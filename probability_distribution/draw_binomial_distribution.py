@@ -39,8 +39,10 @@ def update(i):
 def main():
     fig = plt.figure(figsize=(12, 8))
 
+    print("Create binomial distribution gif...")
     gif = FuncAnimation(fig, update, frames=len(mu_vals), interval=100)
-    gif.save("binomial_dist.gif")
+    gif.save("images/binomial_dist.gif")
+    print("Finish!!")
 
 
 if __name__ == "__main__":
