@@ -32,7 +32,6 @@ def update(i):
     plt.ylabel("probability")
     plt.suptitle("Beta distribution", fontsize=20)
     plt.title("a=" + str(a) + ", b=" + str(b), loc="left")
-    plt.grid()
 
 
 def main():
