@@ -1,3 +1,5 @@
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -131,4 +133,7 @@ if __name__ == "__main__":
     draw_base_trigonometric_graph(
         axis_x, axis_y, axis_u, axis_v, grid_x, grid_y, grid_u, grid_v, axis_vals
     )
-    plt.show()
+    if len(sys.argv) == 2 and sys.argv[1] == "NotShow":
+        print("It shows nothing")
+    else:
+        plt.show()

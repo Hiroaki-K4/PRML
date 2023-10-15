@@ -1,0 +1,22 @@
+name: ML PRACTICE CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run test
+      run: docker run --rm -v $(pwd):/data cytopia/black . --check --verbose --diff --color
+
+  probability_distribution_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run test
+      run: bash test.sh probability_distribution

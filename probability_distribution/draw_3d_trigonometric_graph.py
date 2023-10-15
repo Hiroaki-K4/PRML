@@ -1,8 +1,10 @@
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import dirichlet
 
 import draw_contour_map
+import draw_dirichlet_distribution
 import draw_trigonometric_graph
 
 
@@ -27,7 +29,9 @@ def draw_3d_trigonometric_graph(
     # Calculate probability density of dirchlet distribution
     dens_vals = np.array(
         [
-            dirichlet.pdf(x=x_k, alpha=alpha_k) if all(x_k != np.nan) else np.nan
+            draw_dirichlet_distribution.calculate_probability_density(x_k, alpha_k)
+            if all(x_k != np.nan)
+            else np.nan
             for x_k in x_points
         ]
     )
@@ -159,4 +163,7 @@ if __name__ == "__main__":
         y_1_grid,
         y_shape,
     )
-    plt.show()
+    if len(sys.argv) == 2 and sys.argv[1] == "NotShow":
+        print("It shows nothing")
+    else:
+        plt.show()
