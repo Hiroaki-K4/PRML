@@ -19,8 +19,10 @@ $$
 This is known as the Bernoulli distribution. The mean and variance of this distribution are as follows
 
 $$
-E[x]=\mu \\
-var[x]=\mu(1-\mu) \tag{3}
+\begin{align*}
+E[x]&=\mu \\
+var[x]&=\mu(1-\mu) \tag{3}
+\end{align*}
 $$
 
 ## Binomial distribution
@@ -33,8 +35,10 @@ $$
 The mean and variance are as follows.
 
 $$
-E[m]=\sum_{m=0}^N mBin(m|N,\mu)=N\mu \\
-var[m]=\sum_{m=0}^N (m-E[m])^2 Bin(m|N,\mu) = N\mu(1-\mu) \tag{5}
+\begin{align*}
+E[m]&=\sum_{m=0}^N mBin(m|N,\mu)=N\mu \\
+var[m]&=\sum_{m=0}^N (m-E[m])^2 Bin(m|N,\mu) = N\mu(1-\mu) \tag{5}
+\end{align*}
 $$
 
 You can draw the binomial distribution by running follow command.
@@ -65,8 +69,10 @@ $$
 The mean and variance of the beta distribution are given by
 
 $$
-E[\mu]=\frac{a}{a+b} \\
-var[\mu]=\frac{ab}{(a+b)^2(a+b+1)} \tag{8}
+\begin{align*}
+E[\mu]&=\frac{a}{a+b} \\
+var[\mu]&=\frac{ab}{(a+b)^2(a+b+1)} \tag{8}
+\end{align*}
 $$
 
 The parameters $a$ and $b$ are often referred to as hyperparameters because they determine the distribution of the parameter $\mu$. A graph can be created by running the following code when the hyperparameters are set to various values.
