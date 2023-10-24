@@ -26,6 +26,8 @@ test_probability_distribution() {
     check_result "draw_dirichlet_distribution.py"
     python3 draw_trigonometric_graph.py NotShow
     check_result "draw_trigonometric_graph.py"
+    python3 draw_gaussian_distribution.py
+    check_result "draw_gaussian_distribution.py"
     cd ../
 }
 
