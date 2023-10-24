@@ -141,6 +141,18 @@ The drawing shows what happens when the parameter $\alpha_1$ is varied.
 
 <br></br>
 
+## Gaussian distribution
+
+You can draw the Gaussian distribution by running follow command.
+
+```bash
+python3 draw_gaussian_distribution.py
+```
+
+<img src='images/gaussian_dist.gif' width='600'>
+
+<br></br>
+
 ## References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
