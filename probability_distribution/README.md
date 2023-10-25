@@ -157,3 +157,4 @@ python3 draw_gaussian_distribution.py
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
 - [Python Plotting Dirichlet Distributions](https://www.anarchive-beta.com/entry/2022/10/19/120500)
+- [Python Plotting Gaussian Distributions](https://www.anarchive-beta.com/entry/2022/01/31/180000)
