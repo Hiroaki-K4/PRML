@@ -1,11 +1,10 @@
 import sys
 
-import matplotlib.pyplot as plt
-import numpy as np
-
 import draw_contour_map
 import draw_dirichlet_distribution
 import draw_trigonometric_graph
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def draw_3d_trigonometric_graph(

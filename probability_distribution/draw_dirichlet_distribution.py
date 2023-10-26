@@ -1,9 +1,8 @@
+import draw_trigonometric_graph
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 from scipy.special import gamma
-
-import draw_trigonometric_graph
 
 # Parameter to be changed
 alpha_1_vals = np.arange(start=1.0, stop=10.1, step=0.1).round(decimals=1)
