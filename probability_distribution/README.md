@@ -149,7 +149,7 @@ You can draw the Gaussian distribution by running follow command.
 python3 draw_gaussian_distribution.py
 ```
 
-<!-- <img src='images/gaussian_dist.gif' width='600'> -->
+<img src='images/gaussian_dist.gif' width='600'>
 
 ```bash
 python3 draw_multi_dimentional_gaussian_distribution.py
