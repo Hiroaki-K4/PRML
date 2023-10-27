@@ -149,7 +149,15 @@ You can draw the Gaussian distribution by running follow command.
 python3 draw_gaussian_distribution.py
 ```
 
-<img src='images/gaussian_dist.gif' width='600'>
+<!-- <img src='images/gaussian_dist.gif' width='600'> -->
+
+```bash
+python3 draw_multi_dimentional_gaussian_distribution.py
+```
+
+<img src='images/multi_gaussian.png' width='600'>
+
+<img src='images/multi_gaussian_top.png' width='600'>
 
 <br></br>
 
@@ -158,3 +166,4 @@ python3 draw_gaussian_distribution.py
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
 - [Python Plotting Dirichlet Distributions](https://www.anarchive-beta.com/entry/2022/10/19/120500)
 - [Python Plotting Gaussian Distributions](https://www.anarchive-beta.com/entry/2022/01/31/180000)
+- [The world's easiest way to use np.meshgrid (mesh grid)](https://disassemble-channel.com/np-meshgrid/)

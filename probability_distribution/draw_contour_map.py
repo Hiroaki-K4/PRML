@@ -1,9 +1,10 @@
 import sys
 
-import draw_dirichlet_distribution
-import draw_trigonometric_graph
 import matplotlib.pyplot as plt
 import numpy as np
+
+import draw_dirichlet_distribution
+import draw_trigonometric_graph
 
 
 def calculate_3d_coords_for_contour_map():

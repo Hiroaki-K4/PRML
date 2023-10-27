@@ -28,6 +28,8 @@ test_probability_distribution() {
     check_result "draw_trigonometric_graph.py"
     python3 draw_gaussian_distribution.py
     check_result "draw_gaussian_distribution.py"
+    python3 draw_multi_dimentional_gaussian_distribution.py NotShow
+    check_result "draw_multi_dimentional_gaussian_distribution.py"
     cd ../
 }
 
