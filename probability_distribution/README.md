@@ -151,9 +151,19 @@ python3 draw_gaussian_distribution.py
 
 <img src='images/gaussian_dist.gif' width='600'>
 
+```bash
+python3 draw_multi_dimentional_gaussian_distribution.py
+```
+
+<img src='images/multi_gaussian.png' width='600'>
+
+<img src='images/multi_gaussian_top.png' width='600'>
+
 <br></br>
 
 ## References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
 - [Python Plotting Dirichlet Distributions](https://www.anarchive-beta.com/entry/2022/10/19/120500)
+- [Python Plotting Gaussian Distributions](https://www.anarchive-beta.com/entry/2022/01/31/180000)
+- [The world's easiest way to use np.meshgrid (mesh grid)](https://disassemble-channel.com/np-meshgrid/)
