@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def calculate_multi_dimentional_gaussian_distribution(mu, cov, vals):
+def calculate_multivariate_gaussian_distribution(mu, cov, vals):
     if mu.shape[0] != cov.shape[0] or mu.shape[0] != cov.shape[1]:
         raise ValueError("Shape of mu and cov are not same.")
 
@@ -40,10 +40,10 @@ def main():
     vals[:, :, 0] = X
     vals[:, :, 1] = Y
 
-    density = calculate_multi_dimentional_gaussian_distribution(mu, cov, vals)
+    density = calculate_multivariate_gaussian_distribution(mu, cov, vals)
 
     fig = plt.figure()
-    fig.suptitle(t="Multi dimentional gaussian distribution", fontsize=20)
+    fig.suptitle(t="Multivariate gaussian distribution", fontsize=20)
     ax = fig.add_subplot(projection="3d")
     ax.set_xlabel(xlabel="Dimention 1")
     ax.set_ylabel(ylabel="Dimention 2")

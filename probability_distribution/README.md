@@ -142,8 +142,14 @@ The drawing shows what happens when the parameter $\alpha_1$ is varied.
 <br></br>
 
 ## Gaussian distribution
+The Gaussian distribution, also called the normal distribution, is widely used as a model for the distribution of continuous variables.
+If there is only one variable, it can be written as follows. $\mu$ is the averange and $\sigma^2$ is the variance.
 
-You can draw the Gaussian distribution by running follow command.
+$$
+\mathcal{N}(x|\mu,\sigma^2)=\frac{1}{(2\pi\sigma^2)^{1/2}}e^{-\frac{1}{2\sigma^2}(x-\mu)^2} \tag{15}
+$$
+
+You can draw the Gaussian distribution by running follow command. Under a Gaussian distribution, the probability density of the random numbers created gradually follows a Gaussian distribution.
 
 ```bash
 python3 draw_gaussian_distribution.py
@@ -151,8 +157,29 @@ python3 draw_gaussian_distribution.py
 
 <img src='images/gaussian_dist.gif' width='600'>
 
+### Multivariate Gaussian distribution
+
+The multivariate Gaussian distribution for a vector $x$ in dimension $D$ is as follows.
+
+$$
+\mathcal{N}(x|\mu,\sigma)=\frac{1}{(2\pi)^{D/2}} \frac{1}{|\sigma|^{1/2}} e^{-\frac{1}{2}(x-\mu)^\intercal\sigma^{-1}(x-\mu)} \tag{16}
+$$
+
+$\mu$ is the average in dimention $D$, $\sigma$ is the covariance matrix in dimention $D \times D$ and $|\sigma|$ is the determinant of $\sigma$
+
+The Gaussian distribution depends on $x$ through the following quadratic form, which appears in the exponential part.
+
+$$
+\triangle^2=(x-\mu)^\intercal\sigma^{-1}(x-\mu) \tag{17}
+$$
+
+This quantity $\triangle$ is called the **Mahalanobis distance** from $\mu$ to $x$. This would be the Euclidean distance if $\sigma$ were a unit matrix. The density of the Gaussian distribution is constant on the surface where the value of this quadratic form is constant in $x$-space.
+
+
+You can draw the multivariate Gaussian distribution by running follow command.
+
 ```bash
-python3 draw_multi_dimentional_gaussian_distribution.py
+python3 draw_multivariate_gaussian_distribution.py
 ```
 
 <img src='images/multi_gaussian.png' width='600'>

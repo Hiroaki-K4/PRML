@@ -20,8 +20,8 @@ test_probability_distribution() {
     check_result "draw_contour_map.py"
     python3 draw_trigonometric_graph.py NotShow
     check_result "draw_trigonometric_graph.py"
-    python3 draw_multi_dimentional_gaussian_distribution.py NotShow
-    check_result "draw_multi_dimentional_gaussian_distribution.py"
+    python3 draw_multivariate_gaussian_distribution.py NotShow
+    check_result "draw_multivariate_gaussian_distribution.py"
     cd ../
 }
 
