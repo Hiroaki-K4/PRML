@@ -157,6 +157,8 @@ python3 draw_gaussian_distribution.py
 
 <img src='images/gaussian_dist.gif' width='600'>
 
+### Multivariate Gaussian distribution
+
 The multivariate Gaussian distribution for a vector $x$ in dimension $D$ is as follows.
 
 $$
