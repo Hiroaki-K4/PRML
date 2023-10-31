@@ -1,7 +1,10 @@
+import math
 import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+import draw_gaussian_distribution
 
 
 def calculate_multivariate_gaussian_distribution(mu, cov, vals):
@@ -27,15 +30,12 @@ def calculate_multivariate_gaussian_distribution(mu, cov, vals):
     return density
 
 
-def calculate_conditional_gaussian_distribution(target_idx, mu, cov, y):
+def calculate_conditional_gaussian_distribution(mu, cov, y):
     pre_mat = np.linalg.inv(cov)
-    print("target: ", pre_mat[target_idx, target_idx]**(-1))
-    var = np.linalg.inv(pre_mat[target_idx, target_idx])
-    print("cov: ", cov)
-    print("pre_mat: ", pre_mat)
-    print("var: ", var)
+    var_a = pre_mat[0, 0] ** (-1)
+    mu_a = mu[0] - pre_mat[0, 0] ** (-1) * pre_mat[0, 1] * (y - mu[1])
 
-    return 0
+    return mu_a, var_a
 
 
 def main():
@@ -54,13 +54,30 @@ def main():
     density = calculate_multivariate_gaussian_distribution(mu, cov, vals)
 
     fig = plt.figure()
-    fig.suptitle(t="Multivariate gaussian distribution", fontsize=20)
-    cnf = plt.contourf(X, Y, density, alpha=0.8)
-    plt.colorbar(cnf, label="density")
+    cnf = fig.add_subplot(121)
+    cond_dist = fig.add_subplot(122)
+
+    cnf.contourf(X, Y, density, alpha=0.8)
+    cnf.set_title("Multivariate Gaussian Distribution")
+    cnf.set_xlabel("X")
+    cnf.set_ylabel("Y")
+    cnf.plot([-3, 3], [1.5, 1.5], color="red")
 
     # Calculate conditional Gaussian distribution
     y = 1.5
-    a = calculate_conditional_gaussian_distribution(0, mu, cov, y)
+    mu_a, var_a = calculate_conditional_gaussian_distribution(mu, cov, y)
+    cond_density = draw_gaussian_distribution.calculate_gaussian_distribution(
+        X[0], mu_a, math.sqrt(var_a)
+    )
+    cond_dist.plot(X[0], cond_density)
+    cond_dist_title = (
+        "Conditional Gaussian Distribution: y={0}, $\mu={1}, \sigma^2={2}$".format(
+            y, mu_a, round(var_a, 2)
+        )
+    )
+    cond_dist.set_title(cond_dist_title)
+    cond_dist.set_xlabel("X")
+    cond_dist.set_ylabel("Density")
 
 
 if __name__ == "__main__":
