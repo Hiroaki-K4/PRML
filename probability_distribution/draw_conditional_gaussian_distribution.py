@@ -71,7 +71,7 @@ def main():
     )
     cond_dist.plot(X[0], cond_density)
     cond_dist_title = (
-        "Conditional Gaussian Distribution: y={0}, $\mu={1}, \sigma^2={2}$".format(
+        "Conditional Gaussian Distribution: Y={0}, $\mu={1}, \sigma^2={2}$".format(
             y, mu_a, round(var_a, 2)
         )
     )

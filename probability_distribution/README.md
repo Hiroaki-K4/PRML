@@ -157,6 +157,8 @@ python3 draw_gaussian_distribution.py
 
 <img src='images/gaussian_dist.gif' width='600'>
 
+<br></br>
+
 ### Multivariate Gaussian distribution
 
 The multivariate Gaussian distribution for a vector $x$ in dimension $D$ is as follows.
@@ -185,6 +187,78 @@ python3 draw_multivariate_gaussian_distribution.py
 <img src='images/multi_gaussian.png' width='600'>
 
 <img src='images/multi_gaussian_top.png' width='600'>
+
+<br></br>
+
+## Conditional Gaussian distribution
+An important property of the multivariate Gaussian distribution is that if the simultaneous distribution of two sets of variables follows a Gaussian distribution, then given one set of variables, the conditional distribution of the other set will also be Gaussian.
+Let $x$ be a D-dimensional vector following a Gaussian distribution $\mathcal{N}(x|\mu,\sigma)$, and partition this vector $x$ into two mutually prime subsets $x_a$ and $x_b$.
+
+$$
+x=\begin{pmatrix}
+x_a \\
+x_b \\
+\end{pmatrix} \tag{18}
+$$
+
+The corresponding partitioning of the mean vector $\mu$ is also defined.
+
+$$
+\mu=\begin{pmatrix}
+\mu_a \\
+\mu_b \\
+\end{pmatrix} \tag{19}
+$$
+
+And the covariance matrix $\sigma$ is given in the same way.
+
+$$
+\sigma=\begin{pmatrix}
+\sigma_{aa} & \sigma_{ab} \\
+\sigma_{ba} & \sigma_{bb} \\
+\end{pmatrix} \tag{20}
+$$
+
+By the way, it is often more convenient to consider the inverse of the covariance.
+
+$$
+A\equiv\sigma^{-1} \tag{21}
+$$
+
+This is called the precision matrix. The partitioned precision matrix is as follows.
+
+$$
+A=\begin{pmatrix}
+A_{aa} & A_{ab} \\
+A_{ba} & A_{bb} \\
+\end{pmatrix} \tag{22}
+$$
+
+Let's start by finding an expression for the conditional distribution $p(x_a|x_b)$: as long as we fix $x_b$ at the observed value and normalize the obtained expression to be a legitimate probability on $x_a$, we can find the conditional distribution using the simultaneous distribution $p(x)=p(x_a, x_b)$ from the multiplication theorem of probability. Instead of doing this normalization explicitly, the solution can be efficiently obtained by considering the quadratic form of the exponential part of the Gaussian distribution in Eq(17) and finding the normalization coefficient at the end of the calculation.
+
+We can get below equation by using Eq(18), Eq(19) and Eq(22).
+
+$$
+-\frac{1}{2}(x-\mu)^\intercal\sigma^{-1}(x-\mu)=-\frac{1}{2}(x_a-\mu_a)^\intercal A_{aa}(x_a-\mu_a)-\frac{1}{2}(x_a-\mu_a)^\intercal A_{ab}(x_b-\mu_b) \\
+-\frac{1}{2}(x_b-\mu_b)^\intercal A_{ba}(x_a-\mu_a)-\frac{1}{2}(x_b-\mu_b)^\intercal A_{bb}(x_b-\mu_b) \tag{23}
+$$
+
+If we view this equation as a function of $x_a$, we see that the corresponding conditional distribution $p(x_a|x_b)$ is also Gaussian, since it is also quadratic in form. Since the characteristics of a Gaussian distribution are completely determined by the mean and covariance matrices, we use Eq(23) to obtain the mean and covariance expressions for $p(x_a|x_b)$.
+
+The exponential part of the general Gaussian distribution $\mathcal{N}(x|\mu,\sigma)$ can be written in a straightforward manner by noting that it can be written as
+
+$$
+-\frac{1}{2}(x-\mu)^\intercal\sigma^{-1}(x-\mu)=-\frac{1}{2}x^\intercal \sigma^{-1} x + x^\intercal \sigma^{-1}\mu+const \tag{24}
+$$
+
+
+You can draw the conditional Gaussian distribution by running follow command.
+
+```bash
+python3 draw_conditional_gaussian_distribution.py
+```
+
+<img src='images/conditional_gaussian_dist.png' width='600'>
 
 <br></br>
 
