@@ -251,6 +251,34 @@ $$
 -\frac{1}{2}(x-\mu)^\intercal\sigma^{-1}(x-\mu)=-\frac{1}{2}x^\intercal \sigma^{-1} x + x^\intercal \sigma^{-1}\mu+const \tag{24}
 $$
 
+$const$ is a term that is independent of x. If we take the general quadratic form and express it in the form on the right side of Eq(24), the coefficient matrix of the quadratic term of $x$ is equal to the inverse covariance matrix $\sigma^{-1}$, and the coefficient matrix of the linear term of $x$ and $\sigma^{-1}\mu$ are equal, the value of $\mu$ can be obtained.
+
+This procedure is applied to the conditional Gaussian distribution $p(x_a|x_b)$ whose quadratic form of the exponential part is Eq(23). The mean and variance of this conditional distribution are denoted by $\mu_{a|b}$ and $\sigma_{a|b}$ respectively. Consider $x_b$ as a constant and consider the functional dependence of $x_a$ on Eq(23). First, taking out all terms of second order for $x_a$, we obtain
+
+$$
+-\frac{1}{2}x_a^\intercal A_{aa}x_a \tag{25}
+$$
+
+From this equation, the variance of $p(x_a|x_b)$ immediately follows.
+
+$$
+\sigma_{a|b}=A_{aa}^{-1} \tag{26}
+$$
+
+Next, considering all linear terms for $x_a$ in Eq(23) and using the relation $A_{ba}^\intercal=A_{ab}$, we obtain
+
+$$
+x_a^\intercal (A_{aa}\mu_a-A_{ab}(x_b-\mu_b)) \tag{27}
+$$
+
+From the discussion of the general form (24), the coefficient of $x_a$ in this equation must be equal to $\sigma_{a|b}^{-1}\mu_{a|b}$. Using also Eq(26), the average is as follows
+
+$$
+\begin{align*}
+\mu_{a|b}&=\sigma_{a|b}(A_{aa}\mu_a-A_{ab}(x_b-\mu_b)) \\
+&=\mu_a-A_{aa}^{-1}A_{ab}(x_b-\mu_b) \tag{28}
+\end{align*}
+$$
 
 You can draw the conditional Gaussian distribution by running follow command.
 
@@ -258,7 +286,9 @@ You can draw the conditional Gaussian distribution by running follow command.
 python3 draw_conditional_gaussian_distribution.py
 ```
 
-<img src='images/conditional_gaussian_dist.png' width='600'>
+The lower right figure shows the conditional Gaussian distribution of $x_a$ when $x_b$ is 1.5.
+
+<img src='images/conditional_gaussian_dist.png' width='800'>
 
 <br></br>
 

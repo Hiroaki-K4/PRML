@@ -58,9 +58,9 @@ def main():
     cond_dist = fig.add_subplot(122)
 
     cnf.contourf(X, Y, density, alpha=0.8)
-    cnf.set_title("Multivariate Gaussian Distribution")
-    cnf.set_xlabel("X")
-    cnf.set_ylabel("Y")
+    cnf.set_title("Multivariate Gaussian distribution")
+    cnf.set_xlabel("$x_a$")
+    cnf.set_ylabel("$x_b$")
     cnf.plot([-3, 3], [1.5, 1.5], color="red")
 
     # Calculate conditional Gaussian distribution
@@ -71,12 +71,12 @@ def main():
     )
     cond_dist.plot(X[0], cond_density)
     cond_dist_title = (
-        "Conditional Gaussian Distribution: Y={0}, $\mu={1}, \sigma^2={2}$".format(
+        "Conditional Gaussian distribution: $x_b$={0}, $\mu={1}, \sigma^2={2}$".format(
             y, mu_a, round(var_a, 2)
         )
     )
     cond_dist.set_title(cond_dist_title)
-    cond_dist.set_xlabel("X")
+    cond_dist.set_xlabel("$x_a$")
     cond_dist.set_ylabel("Density")
 
 

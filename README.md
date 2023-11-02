@@ -9,6 +9,8 @@ This repository provides implementations for a better understanding of [PRML](ht
 
 <img src='probability_distribution/images/dirichlet_dist.gif' width='600'>
 
+<img src='probability_distribution/images/gaussian_dist.gif' width='600'>
+
 <br></br>
 
 ## Reference
