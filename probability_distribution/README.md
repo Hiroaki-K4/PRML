@@ -335,7 +335,19 @@ $$
 \mu_{ML}=\frac{1}{N}\sum_{n=1}^Nx_n \tag{34}
 $$
 
+First, the mean of the posterior distribution in Eq(33) is the value taken between the mean $\mu_0$ of the prior distribution and the maximum likelihood estimated solution $\mu_{ML}$.
+On the other hand, for $N\rightarrow\infty$, the mean of the posterior distribution is the maximum likelihood estimated solution. Let us consider the variance in the same way.
+If the number of data becomes $N\rightarrow\infty$, the variance $\sigma_N^2$ approaches zero and the posterior distribution becomes an infinitely sharp density around the maximum likelihood estimate.
 
+You can draw the Gaussian distribution with known variance by running follow command.
+
+```bash
+python3 draw_gaussian_distribution_with_known_variance.py
+```
+
+The data points were generated with a Gaussian distribution with mean $0.75$ and variance $0.1$, and a prior distribution with mean $0$ was chosen. For both the posterior distribution and the likelihood function, the variance was set to its true value.
+
+<img src='images/gaussian_dist_with_known_var.gif' width='600'>
 
 <br></br>
 

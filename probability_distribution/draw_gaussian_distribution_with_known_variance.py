@@ -32,7 +32,7 @@ def update(n):
     plt.plot(x_vals, density, zorder=2)
     plt.xlabel("$\mu$")
     plt.ylabel("density")
-    plt.suptitle("Gaussian distribution with know variance", fontsize=20)
+    plt.suptitle("Gaussian distribution with known variance", fontsize=20)
     plt.title(
         "$\mu_N="
         + str(round(mu_n, 2))
