@@ -5,7 +5,7 @@ from matplotlib.animation import FuncAnimation
 import draw_gaussian_distribution
 
 mu = 0.75  # Average
-var = 0.1  # Standard deviation
+var = 0.1  # Variance
 N = 1000  # Data number
 x_n = np.random.normal(loc=mu, scale=np.sqrt(var), size=N)
 x_vals = np.linspace(-1, 1, num=250)

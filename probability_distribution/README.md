@@ -351,6 +351,16 @@ The data points were generated with a Gaussian distribution with mean $0.75$ and
 
 <br></br>
 
+### Bayesian inference for the mean of a Gaussian distribution with known average
+
+```bash
+python3 draw_gaussian_distribution_with_known_average.py
+```
+
+<img src='images/gaussian_dist_with_known_avg.gif' width='600'>
+
+<br></br>
+
 ## References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
