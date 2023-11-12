@@ -292,6 +292,65 @@ The lower right figure shows the conditional Gaussian distribution of $x_a$ when
 
 <br></br>
 
+## Baysian inference for Gaussian distribution
+Here, we introduce a prior distribution over the parameters to guide the Bayesian treatment.
+
+### Bayesian inference for the mean of a Gaussian distribution with known variance
+Assuming that the variance $\sigma^2$ is known, consider the problem of estimating the mean $\mu$ from a given set of N observations $x={x_1,...,x_N}$. The likelihood function, which is the probability that observed data occurs when $\mu$ is given, can be regarded as a function of $\mu$, and is as follows.
+
+$$
+p(x|\mu)=\prod_{n=1}^N p(x_n|\mu)=\frac{1}{(2\pi\sigma^2)^{N/2}}exp\left\{-\frac{1}{2\sigma^2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{29}
+$$
+
+Looking at this likelihood function, it takes the form of an exponent in quadratic form for $\mu$. Therefore, if we choose a Gaussian distribution for the posterior distribution $p(\mu)$, it will be the conjugate prior distribution of this likelihood function. This is because the posterior distribution when using this is in the form of two exponents of the quadratic function for $\mu$, which is also a Gaussian distribution. Therefore, we take the prior distribution as follows.
+
+$$
+p(\mu)=\mathcal{N}(\mu|\mu_0,\sigma_0^2) \tag{30}
+$$
+
+The posterior distribution is as follows.
+
+$$
+p(\mu|x)\propto p(x|\mu)p(\mu) \tag{31}
+$$
+
+By a transformation that completes the square of the exponential part, the posterior distribution can be expressed as follows
+
+$$
+p(\mu|x)=\mathcal{N}(\mu|\mu_N,\sigma_N^2) \tag{32}
+$$
+
+The following equation holds for $\mu_N$ and $\sigma_N^2$.
+
+$$
+\begin{align*}
+\mu_N&=\frac{\sigma_N^2}{N\sigma_0^2+\sigma^2}\mu_0+\frac{N\sigma_0^2}{N\sigma_0^2+\sigma^2}\mu_{ML} \\
+\frac{1}{\sigma_N^2}&=\frac{1}{\sigma_0^2}+\frac{N}{\sigma^2} \tag{33}
+\end{align*}
+$$
+
+$\mu_{ML}$ is the maximum likelihood estimated solution of $\mu$ and is the sample mean.
+
+$$
+\mu_{ML}=\frac{1}{N}\sum_{n=1}^Nx_n \tag{34}
+$$
+
+First, the mean of the posterior distribution in Eq(33) is the value taken between the mean $\mu_0$ of the prior distribution and the maximum likelihood estimated solution $\mu_{ML}$.
+On the other hand, for $N\rightarrow\infty$, the mean of the posterior distribution is the maximum likelihood estimated solution. Let us consider the variance in the same way.
+If the number of data becomes $N\rightarrow\infty$, the variance $\sigma_N^2$ approaches zero and the posterior distribution becomes an infinitely sharp density around the maximum likelihood estimate.
+
+You can draw the Gaussian distribution with known variance by running follow command.
+
+```bash
+python3 draw_gaussian_distribution_with_known_variance.py
+```
+
+The data points were generated with a Gaussian distribution with mean $0.75$ and variance $0.1$, and a prior distribution with mean $0$ was chosen. For both the posterior distribution and the likelihood function, the variance was set to its true value.
+
+<img src='images/gaussian_dist_with_known_var.gif' width='600'>
+
+<br></br>
+
 ## References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
