@@ -167,7 +167,7 @@ $$
 \mathcal{N}(x|\mu,\sigma)=\frac{1}{(2\pi)^{D/2}} \frac{1}{|\sigma|^{1/2}} e^{-\frac{1}{2}(x-\mu)^\intercal\sigma^{-1}(x-\mu)} \tag{16}
 $$
 
-$\mu$ is the average in dimention $D$, $\sigma$ is the covariance matrix in dimention $D \times D$ and $|\sigma|$ is the determinant of $\sigma$
+$\mu$ is the mean in dimention $D$, $\sigma$ is the covariance matrix in dimention $D \times D$ and $|\sigma|$ is the determinant of $\sigma$
 
 The Gaussian distribution depends on $x$ through the following quadratic form, which appears in the exponential part.
 
@@ -271,7 +271,7 @@ $$
 x_a^\intercal (A_{aa}\mu_a-A_{ab}(x_b-\mu_b)) \tag{27}
 $$
 
-From the discussion of the general form (24), the coefficient of $x_a$ in this equation must be equal to $\sigma_{a|b}^{-1}\mu_{a|b}$. Using also Eq(26), the average is as follows
+From the discussion of the general form (24), the coefficient of $x_a$ in this equation must be equal to $\sigma_{a|b}^{-1}\mu_{a|b}$. Using also Eq(26), the mean is as follows
 
 $$
 \begin{align*}
@@ -351,13 +351,45 @@ The data points were generated with a Gaussian distribution with mean $0.75$ and
 
 <br></br>
 
-### Bayesian inference for the mean of a Gaussian distribution with known average
+### Bayesian inference for the mean of a Gaussian distribution with known mean
+Now, let us estimate the variance, with the mean known. Again, choosing a distribution that is conjugate to the prior distribution greatly simplifies the computation. Since it is much more convenient to operate with presision $\lambda\equiv1/\sigma^2$, so we will use precision. The likelihood function for $\lambda$ is as follows.
+
+$$
+p(x|\lambda)=\prod_{n=1}^N \mathcal{N}(x_n|\mu,\lambda^{-1}) \propto \lambda^{N/2}exp\left\{-\frac{\lambda}{2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{35}
+$$
+
+From this formula, the conjugate prior of precision must be proportional to the product of the power of $\lambda$ and the exponent of the linear function of $\lambda$. This condition applies to the gamma distribution defined as follows.
+
+$$
+Gam(\lambda|a,b)=\frac{1}{\gamma(a)}b^a\lambda^{a-1}exp(-b\lambda) \tag{36}
+$$
+
+Since the posterior distribution is the prior distribution multiplied by the likelihood function, we have
+
+$$
+p(\lambda|x) \propto \lambda^{a_0-1}\lambda^{N/2} exp\left\{-b_0\lambda -\frac{\lambda}{2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{37}
+$$
+
+It can be seen that this is the gamma distribution $Gam(\lambda|a_N,b_N)$ when the parameters are set as follows
+
+$$
+\begin{align*}
+a_N&=a_0+\frac{N}{2} \\
+b_N&=b_0+\frac{1}{2}\sum_{n=1}^N(x_n-\mu)^2=b_0+\frac{N}{2}\sigma_{ML}^2 \tag{38}
+\end{align*}
+$$
+
+$\sigma_{ML}^2$ is the maximum likelihood estimator of variance.
+
+You can draw the Gaussian distribution with known mean by running follow command.
 
 ```bash
-python3 draw_gaussian_distribution_with_known_average.py
+python3 draw_gaussian_distribution_with_known_mean.py
 ```
 
-<img src='images/gaussian_dist_with_known_avg.gif' width='600'>
+Parameters $a$ and $b$ are being updated, and it can be seen that the accuracy is gradually approaching $1$.
+
+<img src='images/gaussian_dist_with_known_mean.gif' width='600'>
 
 <br></br>
 

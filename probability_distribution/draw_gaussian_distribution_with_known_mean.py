@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 from scipy.special import gamma
 
-mu = 0.75  # Average
+mu = 0.75  # Mean
 var = 1.0  # Variance
 N = 1000  # Data number
 x_n = np.random.normal(loc=mu, scale=np.sqrt(var), size=N)
@@ -35,7 +35,7 @@ def update(n):
     plt.plot(var_vals, density, zorder=2)
     plt.xlabel("$\lambda$")
     plt.ylabel("density")
-    plt.suptitle("Gaussian distribution with known average", fontsize=20)
+    plt.suptitle("Gaussian distribution with known mean", fontsize=20)
     plt.title(
         "$a="
         + str(round(a_n, 1))
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     fig = plt.figure(figsize=(8, 6))
     fig.suptitle("Gaussian Distribution", fontsize=20)
 
-    print("Create a gif of Gaussian distribution with known average...")
-    gif = FuncAnimation(fig, update, frames=50, interval=150)
-    gif.save("images/gaussian_dist_with_known_avg.gif")
+    print("Create a gif of Gaussian distribution with known mean...")
+    gif = FuncAnimation(fig, update, frames=30, interval=150)
+    gif.save("images/gaussian_dist_with_known_mean.gif")
     print("Finish!!")
