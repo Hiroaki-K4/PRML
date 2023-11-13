@@ -13,7 +13,7 @@ def calculate_gaussian_distribution(x_vals, mu, sigma):
     return density
 
 
-mu = 1.0  # Average
+mu = 1.0  # Mean
 sigma = 2.5  # Standard deviation
 N = 1000  # Data number
 x_n = np.random.normal(loc=mu, scale=sigma, size=N)

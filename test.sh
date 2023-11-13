@@ -54,6 +54,8 @@ test_draw_gaussian_distribution() {
     check_result "draw_gaussian_distribution.py"
     python3 draw_gaussian_distribution_with_known_variance.py
     check_result "draw_gaussian_distribution_with_known_variance.py"
+    python3 draw_gaussian_distribution_with_known_mean.py
+    check_result "draw_gaussian_distribution_with_known_mean.py"
     cd ../
 }
 
