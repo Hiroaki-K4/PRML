@@ -49,7 +49,7 @@ def main():
     var = np.var(x_n)
     precision = 1 / np.sqrt(var)
     stu_density = calculate_students_t_distribution(x_vals, mu, precision, 100.0)
-    plt.plot(x_vals, stu_density, label=r"Students't")
+    plt.plot(x_vals, stu_density, label=r"Student's t")
     gauss_density = draw_gaussian_distribution.calculate_gaussian_distribution(
         x_vals, mu, np.sqrt(var)
     )
