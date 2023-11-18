@@ -24,6 +24,8 @@ test_probability_distribution() {
     check_result "draw_multivariate_gaussian_distribution.py"
     python3 draw_conditional_gaussian_distribution.py NotShow
     check_result "draw_conditional_gaussian_distribution.py"
+    python3 draw_students_t_distribution.py NotShow
+    check_result "draw_students_t_distribution.py"
     cd ../
 }
 
