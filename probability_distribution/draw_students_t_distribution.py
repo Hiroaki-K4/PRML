@@ -31,7 +31,7 @@ def main():
     plt.plot(x_vals, middle_nu_density, label=r"$\nu=1.0$")
     plt.plot(x_vals, low_nu_density, label=r"$\nu=0.1$")
     plt.legend()
-    plt.title("Student's t distribution")
+    plt.title("Student's t-distribution")
 
     plt.figure()
     x_n = np.random.normal(loc=mu, scale=np.sqrt(var), size=100)
