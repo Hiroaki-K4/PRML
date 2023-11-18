@@ -393,6 +393,43 @@ Parameters $a$ and $b$ are being updated, and it can be seen that the accuracy i
 
 <br></br>
 
+## Student's t-distribution
+We have seen that the conjugate prior of the precision parameter of the Gaussian distribution is the gamma distribution; placing it on a one-variable Gaussian distribution $\mathcal{N}(x|\mu,\tau^{-1})$, taking the gamma distribution $Gam(\tau|a,b)$ as the prior of precision, from which, with integral elimination of precision and substitution of the variable $z=\tau[b+(x-u)^2/2]$, the peripheral distribution of $x$ becomes
+
+$$
+\begin{align*}
+p(x|\mu,a,b)&=\int_{0}^{\infty} \mathcal{N}(x|\mu,\tau^{-1}) Gam(\tau|a,b)\text{d}\tau \\
+&=\int_{0}^{\infty} \frac{b^a e^{-br}\tau^{a-1}}{\gamma(a)} \left(\frac{\tau}{2\pi}\right)^{1/2}exp\left\{-\frac{\tau}{2}(x-\mu)^2\right\}\text{d}\tau \\
+&=\frac{b^a}{\gamma(a)} \left(\frac{1}{2\pi}\right)^{1/2} \left(b+\frac{(x-\mu)^2}{2}\right)^{-a-1/2} \gamma(a+1/2) \tag{39}
+\end{align*}
+$$
+
+Conveniently, if we define new parameters for $\nu=2a$ and $\lambda=a/b$, the distribution $p(x|\mu,a,b)$ becomes
+
+$$
+St(x|\mu,\lambda,\nu)=\frac{\gamma(\nu/2+1/2)}{\gamma(\nu/2)}\left(\frac{\lambda}{\pi\nu}\right)^{1/2} \left(1+\frac{\lambda(x-\mu)^2}{\nu}\right)^{-\nu/2-1/2} \tag{40}
+$$
+
+This is known as Student's t-distribution.
+The parameter $\lambda$ is also called the precision of the t-distribution, but not necessarily the inverse of the variance.
+The parameter $\nu$ is called the degrees of freedom. For $\nu=1$, the distribution is Cauchy distribution. On the other hand, in the limit of $\nu$, the distribution is Gaussian with mean $\mu$ and precision $\lambda$.
+
+<img src="images/student's_t.png" width='600'>
+
+<br></br>
+
+From Eq(39), we see that the Student's t-distribution is the sum of an infinite number of Gaussian distributions such that the means are the same but the precision is different. This can be interpreted as an infinite mixture of Gaussian distributions. Also, this distribution generally has a longer distributional shank than the Gaussian distribution. Therefore, the t-distribution has an important property called **robustness**. This means that even if there are a small number of data points that are outliers, the t-distribution is less affected by them than the Gaussian distribution. In the following figure, You can see that the Gaussian distribution is more affected by outliers and has a longer tail.
+
+<img src="images/student's_t_with_outliers.png" width='600'>
+
+You can draw the above Student's t-distribution by running follow command.
+
+```bash
+python3 draw_students_t_distribution.py
+```
+
+<br></br>
+
 ## References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
