@@ -141,7 +141,7 @@ The drawing shows what happens when the parameter $\alpha_1$ is varied.
 
 <br></br>
 
-## Gaussian distribution
+# Gaussian distribution
 The Gaussian distribution, also called the normal distribution, is widely used as a model for the distribution of continuous variables.
 If there is only one variable, it can be written as follows. $\mu$ is the averange and $\sigma^2$ is the variance.
 
@@ -159,7 +159,7 @@ python3 draw_gaussian_distribution.py
 
 <br></br>
 
-### Multivariate Gaussian distribution
+## Multivariate Gaussian distribution
 
 The multivariate Gaussian distribution for a vector $x$ in dimension $D$ is as follows.
 
@@ -292,10 +292,10 @@ The lower right figure shows the conditional Gaussian distribution of $x_a$ when
 
 <br></br>
 
-## Baysian inference for Gaussian distribution
+# Baysian inference for Gaussian distribution
 Here, we introduce a prior distribution over the parameters to guide the Bayesian treatment.
 
-### Bayesian inference for the mean of a Gaussian distribution with known variance
+## Bayesian inference for the mean of a Gaussian distribution with known variance
 Assuming that the variance $\sigma^2$ is known, consider the problem of estimating the mean $\mu$ from a given set of N observations $x={x_1,...,x_N}$. The likelihood function, which is the probability that observed data occurs when $\mu$ is given, can be regarded as a function of $\mu$, and is as follows.
 
 $$
@@ -351,7 +351,7 @@ The data points were generated with a Gaussian distribution with mean $0.75$ and
 
 <br></br>
 
-### Bayesian inference for the mean of a Gaussian distribution with known mean
+## Bayesian inference for the mean of a Gaussian distribution with known mean
 Now, let us estimate the variance, with the mean known. Again, choosing a distribution that is conjugate to the prior distribution greatly simplifies the computation. Since it is much more convenient to operate with presision $\lambda\equiv1/\sigma^2$, so we will use precision. The likelihood function for $\lambda$ is as follows.
 
 $$
@@ -393,7 +393,7 @@ Parameters $a$ and $b$ are being updated, and it can be seen that the accuracy i
 
 <br></br>
 
-## Student's t-distribution
+# Student's t-distribution
 We have seen that the conjugate prior of the precision parameter of the Gaussian distribution is the gamma distribution; placing it on a one-variable Gaussian distribution $\mathcal{N}(x|\mu,\tau^{-1})$, taking the gamma distribution $Gam(\tau|a,b)$ as the prior of precision, from which, with integral elimination of precision and substitution of the variable $z=\tau[b+(x-u)^2/2]$, the peripheral distribution of $x$ becomes
 
 $$
@@ -426,6 +426,21 @@ You can draw the above Student's t-distribution by running follow command.
 
 ```bash
 python3 draw_students_t_distribution.py
+```
+
+<br></br>
+
+# von Mises distribution
+In practical terms, the Gaussian distribution is very important, both on its own and as a component of more complex probability models. But there are times when it is inappropriate as a density model for continuous variables. One such case is the periodic variable.
+An example of a periodic variable is the wind direction at a particular geographic location. For example, one would like to measure wind direction values for several days and summarize these values by a parametric distribution. Such quantities can be conveniently expressed using an angular coordinate system $(0\leq \theta < 2\pi)$.
+
+Here, one might want to use a periodic variable chosen with a certain direction as the origin and apply an existing distribution, such as a Gaussian distribution. However, such a policy would result in a strong dependence on the choice of origin.
+For example, there are two observations $\theta=1\degree$ and $\theta=359\degree$. Let us model these using a standard Gaussian distribution. If we choose the origin as $0\degree$, the sample mean for this data set is $180\degree$ and the standard deviation is $179\degree$. However, if we choose $180\degree$ as the origin, the mean would be $0\degree$ and the standard deviation would be $1\degree$. From this example, it is clear that a special method is needed to handle periodic variables.
+
+You can draw the von Mises distribution by running follow command.
+
+```bash
+python3 draw_von_mises_distribution.py
 ```
 
 <br></br>
