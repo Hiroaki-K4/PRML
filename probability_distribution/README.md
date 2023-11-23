@@ -508,6 +508,38 @@ $$
 p(\theta|\theta_0,m)=\frac{1}{2\pi I_0(m)}exp\left\{mcos(\theta-\theta_0) \right\} \tag{50}
 $$
 
+This is called the von Mises distribution. called circular normal distribution. In this formula, the parameter $\theta_0$ corresponds to the mean of the distribution. Another parameter, $m$, is known as the concentration parameter and is similar to the inverse variance of a Gaussian distribution. The normalization coefficient of Eq(50) is expressed as $I_0(m)$. This is a 0th-order modified Bessel function of the first kind, and is defined by the following equation.
+
+$$
+I_0(m)=\frac{1}{2\pi}\int_{0}^{2\pi}exp\left\{mcos\theta \right\}\text{d}\theta \tag{51}
+$$
+
+The log-likelihood function of the von Mises distribution is as follows.
+
+$$
+log(p(D|\theta_0,m))=-Nlog(2\pi)-Nlog(I_0(m))+m\sum_{n=1}^N cos(\theta_n-\theta_0) \tag{52}
+$$
+
+If we set the derivative with respect to $\theta_0$ as $0$, we get the following.
+
+$$
+\sum_{n=1}^N sin(\theta_n-\theta_0)=0 \tag{53}
+$$
+
+Using the following addition theorem of trigonometric functions,
+
+$$
+sin(A-B)=siaAcosB-cosAsinB \tag{54}
+$$
+
+we can get following equation.
+
+$$
+\theta_0^{ML}=tan^{-1}\left\{\frac{\sum_{n}sin\theta_n}{\sum_{n}cos\theta_n}\right\} \tag{55}
+$$
+
+It can be seen that the results here are the same as those obtained earlier as the average of the observed values when viewed in two-dimensional orthogonal space(Eq.43).
+
 You can draw the von Mises distribution by running follow command.
 
 ```bash
