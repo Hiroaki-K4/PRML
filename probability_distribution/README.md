@@ -437,6 +437,77 @@ An example of a periodic variable is the wind direction at a particular geograph
 Here, one might want to use a periodic variable chosen with a certain direction as the origin and apply an existing distribution, such as a Gaussian distribution. However, such a policy would result in a strong dependence on the choice of origin.
 For example, there are two observations $\theta=1\degree$ and $\theta=359\degree$. Let us model these using a standard Gaussian distribution. If we choose the origin as $0\degree$, the sample mean for this data set is $180\degree$ and the standard deviation is $179\degree$. However, if we choose $180\degree$ as the origin, the mean would be $0\degree$ and the standard deviation would be $1\degree$. From this example, it is clear that a special method is needed to handle periodic variables.
 
+Here, let us consider the problem of finding the average of a set of observed values of periodic variables $D=\left\{\theta_1,...,\theta_N \right\}$. Hereafter, $\theta$ will be measured in radians. We have already seen that the simple average $(\theta_1+...+\theta)/N$ strongly depends on the coordinate system. Therefore, in order to find an invariant measure of the average, we note that observed values can be regarded as points on a unit circle and can be expressed by two-dimensional unit vectors $x1,...,x_N$. Instead of averaging the angles, find the average of these vectors ${x_n}$.
+​
+$$
+\bar{x}=\frac{1}{N}\sum_{n=1}^N x_n \tag{41}
+$$
+
+Then, find the angle $\theta$ with respect to this average. Clearly, this definition ensures that the mean position is independent of the origin of each coordinate system. Since the orthogonal coordinates of the observed values are $x_n=(cos\theta_n,sin\theta_n)$, the orthogonal coordinates of the simple average are $\bar{x}=(\bar{r}cos\bar{\theta},\bar{r}sin\bar{\theta})$. Substituting this into Eq(41) and comparing the $cos$ and $sin$ terms, we get the following equation.
+
+$$
+\bar{r}cos\bar{\theta}=\frac{1}{N}\sum_{n=1}^N cos\theta_n, \quad \bar{r}sin\bar{\theta}=\frac{1}{N}\sum_{n=1}^N sin\theta_n \tag{42}
+$$
+
+Taking these ratios and using the identity $tan\theta=sin\theta/cos\theta$, we get the following equation for $\bar{\theta}$.
+
+$$
+\bar{\theta}=tan^{-1}\left\{\frac{\sum_{n}sin\theta_n}{\sum_{n}cos\theta_n}\right\} \tag{43}
+$$
+
+We will show shortly that this result follows naturally as a maximum likelihood estimator of a well-defined distribution on periodic variables.
+
+Now, let's consider the generalization of the Gaussian distribution to periodic variables, which is called the **von Mises distribution**. By convention, let us consider the distribution $p(\theta)$ with period $2\pi$. Any probability density $p(\theta)$ defined over $\theta$ must not only be non-negative and sum to $1$, but also periodic. Therefore, $p(\theta)$ must satisfy the following three conditions.
+
+$$
+\begin{align*}
+p(\theta) &\geq 0 \\
+\int_{0}^{2\pi}p(\theta)\text{d}\theta&=1 \\
+p(\theta+2\pi)&=p(\theta) \tag{44}
+\end{align*}
+$$
+
+A Gaussian distribution that satisfies these three conditions can be easily obtained as follows. Consider a Gaussian distribution on two variables $x=(x_1,x_2)$ with mean $\mu=(\mu_1,\mu_2)$ and covariance matrix $\Sigma=\sigma^2I$. $I$ is a $2\times2$ unit vector.
+
+$$
+p(x_1,x_2)=\frac{1}{2\pi\sigma^2}exp\left\{-\frac{(x_1-\mu_1)^2+(x_2-\mu_2)^2}{2\sigma^2}\right\} \tag{45}
+$$
+
+The shape of this distribution can be determined by converting orthogonal coordinates $(x_1, x_2)$ to polar coordinates $(r,\theta)$ as follows.
+
+$$
+x_1=rcos\theta, \quad x_2=rsin\theta \tag{46}
+$$
+
+The mean $\mu$ is also mapped to polar coordinates.
+
+$$
+\mu_1=r_0cos\theta_0, \quad \mu_2=r_0sin\theta_0 \tag{47}
+$$
+
+Next, we substitute these transformations into the two-dimensional Gaussian distribution Eq(45), condition on the unit circle of $r=1$, and extract only the part that depends on $\theta$. Focusing on the exponential part of the Gaussian distribution, we get the following equation.
+
+$$
+\begin{align*}
+-\frac{1}{2\sigma^2} \left\{(rcos\theta-r_0cos\theta_0)^2+(rsin\theta-r_0sin\theta_0)^2 \right\}
+&=-\frac{1}{2\sigma^2} \left\{1+r_0^2-2r_0cos\theta cos\theta_0 - 2r_0sin\theta sin\theta_0 \right\} \\
+&=\frac{r_0}{\sigma^2}cos(\theta-\theta_0)+const \tag{48}
+\end{align*}
+$$
+
+However, $const$ represents a term independent of $\theta$. Note that the following trigonometric formulas were used here.
+
+$$
+cos^2A+sin^2A=1 \\
+cosAcosB+sinAsinB=cos(A-B) \tag{49}
+$$
+
+If we set $m=r_0/\sigma^2$ here, $p(\theta)$ along the unit circle of r=1 will finally become the following equation.
+
+$$
+p(\theta|\theta_0,m)=\frac{1}{2\pi I_0(m)}exp\left\{mcos(\theta-\theta_0) \right\} \tag{50}
+$$
+
 You can draw the von Mises distribution by running follow command.
 
 ```bash
