@@ -437,7 +437,7 @@ An example of a periodic variable is the wind direction at a particular geograph
 Here, one might want to use a periodic variable chosen with a certain direction as the origin and apply an existing distribution, such as a Gaussian distribution. However, such a policy would result in a strong dependence on the choice of origin.
 For example, there are two observations $\theta=1\degree$ and $\theta=359\degree$. Let us model these using a standard Gaussian distribution. If we choose the origin as $0\degree$, the sample mean for this data set is $180\degree$ and the standard deviation is $179\degree$. However, if we choose $180\degree$ as the origin, the mean would be $0\degree$ and the standard deviation would be $1\degree$. From this example, it is clear that a special method is needed to handle periodic variables.
 
-Here, let us consider the problem of finding the average of a set of observed values of periodic variables $D=\left\{\theta_1,...,\theta_N \right\}$. Hereafter, $\theta$ will be measured in radians. We have already seen that the simple average $(\theta_1+...+\theta)/N$ strongly depends on the coordinate system. Therefore, in order to find an invariant measure of the average, we note that observed values can be regarded as points on a unit circle and can be expressed by two-dimensional unit vectors $x1,...,x_N$. Instead of averaging the angles, find the average of these vectors ${x_n}$.
+Here, let us consider the problem of finding the average of a set of observed values of periodic variables $D=\left\{\theta_1,...,\theta_N \right\}$. Hereafter, $\theta$ will be measured in radians. We have already seen that the simple average $(\theta_1+...+\theta_N)/N$ strongly depends on the coordinate system. Therefore, in order to find an invariant measure of the average, we note that observed values can be regarded as points on a unit circle and can be expressed by two-dimensional unit vectors $x1,...,x_N$. Instead of averaging the angles, find the average of these vectors ${x_n}$.
 ​
 $$
 \bar{x}=\frac{1}{N}\sum_{n=1}^N x_n \tag{41}
@@ -498,8 +498,10 @@ $$
 However, $const$ represents a term independent of $\theta$. Note that the following trigonometric formulas were used here.
 
 $$
-cos^2A+sin^2A=1 \\
-cosAcosB+sinAsinB=cos(A-B) \tag{49}
+\begin{align*}
+cos^2A+sin^2A&=1 \\
+cosAcosB+sinAsinB&=cos(A-B) \tag{49}
+\end{align*}
 $$
 
 If we set $m=r_0/\sigma^2$ here, $p(\theta)$ along the unit circle of r=1 will finally become the following equation.
@@ -508,7 +510,7 @@ $$
 p(\theta|\theta_0,m)=\frac{1}{2\pi I_0(m)}exp\left\{mcos(\theta-\theta_0) \right\} \tag{50}
 $$
 
-This is called the von Mises distribution. called circular normal distribution. In this formula, the parameter $\theta_0$ corresponds to the mean of the distribution. Another parameter, $m$, is known as the concentration parameter and is similar to the inverse variance of a Gaussian distribution. The normalization coefficient of Eq(50) is expressed as $I_0(m)$. This is a 0th-order modified Bessel function of the first kind, and is defined by the following equation.
+This is called the von Mises distribution or circular normal distribution. In this formula, the parameter $\theta_0$ corresponds to the mean of the distribution. Another parameter, $m$ is known as the concentration parameter and is similar to the inverse variance of a Gaussian distribution. The normalization coefficient of Eq(50) is expressed as $I_0(m)$. This is a 0th-order modified Bessel function of the first kind, and is defined by the following equation.
 
 $$
 I_0(m)=\frac{1}{2\pi}\int_{0}^{2\pi}exp\left\{mcos\theta \right\}\text{d}\theta \tag{51}
@@ -545,6 +547,10 @@ You can draw the von Mises distribution by running follow command.
 ```bash
 python3 draw_von_mises_distribution.py
 ```
+
+It can be seen that the distribution is periodic.
+
+<img src="images/von_mises.png" width='600'>
 
 <br></br>
 

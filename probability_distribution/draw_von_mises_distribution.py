@@ -21,13 +21,11 @@ def main():
     m = 5
     theta_0 = np.pi / 4
     density = calculate_von_mises_distribution(theta_vals, m, theta_0)
-    print(density)
     plt.plot(theta_vals, density, label=r"$m=5,\theta_0=\pi/4$")
 
     m = 1
     theta_0 = 3 * np.pi / 4
     density = calculate_von_mises_distribution(theta_vals, m, theta_0)
-    print(density)
     plt.plot(theta_vals, density, label=r"$m=1,\theta_0=3\pi/4$")
     plt.legend()
     plt.title("von Mises distribution")
