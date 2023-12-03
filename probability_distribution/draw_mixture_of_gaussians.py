@@ -3,28 +3,7 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-def calculate_multivariate_gaussian_distribution(mu, cov, vals):
-    if mu.shape[0] != cov.shape[0] or mu.shape[0] != cov.shape[1]:
-        raise ValueError("Shape of mu and cov are not same.")
-
-    density = np.empty((vals.shape[0], vals.shape[1]))
-    for i in range(vals.shape[0]):
-        for j in range(vals.shape[1]):
-            density[i][j] = (
-                (1 / (2 * np.pi) ** (mu.shape[0] / 2))
-                * (1 / np.linalg.det(cov) ** 0.5)
-                * np.exp(
-                    -1
-                    / 2
-                    * np.dot(
-                        np.dot(np.transpose(vals[i][j] - mu), np.linalg.inv(cov)),
-                        (vals[i][j] - mu),
-                    )
-                )
-            )
-
-    return density
+import draw_multivariate_gaussian_distribution as multi_gauss
 
 
 def main():
@@ -58,9 +37,15 @@ def main():
         print("Mixing coefficient is wrong.")
         return
 
-    density_1 = calculate_multivariate_gaussian_distribution(mu_1, cov_1, vals)
-    density_2 = calculate_multivariate_gaussian_distribution(mu_2, cov_2, vals)
-    density_3 = calculate_multivariate_gaussian_distribution(mu_3, cov_3, vals)
+    density_1 = multi_gauss.calculate_multivariate_gaussian_distribution(
+        mu_1, cov_1, vals
+    )
+    density_2 = multi_gauss.calculate_multivariate_gaussian_distribution(
+        mu_2, cov_2, vals
+    )
+    density_3 = multi_gauss.calculate_multivariate_gaussian_distribution(
+        mu_3, cov_3, vals
+    )
     mix_density = (
         mix_coef_1 * density_1 + mix_coef_2 * density_2 + mix_coef_3 * density_3
     )
