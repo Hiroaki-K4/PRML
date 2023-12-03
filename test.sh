@@ -28,6 +28,8 @@ test_probability_distribution() {
     check_result "draw_students_t_distribution.py"
     python3 draw_von_mises_distribution.py NotShow
     check_result "draw_von_mises_distribution.py"
+    python3 draw_mixture_of_gaussians.py NotShow
+    check_result "draw_mixture_of_gaussians.py"
     cd ../
 }
 
