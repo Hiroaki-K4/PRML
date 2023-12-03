@@ -554,6 +554,38 @@ It can be seen that the distribution is periodic.
 
 <br></br>
 
+# Mixture of Gaussians
+While the Gaussian distribution has some important analytical properties, it also has serious limitations for modeling real data sets. For example, if a data set has two main clumps, a single Gaussian distribution cannot capture this structure, but a linear combination of two Gaussians can better represent the characteristics of this data set.  
+For these reasons, consider the following mixture of Gaussians, a superposition of $K$ Gaussian distributions.
+
+$$
+p(x)=\sum_{k=1}^N\pi_k\mathcal{N}(x|\mu_k,\Sigma_k) \tag{56}
+$$
+
+Each Gaussian distribution $\mathcal{N}(x|\mu_k,\Sigma_k)$ is called a mixture component, and each has its own individual parameters, mean $\mu_k$ and covariance $\Sigma_k$. A mixture Gaussian distribution containing three elements can be drawn with the following command.
+
+```bash
+python3 draw_mixture_of_gaussians.py
+```
+
+<img src="images/mixture_of_gaussians.png" width='600'>
+
+The parameter $\pi_k$ is called the mixing coefficient. note that $p(x)$ and each Gaussian element distribution are all normalized, and integrating both sides of Eq(56) with respect to $x$, we obtain the following equation.
+
+$$
+\sum_{k=1}^N\pi_k=1 \tag{57}
+$$
+
+Also, since $\mathcal{N}(x|\mu_k,\Sigma_k)\geq 0$, the sufficient condition for $p(x)\geq 0$ is that $\pi_k\geq 0$ for all $k$. Combining this with Eq(57), we obtain the following relation.
+
+$$
+0 \leq \pi_k \leq 1 \tag{58}
+$$
+
+Thus, we see that the mixing coefficients satisfy the probability condition.
+
+<br></br>
+
 ## References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Python Plotting Binomial Distributions](https://www.anarchive-beta.com/entry/2022/01/14/073000)
