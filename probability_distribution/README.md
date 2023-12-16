@@ -299,7 +299,7 @@ Here, we introduce a prior distribution over the parameters to guide the Bayesia
 Assuming that the variance $\sigma^2$ is known, consider the problem of estimating the mean $\mu$ from a given set of N observations $x={x_1,...,x_N}$. The likelihood function, which is the probability that observed data occurs when $\mu$ is given, can be regarded as a function of $\mu$, and is as follows.
 
 $$
-p(x|\mu)=\prod_{n=1}^N p(x_n|\mu)=\frac{1}{(2\pi\sigma^2)^{N/2}}exp\left\{-\frac{1}{2\sigma^2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{29}
+p(x|\mu)=\prod_{n=1}^N p(x_n|\mu)=\frac{1}{(2\pi\sigma^2)^{N/2}}exp\left\lbrace-\frac{1}{2\sigma^2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{29}
 $$
 
 Looking at this likelihood function, it takes the form of an exponent in quadratic form for $\mu$. Therefore, if we choose a Gaussian distribution for the posterior distribution $p(\mu)$, it will be the conjugate prior distribution of this likelihood function. This is because the posterior distribution when using this is in the form of two exponents of the quadratic function for $\mu$, which is also a Gaussian distribution. Therefore, we take the prior distribution as follows.
