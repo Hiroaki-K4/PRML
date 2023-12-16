@@ -299,7 +299,7 @@ Here, we introduce a prior distribution over the parameters to guide the Bayesia
 Assuming that the variance $\sigma^2$ is known, consider the problem of estimating the mean $\mu$ from a given set of N observations $x={x_1,...,x_N}$. The likelihood function, which is the probability that observed data occurs when $\mu$ is given, can be regarded as a function of $\mu$, and is as follows.
 
 $$
-p(x|\mu)=\prod_{n=1}^N p(x_n|\mu)=\frac{1}{(2\pi\sigma^2)^{N/2}}exp\left\{-\frac{1}{2\sigma^2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{29}
+p(x|\mu)=\prod_{n=1}^N p(x_n|\mu)=\frac{1}{(2\pi\sigma^2)^{N/2}}exp\left\lbrace-\frac{1}{2\sigma^2}\sum_{n=1}^N(x_n-\mu)^2\right\rbrace \tag{29}
 $$
 
 Looking at this likelihood function, it takes the form of an exponent in quadratic form for $\mu$. Therefore, if we choose a Gaussian distribution for the posterior distribution $p(\mu)$, it will be the conjugate prior distribution of this likelihood function. This is because the posterior distribution when using this is in the form of two exponents of the quadratic function for $\mu$, which is also a Gaussian distribution. Therefore, we take the prior distribution as follows.
@@ -355,7 +355,7 @@ The data points were generated with a Gaussian distribution with mean $0.75$ and
 Now, let us estimate the variance, with the mean known. Again, choosing a distribution that is conjugate to the prior distribution greatly simplifies the computation. Since it is much more convenient to operate with presision $\lambda\equiv1/\sigma^2$, so we will use precision. The likelihood function for $\lambda$ is as follows.
 
 $$
-p(x|\lambda)=\prod_{n=1}^N \mathcal{N}(x_n|\mu,\lambda^{-1}) \propto \lambda^{N/2}exp\left\{-\frac{\lambda}{2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{35}
+p(x|\lambda)=\prod_{n=1}^N \mathcal{N}(x_n|\mu,\lambda^{-1}) \propto \lambda^{N/2}exp\left\lbrace-\frac{\lambda}{2}\sum_{n=1}^N(x_n-\mu)^2\right\rbrace \tag{35}
 $$
 
 From this formula, the conjugate prior of precision must be proportional to the product of the power of $\lambda$ and the exponent of the linear function of $\lambda$. This condition applies to the gamma distribution defined as follows.
@@ -367,7 +367,7 @@ $$
 Since the posterior distribution is the prior distribution multiplied by the likelihood function, we have
 
 $$
-p(\lambda|x) \propto \lambda^{a_0-1}\lambda^{N/2} exp\left\{-b_0\lambda -\frac{\lambda}{2}\sum_{n=1}^N(x_n-\mu)^2\right\} \tag{37}
+p(\lambda|x) \propto \lambda^{a_0-1}\lambda^{N/2} exp\left\lbrace-b_0\lambda -\frac{\lambda}{2}\sum_{n=1}^N(x_n-\mu)^2\right\rbrace \tag{37}
 $$
 
 It can be seen that this is the gamma distribution $Gam(\lambda|a_N,b_N)$ when the parameters are set as follows
@@ -399,7 +399,7 @@ We have seen that the conjugate prior of the precision parameter of the Gaussian
 $$
 \begin{align*}
 p(x|\mu,a,b)&=\int_{0}^{\infty} \mathcal{N}(x|\mu,\tau^{-1}) Gam(\tau|a,b)\text{d}\tau \\
-&=\int_{0}^{\infty} \frac{b^a e^{-br}\tau^{a-1}}{\gamma(a)} \left(\frac{\tau}{2\pi}\right)^{1/2}exp\left\{-\frac{\tau}{2}(x-\mu)^2\right\}\text{d}\tau \\
+&=\int_{0}^{\infty} \frac{b^a e^{-br}\tau^{a-1}}{\gamma(a)} \left(\frac{\tau}{2\pi}\right)^{1/2}exp\left\lbrace-\frac{\tau}{2}(x-\mu)^2\right\rbrace\text{d}\tau \\
 &=\frac{b^a}{\gamma(a)} \left(\frac{1}{2\pi}\right)^{1/2} \left(b+\frac{(x-\mu)^2}{2}\right)^{-a-1/2} \gamma(a+1/2) \tag{39}
 \end{align*}
 $$
@@ -437,7 +437,7 @@ An example of a periodic variable is the wind direction at a particular geograph
 Here, one might want to use a periodic variable chosen with a certain direction as the origin and apply an existing distribution, such as a Gaussian distribution. However, such a policy would result in a strong dependence on the choice of origin.
 For example, there are two observations $\theta=1\degree$ and $\theta=359\degree$. Let us model these using a standard Gaussian distribution. If we choose the origin as $0\degree$, the sample mean for this data set is $180\degree$ and the standard deviation is $179\degree$. However, if we choose $180\degree$ as the origin, the mean would be $0\degree$ and the standard deviation would be $1\degree$. From this example, it is clear that a special method is needed to handle periodic variables.
 
-Here, let us consider the problem of finding the average of a set of observed values of periodic variables $D=\left\{\theta_1,...,\theta_N \right\}$. Hereafter, $\theta$ will be measured in radians. We have already seen that the simple average $(\theta_1+...+\theta_N)/N$ strongly depends on the coordinate system. Therefore, in order to find an invariant measure of the average, we note that observed values can be regarded as points on a unit circle and can be expressed by two-dimensional unit vectors $x1,...,x_N$. Instead of averaging the angles, find the average of these vectors ${x_n}$.
+Here, let us consider the problem of finding the average of a set of observed values of periodic variables $D=\left\lbrace\theta_1,...,\theta_N \right\rbrace$. Hereafter, $\theta$ will be measured in radians. We have already seen that the simple average $(\theta_1+...+\theta_N)/N$ strongly depends on the coordinate system. Therefore, in order to find an invariant measure of the average, we note that observed values can be regarded as points on a unit circle and can be expressed by two-dimensional unit vectors $x1,...,x_N$. Instead of averaging the angles, find the average of these vectors ${x_n}$.
 ​
 $$
 \bar{x}=\frac{1}{N}\sum_{n=1}^N x_n \tag{41}
@@ -452,7 +452,7 @@ $$
 Taking these ratios and using the identity $tan\theta=sin\theta/cos\theta$, we get the following equation for $\bar{\theta}$.
 
 $$
-\bar{\theta}=tan^{-1}\left\{\frac{\sum_{n}sin\theta_n}{\sum_{n}cos\theta_n}\right\} \tag{43}
+\bar{\theta}=tan^{-1}\left\lbrace\frac{\sum_{n}sin\theta_n}{\sum_{n}cos\theta_n}\right\rbrace \tag{43}
 $$
 
 We will show shortly that this result follows naturally as a maximum likelihood estimator of a well-defined distribution on periodic variables.
@@ -470,7 +470,7 @@ $$
 A Gaussian distribution that satisfies these three conditions can be easily obtained as follows. Consider a Gaussian distribution on two variables $x=(x_1,x_2)$ with mean $\mu=(\mu_1,\mu_2)$ and covariance matrix $\Sigma=\sigma^2I$. $I$ is a $2\times2$ unit vector.
 
 $$
-p(x_1,x_2)=\frac{1}{2\pi\sigma^2}exp\left\{-\frac{(x_1-\mu_1)^2+(x_2-\mu_2)^2}{2\sigma^2}\right\} \tag{45}
+p(x_1,x_2)=\frac{1}{2\pi\sigma^2}exp\left\lbrace-\frac{(x_1-\mu_1)^2+(x_2-\mu_2)^2}{2\sigma^2}\right\rbrace \tag{45}
 $$
 
 The shape of this distribution can be determined by converting orthogonal coordinates $(x_1, x_2)$ to polar coordinates $(r,\theta)$ as follows.
@@ -489,8 +489,8 @@ Next, we substitute these transformations into the two-dimensional Gaussian dist
 
 $$
 \begin{align*}
--\frac{1}{2\sigma^2} \left\{(rcos\theta-r_0cos\theta_0)^2+(rsin\theta-r_0sin\theta_0)^2 \right\}
-&=-\frac{1}{2\sigma^2} \left\{1+r_0^2-2r_0cos\theta cos\theta_0 - 2r_0sin\theta sin\theta_0 \right\} \\
+-\frac{1}{2\sigma^2} \left\lbrace(rcos\theta-r_0cos\theta_0)^2+(rsin\theta-r_0sin\theta_0)^2 \right\rbrace
+&=-\frac{1}{2\sigma^2} \left\lbrace1+r_0^2-2r_0cos\theta cos\theta_0 - 2r_0sin\theta sin\theta_0 \right\rbrace \\
 &=\frac{r_0}{\sigma^2}cos(\theta-\theta_0)+const \tag{48}
 \end{align*}
 $$
@@ -507,13 +507,13 @@ $$
 If we set $m=r_0/\sigma^2$ here, $p(\theta)$ along the unit circle of r=1 will finally become the following equation.
 
 $$
-p(\theta|\theta_0,m)=\frac{1}{2\pi I_0(m)}exp\left\{mcos(\theta-\theta_0) \right\} \tag{50}
+p(\theta|\theta_0,m)=\frac{1}{2\pi I_0(m)}exp\left\lbrace mcos(\theta-\theta_0) \right\rbrace \tag{50}
 $$
 
 This is called the von Mises distribution or circular normal distribution. In this formula, the parameter $\theta_0$ corresponds to the mean of the distribution. Another parameter, $m$ is known as the concentration parameter and is similar to the inverse variance of a Gaussian distribution. The normalization coefficient of Eq(50) is expressed as $I_0(m)$. This is a 0th-order modified Bessel function of the first kind, and is defined by the following equation.
 
 $$
-I_0(m)=\frac{1}{2\pi}\int_{0}^{2\pi}exp\left\{mcos\theta \right\}\text{d}\theta \tag{51}
+I_0(m)=\frac{1}{2\pi}\int_{0}^{2\pi}exp\left\lbrace mcos\theta \right\rbrace\text{d}\theta \tag{51}
 $$
 
 The log-likelihood function of the von Mises distribution is as follows.
@@ -537,7 +537,7 @@ $$
 we can get following equation.
 
 $$
-\theta_0^{ML}=tan^{-1}\left\{\frac{\sum_{n}sin\theta_n}{\sum_{n}cos\theta_n}\right\} \tag{55}
+\theta_0^{ML}=tan^{-1}\left\lbrace\frac{\sum_{n}sin\theta_n}{\sum_{n}cos\theta_n}\right\rbrace \tag{55}
 $$
 
 It can be seen that the results here are the same as those obtained earlier as the average of the observed values when viewed in two-dimensional orthogonal space(Eq.43).
