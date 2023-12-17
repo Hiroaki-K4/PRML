@@ -3,7 +3,7 @@ This repository provides implementations for a better understanding of [PRML](ht
 
 <br></br>
 
-## [Probability distribution](https://github.com/Hiroaki-K4/ml_practice/tree/main/probability_distribution)
+# [Probability distribution](https://github.com/Hiroaki-K4/ml_practice/tree/main/probability_distribution)
 
 <img src='probability_distribution/images/beta_dist.gif' width='600'>
 
@@ -13,5 +13,5 @@ This repository provides implementations for a better understanding of [PRML](ht
 
 <br></br>
 
-## Reference
+# Reference
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
