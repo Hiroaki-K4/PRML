@@ -1,44 +1,55 @@
+import random
+
 import matplotlib.pyplot as plt
 import numpy as np
-import random
+
+
+def update_weights(x, y, dim):
+    A = np.zeros((dim + 1, dim + 1))
+    T = np.zeros(dim + 1)
+    for i in range(dim + 1):
+        for j in range(dim + 1):
+            multi_x = np.array(x) ** (i + j)
+            A[i, j] = sum(multi_x)
+        T[i] = np.dot(np.array(x) ** i, np.array(y))
+
+    return np.dot(np.linalg.inv(A), T)
+
+
+def predict(W, x):
+    pred = np.zeros(x.shape)
+    for i in range(len(W)):
+        pred += np.dot(W[i], x**i)
+
+    return pred
 
 
 def main():
     # Create dataset
     random.seed(0)
-    x = np.linspace(0, 2*np.pi, 500)
+    x = np.linspace(0, 2 * np.pi, 500)
     y = np.sin(x)
-    nums = random.sample(range(x.shape[0]), k=10)
-    print(type(nums))
+    nums = random.sample(range(x.shape[0]), k=30)
     noise_x = []
     noise_y = []
     for idx in nums:
-        print(idx)
         random_x = x[idx]
-        random_y = y[idx] + np.random.normal(0, 0.3)
-        print(random_x)
-        print(random_y)
+        random_y = y[idx] + np.random.normal(0, 0.2)
         noise_x.append(random_x)
         noise_y.append(random_y)
 
-    M = 10
-    A = np.empty((len(noise_x), M))
-    print(A)
-    print(A.shape)
-    input()
-    for i in range(len(noise_x)):
-        for j in range(M):
-            A[i, j] = noise_x[i] ** j
+    model_dim = 3
+    W = update_weights(np.array(noise_x), np.array(noise_y), model_dim)
+    pred = predict(W, np.array(x))
 
-    print(A)
-    w = np.dot(np.linalg.inv(A), np.array(noise_y))
-    print("w: ", w)
-    # TODO Predict y by using w
-
-    plt.plot(x, y)
-    plt.scatter(noise_x, noise_y)
+    plt.plot(x, y, label="True")
+    plt.plot(x, pred, label="Prediction")
+    plt.scatter(noise_x, noise_y, label="Noise points")
+    plt.legend()
+    title = "Polynomial curve fitting(dimention is {0})".format(str(model_dim))
+    plt.title(title)
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
