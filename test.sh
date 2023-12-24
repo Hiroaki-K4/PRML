@@ -65,6 +65,13 @@ test_draw_gaussian_distribution() {
     cd ../
 }
 
+test_linear_regression_model() {
+    cd linear_regression_model
+    python3 draw_polynomial_curve_fitting.py NotShow
+    check_result "draw_polynomial_curve_fitting.py"
+    cd ../
+}
+
 python3 -m pip install -r requirements.txt
 
 if [ $# -eq 1 ]; then
@@ -78,6 +85,8 @@ if [ $# -eq 1 ]; then
         test_draw_dirichlet_distribution
     elif [ $1 = "draw_gaussian_distribution" ]; then
         test_draw_gaussian_distribution
+    elif [ $1 = "linear_regression_model" ]; then
+        test_linear_regression_model
     else
         echo "Argument is wrong"
         exit 1
@@ -89,4 +98,5 @@ else
     test_draw_binomial_distribution
     test_draw_dirichlet_distribution
     test_draw_gaussian_distribution
+    test_linear_regression_model
 fi

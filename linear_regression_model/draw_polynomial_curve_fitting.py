@@ -1,4 +1,5 @@
 import random
+import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -39,7 +40,7 @@ def main():
         noise_x.append(random_x)
         noise_y.append(random_y)
 
-    degree = 10
+    degree = 3
     W = update_weights(np.array(noise_x), np.array(noise_y), degree)
     pred = predict(W, np.array(x))
 
@@ -49,8 +50,11 @@ def main():
     plt.legend()
     title = "Polynomial curve fitting(degree={0},N={1})".format(str(degree), str(N))
     plt.title(title)
-    plt.show()
 
 
 if __name__ == "__main__":
     main()
+    if len(sys.argv) == 2 and sys.argv[1] == "NotShow":
+        print("It shows nothing")
+    else:
+        plt.show()
