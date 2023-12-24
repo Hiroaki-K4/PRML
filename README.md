@@ -13,5 +13,11 @@ This repository provides implementations for a better understanding of [PRML](ht
 
 <br></br>
 
+# [Linear regression model](https://github.com/Hiroaki-K4/ml_practice/tree/main/linear_regression_model)
+
+<img src='linear_regression_model/images/curve_fitting_3.png' width='600'>
+
+<br></br>
+
 # Reference
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
