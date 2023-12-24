@@ -7,12 +7,46 @@ The goal of regression is to calculate the value of $t$ for a new $x$, given a t
 <br></br>
 
 # Polynomial curve fitting
+As a training set, $x=(x_1,...,x_N)^\intercal$, which is an arrangement of $N$ observed values $x$, and $t=(t_1,...,t_N)^\intercal$, which is an arrangement of the corresponding observation values $t$. Suppose it is given. Then, for the target data set $t$, first calculate the function value of $sin(2\pi x)$, then add random noise.
+Here, we will use the following polynomial to fit the data.
+
+$$
+y(x,w)=w_0+w_1x+w_2x^2+...+w_Mx^M=\sum_{j=0}^Mw_jx^j \tag{1}
+$$
+
+$M$ is the degree of the polynomial. The polynomial coefficients $w_0,...,w_M$ are collectively written as a vector $w$.
+
+Let's find the coefficient values by fitting a polynomial to the training data. This can be achieved by minimizing an error function that measures the deviation between the value of the function $y(x,w)$ and the data points of the training set when $w$ is arbitrarily fixed. A simple and widely used method for selecting an error function is the sum of squared error between the predicted value $y(x_n,w)$ at each data point $x_n$ and the corresponding target value $t_n$. If you write it as a formula, it will look like the following, and this will be minimized.
+
+$$
+E(w)=\frac{1}{2}\sum_{n=1}^N(y(x_n,w)-t_n)^2 \tag{2}
+$$
+
+Since the error function is a quadratic function of the coefficient $w$, the statement about that coefficient is linear with respect to the elements of $w$ and usually has only one solution that minimizes the error function.
+By differentiating with respect to w and setting it to 0, we can derive the solution as follows.
+
+$$
+\begin{align*}
+E'(w)=\sum_{n=1}^N\Bigl(\sum_{j=0}^Mw_jx_n^j-t_n\Bigr)x_n^i&=0 \\
+\sum_{n=1}^N\sum_{j=0}^Mw_jx_n^{i+j}&=\sum_{n=1}^Nx_n^it_n \\
+\sum_{j=0}^Mw_j&=A^{-1}T \tag{3}
+\end{align*}
+$$
+
+However, somewhere along the way, I replaced $\sum_{n=1}^Nx_n^{i+j}$ with $A$ and $\sum_{n=1}^Nx_n^it_n$ with $T$.
+
+We can try a polynomial curve fitting by running the follow command. You can edit a degree of the model.
 
 ```bash
 python3 draw_polynomial_curve_fitting.py
 ```
+<img src="images/curve_fitting_1.png" width='600'>
 
-<img src="images/polynomial_curve_fitting.png" width='600'>
+<img src="images/curve_fitting_3.png" width='600'>
+
+<img src="images/curve_fitting_10.png" width='600'>
+
+It can be seen that if the order increases too much, overfitting occurs.
 
 <br></br>
 

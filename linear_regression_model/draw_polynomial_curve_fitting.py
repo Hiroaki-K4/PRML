@@ -29,7 +29,8 @@ def main():
     random.seed(0)
     x = np.linspace(0, 2 * np.pi, 500)
     y = np.sin(x)
-    nums = random.sample(range(x.shape[0]), k=30)
+    N = 30
+    nums = random.sample(range(x.shape[0]), k=N)
     noise_x = []
     noise_y = []
     for idx in nums:
@@ -38,15 +39,15 @@ def main():
         noise_x.append(random_x)
         noise_y.append(random_y)
 
-    model_dim = 3
-    W = update_weights(np.array(noise_x), np.array(noise_y), model_dim)
+    degree = 10
+    W = update_weights(np.array(noise_x), np.array(noise_y), degree)
     pred = predict(W, np.array(x))
 
     plt.plot(x, y, label="True")
     plt.plot(x, pred, label="Prediction")
     plt.scatter(noise_x, noise_y, label="Noise points")
     plt.legend()
-    title = "Polynomial curve fitting(dimention is {0})".format(str(model_dim))
+    title = "Polynomial curve fitting(degree={0},N={1})".format(str(degree), str(N))
     plt.title(title)
     plt.show()
 
