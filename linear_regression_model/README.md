@@ -51,6 +51,18 @@ It can be seen that if the order increases too much, overfitting occurs.
 <br></br>
 
 # Linear basis function model
+The simplest linear regression model involves a linear combination of input variables.
+
+$$
+y(x,w)=w_0+w_1x_1+...+w_Dx_D \tag{4}
+$$
+
+An important property of this model is that it is a linear function with respect to the parameters $w_0,...,w_D$. However, since the input variable $x_i$ is also a linear function, it has poor expressive ability, which is a fatal problem with this model. Therefore, we expand this class of models by considering linear combinations of nonlinear functions with respect to input variables.
+
+$$
+y(x,w)=w_0+\sum_{j=1}^{M-1}w_j\phi_j(x) \tag{5}
+$$
+
 
 <br></br>
 
