@@ -69,6 +69,8 @@ test_linear_regression_model() {
     cd linear_regression_model
     python3 draw_polynomial_curve_fitting.py NotShow
     check_result "draw_polynomial_curve_fitting.py"
+    python3 draw_basis_functions.py NotShow
+    check_result "draw_basis_functions.py"
     cd ../
 }
 
