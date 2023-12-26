@@ -51,6 +51,45 @@ It can be seen that if the order increases too much, overfitting occurs.
 <br></br>
 
 # Linear basis function model
+The simplest linear regression model involves a linear combination of input variables.
+
+$$
+y(x,w)=w_0+w_1x_1+...+w_Dx_D \tag{4}
+$$
+
+An important property of this model is that it is a linear function with respect to the parameters $w_0,...,w_D$. However, since the input variable $x_i$ is also a linear function, it has poor expressive ability, which is a fatal problem with this model. Therefore, we expand this class of models by considering linear combinations of nonlinear functions with respect to input variables.
+
+$$
+y(x,w)=w_0+\sum_{j=1}^{M-1}w_j\phi_j(x) \tag{5}
+$$
+
+However, $\phi_j(x)$ is called basis function. If the maximum value of subscript $j$ is expressed as $M-1$, the number of parameters in this model is $M$.
+The parameter $w_0$ allows for an arbitrary fixed amount of offset of the data and is sometimes called a bias parameter. It is often easier to handle by adding a dummy basis function $\phi_0(x)=1$ defined as follows.
+
+$$
+y(x,w)=\sum_{j=0}^{M-1}w_j\phi_j(x)=w^\intercal\phi(x) \tag{6}
+$$
+
+$w=(w_0,...,w_{M-1})^\intercal$ and $\phi=(\phi_0,...,\phi_{M-1})^\intercal$.
+By using nonlinear basis functions, the function $y(x,w)$ becomes a nonlinear function with respect to the input vector $x$. However, since it is linear with respect to the parameter $w$, the function expressed in the form of Eq(5) is called a linear model. Due to the linearity with respect to the parameters, the behavior of this class of models can be analyzed very easily.
+
+Basis functions include polynomials, Gaussian basis functions, and sigmoid basis functions. The sigmoid function is expressed as follows.
+
+$$
+\begin{align*}
+\phi_j(x)&=\sigma\Bigl(\frac{x-\mu_j}{s}\Bigr) \\
+\sigma(a)&=\frac{1}{1+exp(-a)} \tag{7}
+\end{align*}
+$$
+
+We can draw basis functions by running following command.
+
+```bash
+python3 draw_basis_functions.py
+```
+
+<img src="images/basis_func.png" width='800'>
+
 
 <br></br>
 
