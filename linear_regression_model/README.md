@@ -90,6 +90,11 @@ python3 draw_basis_functions.py
 
 <img src="images/basis_func.png" width='800'>
 
+<br></br>
+
+# Bias-variance decomposition
+
+<img src="images/bias_variance.png" width='800'>
 
 <br></br>
 
