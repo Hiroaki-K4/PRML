@@ -71,6 +71,8 @@ test_linear_regression_model() {
     check_result "draw_polynomial_curve_fitting.py"
     python3 draw_basis_functions.py NotShow
     check_result "draw_basis_functions.py"
+    python3 draw_bias_variance_decomposition.py NotShow
+    check_result "draw_bias_variance_decomposition.py"
     cd ../
 }
 

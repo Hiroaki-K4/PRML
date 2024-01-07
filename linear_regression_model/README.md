@@ -90,6 +90,99 @@ python3 draw_basis_functions.py
 
 <img src="images/basis_func.png" width='800'>
 
+<br></br>
+
+# Regularized least squares method
+We add a regularization term to the error function to prevent overfitting. The error function can be written as follows.
+
+$$
+\frac{1}{2} \sum_{n=1}^{N} (t_n-w^\intercal\phi(x))^2 + \frac{\lambda}{2}w^\intercal w \tag{8}
+$$
+
+$\lambda$ is a regularization coefficient to control relative importance between the error and the regularization term.
+The choice of this regularization term is called as **weight decay** in the field of machine learning. Because weights, which are not needed by the sequential learning algorithm, approach $0$.
+
+Set the gradient of $w$ in Eq(8) to $0$ and solve for w, we can get following equation.
+
+$$
+w=(\lambda I + \Phi^\intercal\Phi)^{-1}\Phi^\intercal t \tag{9}
+$$
+
+$\Phi$ is called as **design matrix** and can be written as follows. $\phi$ is a basis function.
+
+$$
+\Phi=
+\begin{pmatrix}
+\phi_0(x_1) & \phi_1(x_1) & ... & \phi_{M-1}(x_1) \\
+\phi_0(x_2) & \phi_1(x_2) & ... & \phi_{M-1}(x_2) \\
+... & ... & ... & ... \\
+\phi_0(x_N) & \phi_1(x_N) & ... & \phi_{M-1}(x_N) \\
+\end{pmatrix} \tag{10}
+$$
+
+<br></br>
+
+# Bias-variance decomposition
+If you train a complicated model with a small training data, the model may overfitting. However, limit the number of basis functions to avoid overfitting, the expression of model is restricted. If you add a regularization term, overfitting can be prevented, but it is difficult to decide an appropriate $\lambda$.  
+Let's think about the complexity of model known as the trade-off of **bias-variance**. In the decision theory, the standard error function is squared error function, and best precision is give as the conditional expectation value.
+
+$$
+h(x)=E[t|x]=\int tp(t|x)dt \tag{11}
+$$
+
+Also, the expected squared loss can be written as follows.
+
+$$
+E[L]=\int(y(x)-h(x))^2 p(x)dx + \int\int(h(x)-t)^2 p(x,t)dxdt \tag{12}
+$$
+
+The second term is independent of $y(x)$, depends on the noise of data and represents the achievable minimum expectation error. The first term depends on $y(x)$, so we need to calculate y(x) minimize this term.
+
+Now consider the integral of the first term in Eq(12). This can be written as follows in a certain dataset $D$.
+
+$$
+(y(x;D)-h(x))^2 \tag{13}
+$$
+
+Because this amount depends on dataset $D$, think about the expectations for how this dataset $D$ is taken. The following equation is obtained by using $E_D[y(x;D)]$.
+
+$$
+(y(x;D)-E_D[y(x;D)] + E_D[y(x;D)] - h(x))^2 \\
+=(y(x;D)-E_D[y(x;D)])^2+(E_D[y(x;D)] - h(x))^2 \\
++ 2(y(x;D)-E_D[y(x;D)])(E_D[y(x;D)] - h(x)) \tag{14}
+$$
+
+The final term disapppears by getting expectations how dataset $D$ is taken.
+
+$$
+E_D[(y(x;D)-h(x))^2]=(E_D[y(x;D)] - h(x))^2 + E_D[(y(x;D)-E_D[y(x;D)])^2] \tag{15}
+$$
+
+The first term is called a **squared bias**, represents the distance between the average of predictions and the ideal regression function. The second term is called **variance**, represents the distance between predictions and the expectations how dataset is taken.
+
+we can write the expected squared loss can be written as follows.
+
+$$
+\begin{align*}
+ExpectedLoss&=Bias^2+Variance+Noise \tag{16} \\
+Bias^2&=\int(E_D[y(x;D)] - h(x))^2 p(x)dx \tag{17} \\
+Variance&=\int E_D[(y(x;D)-E_D[y(x;D)])^2] p(x)dx \tag{18} \\
+Noise&=\int\int(h(x)-t)^2 p(x,t)dxdt \tag{19}
+\end{align*}
+$$
+
+The purpose of training is to minimize the expected loss. Flexible and complicated model has a small bias but a large variance. On the other hand, less flexible model has a large bias but a small variance. Therefore, the model reduce bias and variance in a well-balanced manner is an optimal model.
+
+We will show it by using trigonometric functions. Here, generate $L=100$ datasets with $N=25$ points  by using a trigonometric function $h(x)=sin(2\pi x)$
+Optimize $24$ gauss basis functions to minimize Eq(8). Top row graph corresponds to a large regularization coefficient $\lambda$. In this case, variance(left graph) is small but bias(right graph) is large. On the other hand, the bottom graph corresponds to a small regularization coefficient $\lambda$. In this case, variance(left graph) is large but bias(right graph) is small. The prediction at right graph is averaged by $100$ predictions.
+
+<img src="images/bias_variance.png" width='800'>
+
+You can draw above graph by running following command.
+
+```bash
+python3 draw_bias_variance_decomposition.py
+```
 
 <br></br>
 
