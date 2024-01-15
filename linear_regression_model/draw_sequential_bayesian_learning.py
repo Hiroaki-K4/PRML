@@ -75,7 +75,6 @@ def draw_data_space(data_space_graph, rand_w, x_min, x_max):
 
     data_space_graph.set_xlim(-1, 1)
     data_space_graph.set_ylim(-1, 1)
-    data_space_graph.set_title("Data space")
     data_space_graph.set_xlabel("$x$")
     data_space_graph.set_ylabel("$y$")
 
@@ -89,7 +88,6 @@ def draw_posterior_distribution(post_graph, w_0, w_1, post_density):
 
 
 def draw_likelihood(likelihood_graph, w_0, w_1, w_density, true_a_0, true_a_1):
-    likelihood_graph.set_title("Likelihood")
     likelihood_graph.contourf(w_0, w_1, w_density, alpha=0.8)
     likelihood_graph.scatter([true_a_0], [true_a_1], c="white")
     likelihood_graph.set_xlim(-1, 1)
@@ -98,15 +96,33 @@ def draw_likelihood(likelihood_graph, w_0, w_1, w_density, true_a_0, true_a_1):
     likelihood_graph.set_ylabel("$w_1$")
 
 
+def calcualte_mean_and_cov_from_probability_density(w_s, density):
+    print(w_s.shape)
+    print(density.shape)
+    input()
+    mu = 0
+    cov = np.zeros((2, 2))
+    for row in range(w_s.shape[0]):
+        for col in range(w_s.shape[1]):
+            mu += w_s[row][col] * density[row][col]
+
+    # TODO Implement covariance calculator
+    for row in range(w_s.shape[0]):
+        for col in range(w_s.shape[1]):
+            arr = np.reshape(w_s[row][col] - mu, (2, 1))
+            cov += np.dot(arr, arr.T) * density[row][col]
+
+    print(mu)
+    print(cov)
+    input()
+
+
 def main():
     np.random.seed(314)
     random.seed(314)
 
-    fig, (
-        (ax1, pri_post_dist, data_space_graph),
-        (likelihood_graph, ax4, ax5),
-    ) = plt.subplots(2, 3)
-    fig.delaxes(ax1)
+    fig, axes = plt.subplots(4, 3)
+    fig.delaxes(axes[0, 0])
 
     true_a_0 = -0.3
     true_a_1 = 0.5
@@ -130,23 +146,36 @@ def main():
     density = draw_multivariate_gaussian_distribution.calculate_multivariate_gaussian_distribution(
         mu, cov, w_s
     )
-    pri_post_dist.contourf(w_0, w_1, density, alpha=0.8)
-    pri_post_dist.set_title("Prior/Posterior")
-    pri_post_dist.set_xlabel("$w_0$")
-    pri_post_dist.set_ylabel("$w_1$")
+
+    calcualte_mean_and_cov_from_probability_density(w_s, density)
+
+    axes[0, 1].contourf(w_0, w_1, density, alpha=0.8)
+    axes[0, 1].set_title("Prior/Posterior")
+    axes[0, 1].set_xlabel("$w_0$")
+    axes[0, 1].set_ylabel("$w_1$")
 
     # First data space
     rand_w = np.random.multivariate_normal(mu, cov, size=6)
-    draw_data_space(data_space_graph, rand_w, x_min, x_max)
+    draw_data_space(axes[0, 2], rand_w, x_min, x_max)
+    axes[0, 2].set_title("Data space")
 
-    # Add loop
-
-    x, y = get_label(true_a_0, true_a_1, noise_std, x_min, x_max)
-    w_density = calculate_likelihood_function(x, y, w_s, noise_std)
-    draw_likelihood(likelihood_graph, w_0, w_1, w_density, true_a_0, true_a_1)
-
-    post_density = density * w_density
-    draw_posterior_distribution(ax4, w_0, w_1, post_density)
+    for row in range(1, axes.shape[0]):
+        for col in range(axes.shape[1]):
+            if col == 0:
+                # Draw likelihood
+                x, y = get_label(true_a_0, true_a_1, noise_std, x_min, x_max)
+                w_density = calculate_likelihood_function(x, y, w_s, noise_std)
+                draw_likelihood(axes[row, col], w_0, w_1, w_density, true_a_0, true_a_1)
+                if row == 1:
+                    axes[row, col].set_title("Likelihood")
+            elif col == 1:
+                # Draw posterior distribution
+                post_density = density * w_density
+                draw_posterior_distribution(axes[row, col], w_0, w_1, post_density)
+            elif col == 2:
+                # Draw data space
+                rand_w = np.random.multivariate_normal(mu, cov, size=6)
+                draw_data_space(axes[row, col], rand_w, x_min, x_max)
 
 
 if __name__ == "__main__":
