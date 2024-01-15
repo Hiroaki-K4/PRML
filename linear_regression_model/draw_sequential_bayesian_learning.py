@@ -51,17 +51,27 @@ def get_label(true_a_0, true_a_1, noise_std, x_min, x_max):
     return x, y
 
 
-def calculate_likelihood_function(x, y, w_s, noise_std):
-    pred = np.empty((w_s.shape[0], w_s.shape[1]))
-    for i in range(w_s.shape[0]):
-        for j in range(w_s.shape[1]):
-            pred[i][j] = w_s[i][j][0] * x + w_s[i][j][1]
+def calculate_likelihood_function(x_s, y_s, w_s, noise_std):
+    res = None
+    for i in range(len(x_s)):
+        x = x_s[i]
+        y = y_s[i]
+        pred = np.empty((w_s.shape[0], w_s.shape[1]))
+        for i in range(w_s.shape[0]):
+            for j in range(w_s.shape[1]):
+                pred[i][j] = w_s[i][j][0] * x + w_s[i][j][1]
 
-    density = draw_gaussian_distribution.calculate_gaussian_distribution(
-        y, pred, noise_std
-    )
+        likelihood = draw_gaussian_distribution.calculate_gaussian_distribution(
+            y, pred, noise_std
+        )
+        if res is None:
+            res = likelihood
+        else:
+            res *= likelihood
 
-    return density
+    res /= np.max(res)
+
+    return res
 
 
 def draw_data_space(data_space_graph, rand_w, x_min, x_max):
@@ -97,24 +107,22 @@ def draw_likelihood(likelihood_graph, w_0, w_1, w_density, true_a_0, true_a_1):
 
 
 def calcualte_mean_and_cov_from_probability_density(w_s, density):
-    print(w_s.shape)
-    print(density.shape)
-    input()
     mu = 0
-    cov = np.zeros((2, 2))
     for row in range(w_s.shape[0]):
         for col in range(w_s.shape[1]):
             mu += w_s[row][col] * density[row][col]
 
-    # TODO Implement covariance calculator
+    mu /= w_s.shape[0]
+
+    cov = np.zeros((2, 2))
     for row in range(w_s.shape[0]):
         for col in range(w_s.shape[1]):
             arr = np.reshape(w_s[row][col] - mu, (2, 1))
             cov += np.dot(arr, arr.T) * density[row][col]
 
-    print(mu)
-    print(cov)
-    input()
+    cov /= w_s.shape[0] * w_s.shape[1]
+
+    return mu, cov
 
 
 def main():
@@ -147,8 +155,6 @@ def main():
         mu, cov, w_s
     )
 
-    calcualte_mean_and_cov_from_probability_density(w_s, density)
-
     axes[0, 1].contourf(w_0, w_1, density, alpha=0.8)
     axes[0, 1].set_title("Prior/Posterior")
     axes[0, 1].set_xlabel("$w_0$")
@@ -159,23 +165,44 @@ def main():
     draw_data_space(axes[0, 2], rand_w, x_min, x_max)
     axes[0, 2].set_title("Data space")
 
+    post_density = density
+    x_s = []
+    y_s = []
     for row in range(1, axes.shape[0]):
+        new_data_num = 4 ** (row - 1)
+        for i in range(new_data_num):
+            x, y = get_label(true_a_0, true_a_1, noise_std, x_min, x_max)
+            x_s.append(x)
+            y_s.append(y)
         for col in range(axes.shape[1]):
             if col == 0:
                 # Draw likelihood
-                x, y = get_label(true_a_0, true_a_1, noise_std, x_min, x_max)
-                w_density = calculate_likelihood_function(x, y, w_s, noise_std)
-                draw_likelihood(axes[row, col], w_0, w_1, w_density, true_a_0, true_a_1)
+                likelihood = calculate_likelihood_function(x_s, y_s, w_s, noise_std)
+                last_elem_likelihood = calculate_likelihood_function(
+                    [x_s[-1]], [y_s[-1]], w_s, noise_std
+                )
+                draw_likelihood(
+                    axes[row, col], w_0, w_1, last_elem_likelihood, true_a_0, true_a_1
+                )
                 if row == 1:
                     axes[row, col].set_title("Likelihood")
             elif col == 1:
                 # Draw posterior distribution
-                post_density = density * w_density
+                post_density = post_density * likelihood
+                post_density /= np.max(post_density)
                 draw_posterior_distribution(axes[row, col], w_0, w_1, post_density)
             elif col == 2:
                 # Draw data space
+                mu, cov = calcualte_mean_and_cov_from_probability_density(
+                    w_s, post_density
+                )
                 rand_w = np.random.multivariate_normal(mu, cov, size=6)
+                # TODO Find how to determine mean and variance from multivariate distribution
+                print("mu: ", mu)
+                print("cov: ", cov)
+                print("rand_w: ", rand_w)
                 draw_data_space(axes[row, col], rand_w, x_min, x_max)
+                axes[row, col].scatter([x_s], [y_s])
 
 
 if __name__ == "__main__":
