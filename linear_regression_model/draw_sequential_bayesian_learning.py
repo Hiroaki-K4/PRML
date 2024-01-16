@@ -1,4 +1,3 @@
-import math
 import random
 import sys
 
@@ -69,8 +68,6 @@ def calculate_likelihood_function(x_s, y_s, w_s, noise_std):
         else:
             res *= likelihood
 
-    res /= np.max(res)
-
     return res
 
 
@@ -104,25 +101,6 @@ def draw_likelihood(likelihood_graph, w_0, w_1, w_density, true_a_0, true_a_1):
     likelihood_graph.set_ylim(-1, 1)
     likelihood_graph.set_xlabel("$w_0$")
     likelihood_graph.set_ylabel("$w_1$")
-
-
-def calcualte_mean_and_cov_from_probability_density(w_s, density):
-    mu = 0
-    for row in range(w_s.shape[0]):
-        for col in range(w_s.shape[1]):
-            mu += w_s[row][col] * density[row][col]
-
-    mu /= w_s.shape[0]
-
-    cov = np.zeros((2, 2))
-    for row in range(w_s.shape[0]):
-        for col in range(w_s.shape[1]):
-            arr = np.reshape(w_s[row][col] - mu, (2, 1))
-            cov += np.dot(arr, arr.T) * density[row][col]
-
-    cov /= w_s.shape[0] * w_s.shape[1]
-
-    return mu, cov
 
 
 def main():
@@ -189,18 +167,18 @@ def main():
             elif col == 1:
                 # Draw posterior distribution
                 post_density = post_density * likelihood
-                post_density /= np.max(post_density)
                 draw_posterior_distribution(axes[row, col], w_0, w_1, post_density)
             elif col == 2:
                 # Draw data space
-                mu, cov = calcualte_mean_and_cov_from_probability_density(
-                    w_s, post_density
+                w_s_re = np.reshape(w_s, (w_s.shape[0] * w_s.shape[1], 2))
+                post_density_re = np.reshape(
+                    post_density, (post_density.shape[0] * post_density.shape[1])
                 )
-                rand_w = np.random.multivariate_normal(mu, cov, size=6)
-                # TODO Find how to determine mean and variance from multivariate distribution
-                print("mu: ", mu)
-                print("cov: ", cov)
-                print("rand_w: ", rand_w)
+                post_density_re = post_density_re / sum(post_density_re)
+                indicies = np.random.choice(len(w_s_re), 6, p=post_density_re)
+                rand_w = np.empty((len(indicies), 2))
+                for i in range(len(indicies)):
+                    rand_w[i] = w_s_re[indicies[i]]
                 draw_data_space(axes[row, col], rand_w, x_min, x_max)
                 axes[row, col].scatter([x_s], [y_s])
 
