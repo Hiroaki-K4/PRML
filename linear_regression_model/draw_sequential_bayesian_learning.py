@@ -86,8 +86,9 @@ def draw_data_space(data_space_graph, rand_w, x_min, x_max):
     data_space_graph.set_ylabel("$y$")
 
 
-def draw_posterior_distribution(post_graph, w_0, w_1, post_density):
+def draw_posterior_distribution(post_graph, w_0, w_1, post_density, true_a_0, true_a_1):
     post_graph.contourf(w_0, w_1, post_density, alpha=0.8)
+    post_graph.scatter([true_a_0], [true_a_1], c="white")
     post_graph.set_xlim(-1, 1)
     post_graph.set_ylim(-1, 1)
     post_graph.set_xlabel("$w_0$")
@@ -167,7 +168,9 @@ def main():
             elif col == 1:
                 # Draw posterior distribution
                 post_density = post_density * likelihood
-                draw_posterior_distribution(axes[row, col], w_0, w_1, post_density)
+                draw_posterior_distribution(
+                    axes[row, col], w_0, w_1, post_density, true_a_0, true_a_1
+                )
             elif col == 2:
                 # Draw data space
                 w_s_re = np.reshape(w_s, (w_s.shape[0] * w_s.shape[1], 2))
