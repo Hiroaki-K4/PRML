@@ -18,12 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          src:
-            - 'probability_distribution/**'
     - name: Run test
       run: bash test.sh probability_distribution
 
@@ -31,12 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          src:
-            - 'probability_distribution/**'
     - name: Run test
       run: bash test.sh draw_beta_distribution
 
@@ -44,12 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          src:
-            - 'probability_distribution/**'
     - name: Run test
       run: bash test.sh draw_binomial_distribution
 
@@ -57,12 +39,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          src:
-            - 'probability_distribution/**'
     - name: Run test
       run: bash test.sh draw_dirichlet_distribution
 
@@ -70,12 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          src:
-            - 'probability_distribution/**'
     - name: Run test
       run: bash test.sh draw_gaussian_distribution
 
@@ -83,11 +53,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          src:
-            - 'linear_regression_model/**'
     - name: Run test
       run: bash test.sh linear_regression_model
