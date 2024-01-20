@@ -186,5 +186,47 @@ python3 draw_bias_variance_decomposition.py
 
 <br></br>
 
+# Bayesian linear regression
+We demonstrate how avoid overfitting of most likelihood estimation and decide the complexity of the model from only training data.
+
+## Distribution of parameters
+Here, we explain about Bayesian treatment of linear regression model by introducing the prior probability distribution of model parameter $w$. Prior distribution can be written as follows $m_0$ is the expected value and $S_0$ is the convariance.
+
+$$
+p(w)=\mathcal{N}(w|m_0,S_0) \tag{20}
+$$
+
+The likelihood function becomes as follows. $\phi$ is the basis function and $\beta$ is the precision.
+
+$$
+p(t|X,w,\beta)=\prod_{n=1}^N \mathcal{N}(t_n|w^\intercal \phi(x_n), \beta^{-1}) \tag{21}
+$$
+
+Next, the posterior distribution is propotional to the product of the likelihood function and the prior distribution.
+
+$$
+p(w|t)\propto p(t|X,w,\beta) \times p(w) \tag{22}
+$$
+
+We describe the Bayesian learning and how to update the posterior distribution by using a simple example about linear fitting. We use simple linear model $y(x,w)=w_0+w_1x$, so we can plot the prior distribution and the posterior distribution of parameters to the paramter space.
+
+To create the correct label value $t_n$, we choose $x_n$ from the uniform distribution and evaluate $f(x,a)=a_0+a_1x(a_0=-0.3,a_1=0.5)$. Gauss noise (std=0.2) is added to $t_n$.
+
+The purpose is to recover true parameter $a_0$ and $a_1$ and to find the relationship between data size and prediction value. The below graph shows the result and sequentiality of Bayesian learning. 
+
+<img src="images/bayesian_learning.png" width='800'>
+
+The figure in the first row shows the situation before any data is observed. The second graph represents the situation after observing one data point. The right graph shows the position of data $(x,t)$ by a blue point. The left graph shows the likelihood function $p(t|x,w)$ as a function of $w$. It represents a soft constraint that a line should pass near this data point.
+White point is true parameter value($a_0=-0.3,a_1=0.5$). Middle graph is obtained by multiplying the likelihood function and the prior distribution and normalizing it. Right graph shows observed points(blue) and the regression function chosen randomly from the posterior distribution of $w$. You can see that as the number of data points increases, the lines become more coherent. Posterior distribution becomes prior distribution of next row.
+It can be seen that the posterior distribution becomes sharper as the amount of data increases.
+
+You can draw above graph by running following command.
+
+```bash
+python3 draw_sequential_bayesian_learning.py
+```
+
+<br></br>
+
 # Reference
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
