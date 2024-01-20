@@ -217,7 +217,7 @@ The purpose is to recover true parameter $a_0$ and $a_1$ and to find the relatio
 <img src="images/bayesian_learning.png" width='800'>
 
 The figure in the first row shows the situation before any data is observed. The second graph represents the situation after observing one data point. The right graph shows the position of data $(x,t)$ by a blue point. The left graph shows the likelihood function $p(t|x,w)$ as a function of $w$. It represents a soft constraint that a line should pass near this data point.
-White point is true parameter value($a_0=-0.3,a_1=0.5$). Middle graph is obtained by multiplying the likelihood function and the prior distribution and normalizing it. Right graph shows observed points(blue) and the regression function chosen randomly from the posterior distribution of $w$. Posterior distribution becomes prior distribution of next row.
+White point is true parameter value($a_0=-0.3,a_1=0.5$). Middle graph is obtained by multiplying the likelihood function and the prior distribution and normalizing it. Right graph shows observed points(blue) and the regression function chosen randomly from the posterior distribution of $w$. You can see that as the number of data points increases, the lines become more coherent. Posterior distribution becomes prior distribution of next row.
 It can be seen that the posterior distribution becomes sharper as the amount of data increases.
 
 You can draw above graph by running following command.
