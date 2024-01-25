@@ -53,12 +53,29 @@ def predict(W, x, range_start, range_end):
     return pred
 
 
+def draw_predicted_distribution(x, y, input_x, input_y, graph):
+    graph.plot(x, y)
+    graph.scatter(input_x, input_y)
+
+
+def create_random_input_data(x, y, input_x, input_y, N):
+    add_num = N - len(input_x)
+    nums = random.sample(range(x.shape[0]), k=add_num)
+    for idx in nums:
+        random_x = x[idx]
+        random_y = y[idx] + np.random.normal(0, 0.01)
+        input_x.append(random_x)
+        input_y.append(random_y)
+
+    return input_x, input_y
+
+
 def main():
     fig = plt.figure(figsize=(16, 9))
-    lam_1_graph = fig.add_subplot(221)
-    lam_1_avg_graph = fig.add_subplot(222)
-    lam_2_graph = fig.add_subplot(223)
-    lam_2_avg_graph = fig.add_subplot(224)
+    n_1_graph = fig.add_subplot(221)
+    n_2_graph = fig.add_subplot(222)
+    n_4_graph = fig.add_subplot(223)
+    n_25_graph = fig.add_subplot(224)
 
     # Create dataset
     random.seed(0)
@@ -68,48 +85,17 @@ def main():
     range_end = 5
     N = 25
     L = 100
-    pred_sum_1 = np.zeros(x.shape)
-    pred_sum_2 = np.zeros(x.shape)
-    lambda_1 = 2.6
-    lambda_2 = -0.31
-    for i in range(L):
-        nums = random.sample(range(x.shape[0]), k=N)
-        noise_x = []
-        noise_y = []
-        for idx in nums:
-            random_x = x[idx]
-            random_y = y[idx] + np.random.normal(0, 0.01)
-            noise_x.append(random_x)
-            noise_y.append(random_y)
-
-        degree = 24
-        design_mat = calculate_design_matrix(
-            np.array(noise_x), degree + 1, range_start, range_end
-        )
-        W_1 = update_weights(design_mat, np.array(noise_y), lambda_1)
-        W_2 = update_weights(design_mat, np.array(noise_y), lambda_2)
-        pred_1 = predict(W_1, np.array(x), range_start, range_end)
-        pred_2 = predict(W_2, np.array(x), range_start, range_end)
-        pred_sum_1 += pred_1
-        pred_sum_2 += pred_2
-        lam_1_graph.plot(x, pred_1)
-        lam_2_graph.plot(x, pred_2)
-
-    title = "Predictions($\lambda$={0},L={1})".format(str(lambda_1), str(L))
-    lam_1_graph.set_title(title)
-    title = "Predictions($\lambda$={0},L={1})".format(str(lambda_2), str(L))
-    lam_2_graph.set_title(title)
-
-    pred_avg_1 = pred_sum_1 / L
-    pred_avg_2 = pred_sum_2 / L
-    lam_1_avg_graph.plot(x, pred_avg_1, label="Prediction")
-    lam_1_avg_graph.plot(x, y, label="True", c="red", linestyle="--")
-    lam_1_avg_graph.set_title("Average of prediction")
-    lam_2_avg_graph.plot(x, pred_avg_2, label="Prediction")
-    lam_2_avg_graph.plot(x, y, label="True", c="red", linestyle="--")
-    lam_2_avg_graph.set_title("Average of prediction")
-    lam_1_avg_graph.legend()
-    lam_2_avg_graph.legend()
+    input_x = []
+    input_y = []
+    N = 1
+    input_x, input_y = create_random_input_data(x, y, input_x, input_y, 1)
+    draw_predicted_distribution(x, y, input_x, input_y, n_1_graph)
+    input_x, input_y = create_random_input_data(x, y, input_x, input_y, 2)
+    draw_predicted_distribution(x, y, input_x, input_y, n_2_graph)
+    input_x, input_y = create_random_input_data(x, y, input_x, input_y, 4)
+    draw_predicted_distribution(x, y, input_x, input_y, n_4_graph)
+    input_x, input_y = create_random_input_data(x, y, input_x, input_y, 25)
+    draw_predicted_distribution(x, y, input_x, input_y, n_25_graph)
 
 
 if __name__ == "__main__":
