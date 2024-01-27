@@ -29,14 +29,14 @@ def update_weights(design_mat, y, lam):
     return W
 
 
-def calculate_design_matrix(noise_x, degree, range_start, range_end):
-    design_mat = np.ones((len(noise_x), degree))
+def calculate_design_matrix(x, degree, range_start, range_end):
+    design_mat = np.ones((len(x), degree))
     for col in range(degree):
         if col == 0:
             continue
         else:
             mu = calculate_gauss_mu(degree - 1, col - 1, range_start, range_end)
-            design_mat[:, col] = calculate_gauss(noise_x, mu)
+            design_mat[:, col] = calculate_gauss(x, mu)
 
     return design_mat
 
