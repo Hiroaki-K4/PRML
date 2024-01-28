@@ -226,6 +226,48 @@ You can draw above graph by running following command.
 python3 draw_sequential_bayesian_learning.py
 ```
 
+## Predicted distribution
+So far we have talked about $w$ value, there are many cases that we want predict $t$ for a new $x$ in pratical situations. We need to evaluate **predicted distribution** defined as follows.
+
+$$
+p(t|x,t,\alpha, \beta)=\int p(t|x,w,\beta) p(w|x,t,\alpha,\beta)dw \tag{23}
+$$
+
+$t$ is a vector consisting of label value of training data. Predicted distribution can be rewritten as follows after convolving the two normal distiributions.
+
+$$
+p(t|x,t,\alpha,\beta)=\mathcal{N}(t|m_N^\intercal \phi(x),\sigma_N^2(x)) \tag{24}
+$$
+
+Variance of predicted distribution is given as follows.
+
+$$
+\sigma_N^2(x)=\frac{1}{\beta} + \phi(x)^\intercal S_N \phi(x) \tag{25}
+$$
+
+$m_N$ and $S_N$ are given as follows.
+
+$$
+\begin{align*}
+m_N&=S_N(S_0^{-1}m_0+\beta\Phi^\intercal t) \\
+S_N^{-1}&=S_0^{-1}+\beta\Phi^\intercal \Phi \tag{26}
+\end{align*}
+$$
+
+$\Phi$ is design matrix and $\phi$ is basis function.
+
+The first term of Eq(25) represents a noise of data, the second term represents uncertainty of $w$. If a new data point is added, posterior distribution becomes narrower. That is, $\sigma_{N+1}^2(x) \leq \sigma_N^2(x)$ holds true.
+
+We use dataset of trigonometric function for showing an example of predicted distribution of Bayesian linear regression model. The below graph shows distribution at fitting model with gauss basis functions to training data of various sizes. Blue line shows $sin(2\pi x)$ function. Input data is generated from this function and added Gaussian noise. Blue points represent input data points. Red line shows the mean of Gaussian predicted distribution and orange area represents $mean\pm variance$. As the number of data points increases, the degree of uncertainty decreases.
+
+<img src="images/predicted_distribution.png" width='800'>
+
+You can draw above graph by running following command.
+
+```bash
+python3 draw_predicted_distribution.py
+```
+
 <br></br>
 
 # Reference
