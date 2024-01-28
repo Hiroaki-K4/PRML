@@ -75,6 +75,8 @@ test_linear_regression_model() {
     check_result "draw_bias_variance_decomposition.py"
     python3 draw_sequential_bayesian_learning.py NotShow
     check_result "draw_sequential_bayesian_learning.py"
+    python3 draw_predicted_distribution.py NotShow
+    check_result "draw_predicted_distribution.py"
     cd ../
 }
 
