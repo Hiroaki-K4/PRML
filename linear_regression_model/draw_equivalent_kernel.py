@@ -85,6 +85,28 @@ def create_random_input_data(x, y, input_x, input_y, N, noise_std):
     return input_x, input_y
 
 
+def calculate_equivalent_kernel(
+    x_0, x_1, noise_precision, degree, range_start, range_end
+):
+    alpha = 2.0
+    design_mat_0 = draw_bias_variance_decomposition.calculate_design_matrix(
+        np.flip(x_0), degree + 1, range_start, range_end
+    )
+    design_mat_1 = draw_bias_variance_decomposition.calculate_design_matrix(
+        x_1, degree + 1, range_start, range_end
+    )
+    s_n = np.linalg.pinv(
+        alpha * np.identity(design_mat_0.shape[1])
+        + noise_precision * np.dot(design_mat_0.T, design_mat_0)
+    )
+    k = noise_precision * np.dot(np.dot(design_mat_0, s_n), design_mat_1.T)
+    print(k)
+    print(k.shape)
+    # input()
+
+    return k
+
+
 def main():
     fig = plt.figure(figsize=(16, 9))
     fig.suptitle("Equivalent kernel")
@@ -94,11 +116,17 @@ def main():
     # Create dataset
     random.seed(0)
     x_0 = np.linspace(-1, 1, 200)
+    tmp = np.flip(x_0)
     x_1 = np.linspace(-1, 1, 200)
     noise_std = 0.2
     noise_precision = 1 / (noise_std**2)
-    # TODO: Add calculate_equivalent_kernel func
-    # calculate_equivalent_kernel(x_0, x_1, noise_precision)
+    degree = 24
+    range_start = -5
+    range_end = 5
+    k = calculate_equivalent_kernel(
+        x_0, x_1, noise_precision, degree, range_start, range_end
+    )
+    n_1_graph.contourf(x_0, x_1, k, alpha=0.8)
 
 
 if __name__ == "__main__":
