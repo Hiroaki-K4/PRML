@@ -268,6 +268,14 @@ You can draw above graph by running following command.
 python3 draw_predicted_distribution.py
 ```
 
+## Equivalent kernel
+
+<img src="images/equivalent_kernel.png" width='800'>
+
+```bash
+python3 draw_equivalent_kernel.py
+```
+
 <br></br>
 
 # Reference
