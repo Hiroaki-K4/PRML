@@ -276,13 +276,13 @@ y(x, m_N)=m_N^\intercal \phi(x) = \beta\phi(x)^\intercal S_N \Phi^\intercal t =
 \sum_{n=1}^N\beta\phi(x)^\intercal S_N \phi(x_n) t_n \tag{27}
 $$
 
-Therefore, the mean of predicted distribution at point x is given as linear combination of target variable $t_n$ of training data.
+Therefore, the mean of predicted distribution at point $x$ is given as linear combination of target variable $t_n$ of training data.
 
 $$
 y(x, m_N)=\sum_{n=1}^N k(x,x_n)t_n \tag{28}
 $$
 
-Function $k$ is called as a smoother matrix or an equivalent kernel.
+Function $k$ is called as a **smoother matrix** or an **equivalent kernel**.
 
 $$
 k(x, x')=\beta\phi(x)^\intercal S_N \phi(x') \tag{29}
@@ -292,7 +292,7 @@ The below graph shows the equivalent kernel for case Gaussian basis function. In
 
 <img src="images/equivalent_kernel.png" width='800'>
 
-You can try draw the above graph by running following command.
+You can draw the above graph by running following command.
 
 ```bash
 python3 draw_equivalent_kernel.py
@@ -307,7 +307,7 @@ cov[y(x),y(x')]&=cov[\phi(x)^\intercal w, w^\intercal \phi(x')] \\
 \end{align*}
 $$
 
-Eq(29) and $p(w|t)=\mathcal{N}(w|m_N,S_N)$ are used here.
+Eq(29) and $p(w|t)=\mathcal{N}(w|m_N,S_N)$ are used here. It turns out that prediction averages of neighboring points have strong correlation each other while points further apart has small correlation by shape of equivalent kernel. Indeterminancy of posterior distribution between $y$ values for 2 or more $x$ is determined by equivalent kernel. When we define local kernel directly and get observed training data, we can find prediction value for new input vector $x$ by using this local kernel. We can get **Gaussian process**, which is a practical framework for regression from this formulation.
 
 <br></br>
 
