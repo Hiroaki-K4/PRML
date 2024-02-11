@@ -5,6 +5,7 @@ In its simplest form, a linear regression model is a function that is also linea
 The goal of regression is to calculate the value of $t$ for a new $x$, given a training data set consisting of $N$ observed values ${x_n}(n=1,...,N)$ and corresponding target values ${t_n}$. The simplest approach is to directly construct a suitable function $y(x)$ such that the value for a new input $x$ is a prediction of the corresponding value of $t$. In a more general probabilistic view, the aim is to model a prediction distribution $p(t|x)$ to represent the uncertainty in the value of t for each value of $x$. Using this conditional distribution, we can predict $t$ for any new value of $x$ in a way that minimizes the expected value of an appropriately chosen loss function.
 
 <br></br>
+<br></br>
 
 # Polynomial curve fitting
 As a training set, $x=(x_1,...,x_N)^\intercal$, which is an arrangement of $N$ observed values $x$, and $t=(t_1,...,t_N)^\intercal$, which is an arrangement of the corresponding observation values $t$. Suppose it is given. Then, for the target data set $t$, first calculate the function value of $sin(2\pi x)$, then add random noise.
@@ -91,6 +92,7 @@ python3 draw_basis_functions.py
 <img src="images/basis_func.png" width='800'>
 
 <br></br>
+<br></br>
 
 # Regularized least squares method
 We add a regularization term to the error function to prevent overfitting. The error function can be written as follows.
@@ -120,6 +122,7 @@ $$
 \end{pmatrix} \tag{10}
 $$
 
+<br></br>
 <br></br>
 
 # Bias-variance decomposition
@@ -185,6 +188,7 @@ python3 draw_bias_variance_decomposition.py
 ```
 
 <br></br>
+<br></br>
 
 # Bayesian linear regression
 We demonstrate how avoid overfitting of most likelihood estimation and decide the complexity of the model from only training data.
@@ -225,6 +229,8 @@ You can draw above graph by running following command.
 ```bash
 python3 draw_sequential_bayesian_learning.py
 ```
+
+<br></br>
 
 ## Predicted distribution
 So far we have talked about $w$ value, there are many cases that we want predict $t$ for a new $x$ in pratical situations. We need to evaluate **predicted distribution** defined as follows.
@@ -268,6 +274,8 @@ You can draw above graph by running following command.
 python3 draw_predicted_distribution.py
 ```
 
+<br></br>
+
 ## Equivalent kernel
 Predicted distribution can be written as follows.
 
@@ -308,6 +316,46 @@ cov[y(x),y(x')]&=cov[\phi(x)^\intercal w, w^\intercal \phi(x')] \\
 $$
 
 Eq(29) and $p(w|t)=\mathcal{N}(w|m_N,S_N)$ are used here. It turns out that prediction averages of neighboring points have strong correlation each other while points further apart has small correlation by shape of equivalent kernel. Indeterminancy of posterior distribution between $y$ values for 2 or more $x$ is determined by equivalent kernel. When we define local kernel directly and get observed training data, we can find prediction value for new input vector $x$ by using this local kernel. We can get **Gaussian process**, which is a practical framework for regression from this formulation.
+
+<br></br>
+<br></br>
+
+# Evidence approximation
+We introduce prior distribution for hayperparameter to treat linear basis function model completely Bayesian, we predict and marginalize not only parameter $w$ but also hyperparameters. However, even if calculate integral of parameter $w$ or hyperparameter, it is difficult to marginalize it fully analytical on all variables. Here, we discuss two-step approximation method for determining hyperparmeter to maximize marginal likelihood function obtained by integrating only with respect to parameter $w$. This framework is called **evidence approximation** in the machine learning literature.
+
+If we introduce prior distribution of hyperparameters $\alpha, \beta$, we can get predicted distribution by marginalizing the joint distribution with respect to $w, \alpha, \beta$.
+
+$$
+p(t|\text{t})=\int\int\int p(t|w,\beta)p(w|\text{t}, \alpha, \beta) p(\alpha, \beta | t)dw d\alpha d\beta \tag{31}
+$$
+
+When predicted distribution $p(\alpha,\beta|\text{t})$ is sharply pointed around $\hat{\alpha},\hat{\beta}$, we can get predicted distribution marginalize w under with $\alpha$ and $\beta$ fixed at $\hat{\alpha}$ and $\hat{\beta}$.
+
+$$
+p(t|\text{t})\cong p(t|\text{t},\hat{\alpha},\hat{\beta})= \int p(t|w,\hat{\beta})p(w|\text{t}, \hat{\alpha}, \hat{\beta})dw \tag{32}
+$$
+
+Posterior distribution is given as follows by Bayes theorem.
+
+$$
+p(\alpha, \beta | \text{t})\propto p(\text{t}|\alpha, \beta)p(\alpha, \beta) \tag{33}
+$$
+
+When prior distribution is relatively flat, we can get $\hat{\alpha}$ and $\hat{\beta}$ by maximizing marginal likelihood function $p(\text{t}|\alpha,\beta)$ in framework of evidence.
+
+<br></br>
+
+## Evaluation of evidence function
+Marginal likelihood fuction $p(\text{t}|\alpha,\beta)$ is obtained by integrating joint distribution for weight parameter $w$.
+
+$$
+p(t|\alpha,\beta)=\int p(\text{t}|w,\beta)p(w|\alpha)dw \tag{34}
+$$
+
+
+<br></br>
+
+## Maximizing evidence function
 
 <br></br>
 
