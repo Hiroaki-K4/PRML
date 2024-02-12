@@ -352,6 +352,66 @@ $$
 p(t|\alpha,\beta)=\int p(\text{t}|w,\beta)p(w|\alpha)dw \tag{34}
 $$
 
+We can evaluate integral by completing the square of the contents of exponential function and using general form of normalization factor of Gaussian function. Evidence function can be written as follows.
+
+$$
+p(\text{t}|\alpha,\beta)=\Big(\frac{\beta}{2\pi}\Big)^{N/2} \Big(\frac{\alpha}{2\pi}\Big)^{M/2} \int exp{-E(w)}dw \tag{35}
+$$
+
+$M$ is the number of dimention and we define $E(w)$ as follows.
+
+$$
+\begin{align*}
+E(w)&=\beta E_D(w) + \alpha E_W(w) \\
+&=\frac{\beta}{2}|t-\Phi w|^2 + \frac{\alpha}{2}w^\intercal w \tag{36}
+\end{align*}
+$$
+
+we can get below equation by completing the square for $w$.
+
+$$
+E(w)=E(m_N) + \frac{1}{2}(w-m_N)^\intercal A(w-m_N) \tag{37}
+$$
+
+Define $A$ and $E(m_N)$ as follows.
+
+$$
+A=\alpha I + \beta \Phi^\intercal \Phi \tag{38}
+$$
+
+$$
+E(m_N)=\frac{\beta}{2}|t-\Phi m_N|^2 + \frac{\alpha}{2} m_N^\intercal m_N \tag{39}
+$$
+
+A corresponds to matrix of second derivatives of error function.
+
+$$
+A=\triangledown \triangledown E(w) \tag{40}
+$$
+
+This is called as **Hessian matrix**. And we define $m_N$ as follows.
+
+$$
+m_N=\beta A^{-1}\Phi^\intercal t \tag{41}
+$$
+
+Eq(41) represents mean of posterior distribution. From above results, we can evaluate integral of $w$ by using results of normalization factor of multivariate Gaussian distribution.
+
+$$
+\begin{align*}
+\int exp(-E(w))dw
+&=exp(-E(m_N)) \int exp\Big(-\frac{1}{2}(w-m_N)^\intercal A(w-m_N) \Big)dw \\
+&=exp(-E(m_N))(2\pi)^{M/2}|A|^{-1/2} \tag{42}
+\end{align*}
+$$
+
+Logarithm of Marginal likelihood can be written as follows.
+
+$$
+log (p(t|\alpha, \beta))=\frac{M}{2} log(\alpha) + \frac{N}{2} log(\beta) - E(m_N) - \frac{1}{2} log(|A|) - \frac{N}{2} log(2\pi) \tag{43}
+$$
+
+
 
 <br></br>
 
