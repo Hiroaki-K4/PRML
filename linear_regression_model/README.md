@@ -41,6 +41,7 @@ We can try a polynomial curve fitting by running the follow command. You can edi
 ```bash
 python3 draw_polynomial_curve_fitting.py
 ```
+
 <img src="images/curve_fitting_1.png" width='600'>
 
 <img src="images/curve_fitting_3.png" width='600'>
@@ -411,7 +412,15 @@ $$
 log (p(t|\alpha, \beta))=\frac{M}{2} log(\alpha) + \frac{N}{2} log(\beta) - E(m_N) - \frac{1}{2} log(|A|) - \frac{N}{2} log(2\pi) \tag{43}
 $$
 
+Let us now return to the polynomial problem. The below graph represents relationship between the dimention of polynomial $M$ and model evidence. Hyperparameter $\alpha$ is fixed at $\alpha=5\times 10^{-3}$. The 0th degree polynomial has a very poor fith to the training data and evidence value is relatively small. The fitting for first order polynomial is greatly improved and evidence value becames significantly larger. However, the fitting for second order polynomial is hardly improved. Because trigonometric function created data is odd function and does not have terms of even degree in polynomial expansion. The fitting for third polynomial is greatly improved and evidence increases again. Increasing dimention $M$ further will only improve the fitting slightly. At this time, the penalty caused by increasing complexity of model reduces evidence value. Evidence values have maximum value at $M=3$. This is because $M=3$ is the simplest model in models that can explain observed data.
 
+<img src="images/evidence.png" width='800'>
+
+You can evaluate evidence function by running following command.
+
+```bash
+python3 evaluate_evidence_function.py
+```
 
 <br></br>
 

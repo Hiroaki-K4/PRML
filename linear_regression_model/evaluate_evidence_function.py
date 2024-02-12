@@ -65,7 +65,7 @@ def main():
 
     plt.xlabel("$M$")
     plt.ylabel("log evidence function")
-    plt.title("Relationship between dimetion $M$ of polynomial and model evidence")
+    plt.title("Relationship between dimention $M$ of polynomial and model evidence")
     plt.plot(Ms, evi)
 
 
