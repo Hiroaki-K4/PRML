@@ -79,6 +79,8 @@ test_linear_regression_model() {
     check_result "draw_predicted_distribution.py"
     python3 draw_equivalent_kernel.py NotShow
     check_result "draw_equivalent_kernel.py"
+    python3 evaluate_evidence_function.py NotShow
+    check_result "evaluate_evidence_function.py"
     cd ../
 }
 

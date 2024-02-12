@@ -5,6 +5,7 @@ In its simplest form, a linear regression model is a function that is also linea
 The goal of regression is to calculate the value of $t$ for a new $x$, given a training data set consisting of $N$ observed values ${x_n}(n=1,...,N)$ and corresponding target values ${t_n}$. The simplest approach is to directly construct a suitable function $y(x)$ such that the value for a new input $x$ is a prediction of the corresponding value of $t$. In a more general probabilistic view, the aim is to model a prediction distribution $p(t|x)$ to represent the uncertainty in the value of t for each value of $x$. Using this conditional distribution, we can predict $t$ for any new value of $x$ in a way that minimizes the expected value of an appropriately chosen loss function.
 
 <br></br>
+<br></br>
 
 # Polynomial curve fitting
 As a training set, $x=(x_1,...,x_N)^\intercal$, which is an arrangement of $N$ observed values $x$, and $t=(t_1,...,t_N)^\intercal$, which is an arrangement of the corresponding observation values $t$. Suppose it is given. Then, for the target data set $t$, first calculate the function value of $sin(2\pi x)$, then add random noise.
@@ -40,6 +41,7 @@ We can try a polynomial curve fitting by running the follow command. You can edi
 ```bash
 python3 draw_polynomial_curve_fitting.py
 ```
+
 <img src="images/curve_fitting_1.png" width='600'>
 
 <img src="images/curve_fitting_3.png" width='600'>
@@ -91,6 +93,7 @@ python3 draw_basis_functions.py
 <img src="images/basis_func.png" width='800'>
 
 <br></br>
+<br></br>
 
 # Regularized least squares method
 We add a regularization term to the error function to prevent overfitting. The error function can be written as follows.
@@ -120,6 +123,7 @@ $$
 \end{pmatrix} \tag{10}
 $$
 
+<br></br>
 <br></br>
 
 # Bias-variance decomposition
@@ -185,6 +189,7 @@ python3 draw_bias_variance_decomposition.py
 ```
 
 <br></br>
+<br></br>
 
 # Bayesian linear regression
 We demonstrate how avoid overfitting of most likelihood estimation and decide the complexity of the model from only training data.
@@ -225,6 +230,8 @@ You can draw above graph by running following command.
 ```bash
 python3 draw_sequential_bayesian_learning.py
 ```
+
+<br></br>
 
 ## Predicted distribution
 So far we have talked about $w$ value, there are many cases that we want predict $t$ for a new $x$ in pratical situations. We need to evaluate **predicted distribution** defined as follows.
@@ -268,6 +275,8 @@ You can draw above graph by running following command.
 python3 draw_predicted_distribution.py
 ```
 
+<br></br>
+
 ## Equivalent kernel
 Predicted distribution can be written as follows.
 
@@ -308,6 +317,114 @@ cov[y(x),y(x')]&=cov[\phi(x)^\intercal w, w^\intercal \phi(x')] \\
 $$
 
 Eq(29) and $p(w|t)=\mathcal{N}(w|m_N,S_N)$ are used here. It turns out that prediction averages of neighboring points have strong correlation each other while points further apart has small correlation by shape of equivalent kernel. Indeterminancy of posterior distribution between $y$ values for 2 or more $x$ is determined by equivalent kernel. When we define local kernel directly and get observed training data, we can find prediction value for new input vector $x$ by using this local kernel. We can get **Gaussian process**, which is a practical framework for regression from this formulation.
+
+<br></br>
+<br></br>
+
+# Evidence approximation
+We introduce prior distribution for hayperparameter to treat linear basis function model completely Bayesian, we predict and marginalize not only parameter $w$ but also hyperparameters. However, even if calculate integral of parameter $w$ or hyperparameter, it is difficult to marginalize it fully analytical on all variables. Here, we discuss two-step approximation method for determining hyperparmeter to maximize marginal likelihood function obtained by integrating only with respect to parameter $w$. This framework is called **evidence approximation** in the machine learning literature.
+
+If we introduce prior distribution of hyperparameters $\alpha, \beta$, we can get predicted distribution by marginalizing the joint distribution with respect to $w, \alpha, \beta$.
+
+$$
+p(t|\text{t})=\int\int\int p(t|w,\beta)p(w|\text{t}, \alpha, \beta) p(\alpha, \beta | t)dw d\alpha d\beta \tag{31}
+$$
+
+When predicted distribution $p(\alpha,\beta|\text{t})$ is sharply pointed around $\hat{\alpha},\hat{\beta}$, we can get predicted distribution marginalize w under with $\alpha$ and $\beta$ fixed at $\hat{\alpha}$ and $\hat{\beta}$.
+
+$$
+p(t|\text{t})\cong p(t|\text{t},\hat{\alpha},\hat{\beta})= \int p(t|w,\hat{\beta})p(w|\text{t}, \hat{\alpha}, \hat{\beta})dw \tag{32}
+$$
+
+Posterior distribution is given as follows by Bayes theorem.
+
+$$
+p(\alpha, \beta | \text{t})\propto p(\text{t}|\alpha, \beta)p(\alpha, \beta) \tag{33}
+$$
+
+When prior distribution is relatively flat, we can get $\hat{\alpha}$ and $\hat{\beta}$ by maximizing marginal likelihood function $p(\text{t}|\alpha,\beta)$ in framework of evidence.
+
+<br></br>
+
+## Evaluation of evidence function
+Marginal likelihood fuction $p(\text{t}|\alpha,\beta)$ is obtained by integrating joint distribution for weight parameter $w$.
+
+$$
+p(t|\alpha,\beta)=\int p(\text{t}|w,\beta)p(w|\alpha)dw \tag{34}
+$$
+
+We can evaluate integral by completing the square of the contents of exponential function and using general form of normalization factor of Gaussian function. Evidence function can be written as follows.
+
+$$
+p(\text{t}|\alpha,\beta)=\Big(\frac{\beta}{2\pi}\Big)^{N/2} \Big(\frac{\alpha}{2\pi}\Big)^{M/2} \int exp{-E(w)}dw \tag{35}
+$$
+
+$M$ is the number of dimention and we define $E(w)$ as follows.
+
+$$
+\begin{align*}
+E(w)&=\beta E_D(w) + \alpha E_W(w) \\
+&=\frac{\beta}{2}|t-\Phi w|^2 + \frac{\alpha}{2}w^\intercal w \tag{36}
+\end{align*}
+$$
+
+we can get below equation by completing the square for $w$.
+
+$$
+E(w)=E(m_N) + \frac{1}{2}(w-m_N)^\intercal A(w-m_N) \tag{37}
+$$
+
+Define $A$ and $E(m_N)$ as follows.
+
+$$
+A=\alpha I + \beta \Phi^\intercal \Phi \tag{38}
+$$
+
+$$
+E(m_N)=\frac{\beta}{2}|t-\Phi m_N|^2 + \frac{\alpha}{2} m_N^\intercal m_N \tag{39}
+$$
+
+A corresponds to matrix of second derivatives of error function.
+
+$$
+A=\triangledown \triangledown E(w) \tag{40}
+$$
+
+This is called as **Hessian matrix**. And we define $m_N$ as follows.
+
+$$
+m_N=\beta A^{-1}\Phi^\intercal t \tag{41}
+$$
+
+Eq(41) represents mean of posterior distribution. From above results, we can evaluate integral of $w$ by using results of normalization factor of multivariate Gaussian distribution.
+
+$$
+\begin{align*}
+\int exp(-E(w))dw
+&=exp(-E(m_N)) \int exp\Big(-\frac{1}{2}(w-m_N)^\intercal A(w-m_N) \Big)dw \\
+&=exp(-E(m_N))(2\pi)^{M/2}|A|^{-1/2} \tag{42}
+\end{align*}
+$$
+
+Logarithm of Marginal likelihood can be written as follows.
+
+$$
+log (p(t|\alpha, \beta))=\frac{M}{2} log(\alpha) + \frac{N}{2} log(\beta) - E(m_N) - \frac{1}{2} log(|A|) - \frac{N}{2} log(2\pi) \tag{43}
+$$
+
+Let us now return to the polynomial problem. The below graph represents relationship between the dimention of polynomial $M$ and model evidence. Hyperparameter $\alpha$ is fixed at $\alpha=5\times 10^{-3}$. The 0th degree polynomial has a very poor fith to the training data and evidence value is relatively small. The fitting for first order polynomial is greatly improved and evidence value becames significantly larger. However, the fitting for second order polynomial is hardly improved. Because trigonometric function created data is odd function and does not have terms of even degree in polynomial expansion. The fitting for third polynomial is greatly improved and evidence increases again. Increasing dimention $M$ further will only improve the fitting slightly. At this time, the penalty caused by increasing complexity of model reduces evidence value. Evidence values have maximum value at $M=3$. This is because $M=3$ is the simplest model in models that can explain observed data.
+
+<img src="images/evidence.png" width='800'>
+
+You can evaluate evidence function by running following command.
+
+```bash
+python3 evaluate_evidence_function.py
+```
+
+<br></br>
+
+## Maximizing evidence function
 
 <br></br>
 
