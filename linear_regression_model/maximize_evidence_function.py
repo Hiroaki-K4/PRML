@@ -33,8 +33,27 @@ def calculate_evidence_function(x, y, degree, alpha, beta):
     return evidence_func
 
 
-def predict_alpha(x, y, alpha, beta):
-    print(alpha)
+def predict_alpha(x, y, alpha, beta, degree):
+    design_mat = calculate_design_matrix_using_polynomial(x, degree)
+    y_arr = np.array(y)
+    while True:
+        A = alpha * np.identity(degree) + beta * np.dot(design_mat.T, design_mat)
+        m_N = beta * np.dot(np.dot(np.linalg.inv(A), design_mat.T), y_arr)
+
+        eig = beta * np.dot(design_mat.T, design_mat)
+        eigen_values, eigen_vectors = np.linalg.eig(eig)
+        gamma = 0
+        for i in range(eigen_values.shape[0]):
+            gamma += eigen_values[i] / (alpha + eigen_values[i])
+
+        new_alpha = gamma / np.dot(m_N.T, m_N)
+        if abs(alpha - new_alpha) < 1e-4:
+            alpha = new_alpha
+            break
+
+        alpha = new_alpha
+
+    return alpha
 
 
 def main():
@@ -57,9 +76,11 @@ def main():
     true_alpha = 0.005
     true_beta = (1 / 0.2) ** 2
 
-    pred_alpha = 0.1
-    pred_beta = 5
-    predict_alpha(noise_x, noise_y, pred_alpha, pred_beta)
+    pred_alpha = 0.005
+    pred_beta = 23
+    degree = 9
+    pred_alpha = predict_alpha(noise_x, noise_y, pred_alpha, pred_beta, degree)
+    print(pred_alpha)
 
 
 if __name__ == "__main__":
