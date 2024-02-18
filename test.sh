@@ -81,6 +81,8 @@ test_linear_regression_model() {
     check_result "draw_equivalent_kernel.py"
     python3 evaluate_evidence_function.py NotShow
     check_result "evaluate_evidence_function.py"
+    python3 maximize_evidence_function.py
+    check_result "maximize_evidence_function.py"
     cd ../
 }
 
