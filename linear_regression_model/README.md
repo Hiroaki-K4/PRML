@@ -368,7 +368,7 @@ E(w)&=\beta E_D(w) + \alpha E_W(w) \\
 \end{align*}
 $$
 
-we can get below equation by completing the square for $w$.
+We can get below equation by completing the square for $w$.
 
 $$
 E(w)=E(m_N) + \frac{1}{2}(w-m_N)^\intercal A(w-m_N) \tag{37}
@@ -412,7 +412,7 @@ $$
 log (p(t|\alpha, \beta))=\frac{M}{2} log(\alpha) + \frac{N}{2} log(\beta) - E(m_N) - \frac{1}{2} log(|A|) - \frac{N}{2} log(2\pi) \tag{43}
 $$
 
-Let us now return to the polynomial problem. The below graph represents relationship between the dimention of polynomial $M$ and model evidence. Hyperparameter $\alpha$ is fixed at $\alpha=5\times 10^{-3}$. The 0th degree polynomial has a very poor fith to the training data and evidence value is relatively small. The fitting for first order polynomial is greatly improved and evidence value becames significantly larger. However, the fitting for second order polynomial is hardly improved. Because trigonometric function created data is odd function and does not have terms of even degree in polynomial expansion. The fitting for third polynomial is greatly improved and evidence increases again. Increasing dimention $M$ further will only improve the fitting slightly. At this time, the penalty caused by increasing complexity of model reduces evidence value. Evidence values have maximum value at $M=3$. This is because $M=3$ is the simplest model in models that can explain observed data.
+Let us now return to the polynomial problem. The below graph represents relationship between the dimention of polynomial $M$ and model evidence. Hyperparameter $\alpha$ is fixed at $\alpha=5\times 10^{-3}$. The 0th degree polynomial has a very poor fit to the training data and evidence value is relatively small. The fitting for first order polynomial is greatly improved and evidence value becames significantly larger. However, the fitting for second order polynomial is hardly improved. Because trigonometric function created data is odd function and does not have terms of even degree in polynomial expansion. The fitting for third polynomial is greatly improved and evidence increases again. Increasing dimention $M$ further will only improve the fitting slightly. At this time, the penalty caused by increasing complexity of model reduces evidence value. Evidence values have maximum value at $M=3$. This is because $M=3$ is the simplest model in models that can explain observed data.
 
 <img src="images/evidence.png" width='800'>
 
@@ -461,8 +461,33 @@ $$
 \alpha=\frac{\gamma}{m_N^\intercal m_N} \tag{49}
 $$
 
+Note that this is implicit function for $\alpha$ because not only $\gamma$ depends on $\alpha$, but mode $m_N$ of posterior distribution depends on how to choose $\alpha$. So we adopt following iterative procedure. First, we decide init value of $\alpha$. And, we calculate $m_N$ and $\gamma$ by using Eq(26) and Eq(48). Using $m_N$ and $\gamma$, we re-estimate $\alpha$ by using Eq(49). Repeat this process until covergence.
 
+Similarly, we can maximize log marginal likelihood for $\beta$. Following equation is obtained by using $d\lambda_i/d\beta=\lambda_i/ \beta$.
 
+$$
+\frac{d}{d\beta}log|A|=\frac{d}{d\beta}\sum_i log(\lambda_i + \alpha)=\frac{1}{\beta}\sum_i \frac{\lambda_i}{\lambda_i + \alpha}=\frac{\gamma}{\beta} \tag{50}
+$$
+
+Stopping point of merginal likelihood satisfies following equation.
+
+$$
+0=\frac{N}{2\beta}-\frac{1}{2}\sum_{n=1}^N(t_n-m_N^\intercal\phi(x_n))^2 - \frac{\gamma}{2\beta} \tag{51}
+$$
+
+By rearranging the formula, we can obtain the following formula.
+
+$$
+\frac{1}{\beta}=\frac{1}{N-\gamma} \sum_{n=1}^N(t_n-m_N^\intercal\phi(x_n))^2 \tag{52}
+$$
+
+This is implicit function too, so we calculate the solution by using iteration method.
+
+You can maximize evidence function by running following command.
+
+```bash
+python3 maximize_evidence_function.py
+```
 
 <br></br>
 
