@@ -425,6 +425,44 @@ python3 evaluate_evidence_function.py
 <br></br>
 
 ## Maximizing evidence function
+First, we define problem of maximizing $p(\text{t} | \alpha, \beta)$. For that, we think about following eigen vector equation.
+
+$$
+(\beta \Phi^\intercal \Phi)u_i=\lambda_i u_i \tag{44}
+$$
+
+We know $A$ has eigen value $\alpha + \lambda_i$ from Eq(38). We can get following equation by thinking about derivative for $\alpha$ of $log|A|$.
+
+$$
+\frac{d}{d\alpha} log|A|=\frac{d}{d\alpha}log\prod_i(\lambda_i+\alpha)= \frac{d}{d\alpha} \sum_i log(\lambda_i + \alpha) = \sum_i \frac{1}{\lambda_i + \alpha} \tag{45}
+$$
+
+From this, stopping point for $\alpha$ of Eq(43) is as follows.
+
+$$
+0=\frac{M}{2\alpha}-\frac{1}{2}m_N^\intercal m_N - \frac{1}{2}\sum_i \frac{1}{\lambda_i + \alpha} \tag{46}
+$$
+
+Multiplying by $2\alpha$ and rearranging the formula, we get following equation.
+
+$$
+\alpha m_N^\intercal m_N = M-\alpha \sum_i \frac{1}{\lambda_i + \alpha} = \gamma \tag{47}
+$$
+
+Considering the sum for $i$ includes $M$ terms, $\gamma$ can be written as follows.
+
+$$
+\gamma=\sum_i \frac{\lambda_i}{\alpha + \lambda_i} \tag{48}
+$$
+
+From Eq(47), $\alpha$ maximizing marginal likelihood satisfies following equation.
+
+$$
+\alpha=\frac{\gamma}{m_N^\intercal m_N} \tag{49}
+$$
+
+
+
 
 <br></br>
 
