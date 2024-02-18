@@ -1,39 +1,11 @@
-import math
 import random
 
 import numpy as np
 
-
-def calculate_design_matrix_using_polynomial(x, degree):
-    design_mat = np.ones((len(x), degree))
-    for col in range(degree):
-        design_mat[:, col] = np.array(x) ** col
-
-    return design_mat
+from evaluate_evidence_function import calculate_design_matrix_using_polynomial
 
 
-def calculate_evidence_function(x, y, degree, alpha, beta):
-    y_arr = np.array(y)
-    design_mat = calculate_design_matrix_using_polynomial(x, degree)
-    M = degree - 1
-    N = y_arr.shape[0]
-    A = alpha * np.identity(degree) + beta * np.dot(design_mat.T, design_mat)
-    m_N = beta * np.dot(np.dot(np.linalg.inv(A), design_mat.T), y_arr)
-    E_m_N = beta / 2 * np.linalg.norm(
-        y_arr - np.dot(design_mat, m_N)
-    ) ** 2 + alpha / 2 * np.dot(m_N.T, m_N)
-    evidence_func = (
-        M / 2 * math.log(alpha)
-        + N / 2 * math.log(beta)
-        - E_m_N
-        - 1 / 2 * math.log(np.linalg.det(A))
-        - N / 2 * math.log(2 * math.pi)
-    )
-
-    return evidence_func
-
-
-def predict_alpha(x, y, alpha, beta, degree):
+def predict_hyperparameters(x, y, alpha, beta, degree):
     design_mat = calculate_design_matrix_using_polynomial(x, degree)
     y_arr = np.array(y)
     while True:
@@ -46,14 +18,23 @@ def predict_alpha(x, y, alpha, beta, degree):
         for i in range(eigen_values.shape[0]):
             gamma += eigen_values[i] / (alpha + eigen_values[i])
 
+        err = 0
+        for idx in range(design_mat.shape[0]):
+            err += (y[idx] - np.dot(m_N.T, design_mat[idx, :])) ** 2
+
         new_alpha = gamma / np.dot(m_N.T, m_N)
-        if abs(alpha - new_alpha) < 1e-4:
+        new_beta = 1 / (design_mat.shape[0] - gamma) * err
+        new_beta = 1 / new_beta
+
+        if abs(alpha - new_alpha) < 1e-3 and abs(beta - new_beta) < 1e-3:
             alpha = new_alpha
+            beta = new_beta
             break
 
         alpha = new_alpha
+        beta = new_beta
 
-    return alpha
+    return alpha, beta
 
 
 def main():
@@ -73,14 +54,16 @@ def main():
         noise_x.append(random_x)
         noise_y.append(random_y)
 
-    true_alpha = 0.005
-    true_beta = (1 / 0.2) ** 2
-
-    pred_alpha = 0.005
-    pred_beta = 23
+    # Initial value
+    pred_alpha = 0.02
+    pred_beta = 15
     degree = 9
-    pred_alpha = predict_alpha(noise_x, noise_y, pred_alpha, pred_beta, degree)
-    print(pred_alpha)
+    pred_alpha, pred_beta = predict_hyperparameters(
+        noise_x, noise_y, pred_alpha, pred_beta, degree
+    )
+    print("----- Predicted hyperparameters -----")
+    print("alpha: ", pred_alpha)
+    print("beta: ", pred_beta)
 
 
 if __name__ == "__main__":
