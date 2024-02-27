@@ -81,6 +81,15 @@ test_linear_regression_model() {
     check_result "draw_equivalent_kernel.py"
     python3 evaluate_evidence_function.py NotShow
     check_result "evaluate_evidence_function.py"
+    python3 maximize_evidence_function.py
+    check_result "maximize_evidence_function.py"
+    cd ../
+}
+
+test_linear_discriminative_model() {
+    cd linear_discriminative_model
+    python3 fishers_linear_discriminant.py NotShow
+    check_result "fishers_linear_discriminant.py"
     cd ../
 }
 
@@ -99,6 +108,8 @@ if [ $# -eq 1 ]; then
         test_draw_gaussian_distribution
     elif [ $1 = "linear_regression_model" ]; then
         test_linear_regression_model
+    elif [ $1 = "linear_discriminative_model" ]; then
+        test_linear_discriminative_model
     else
         echo "Argument is wrong"
         exit 1
@@ -111,4 +122,5 @@ else
     test_draw_dirichlet_distribution
     test_draw_gaussian_distribution
     test_linear_regression_model
+    test_linear_discriminative_model
 fi
