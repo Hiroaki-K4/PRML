@@ -82,5 +82,46 @@ python3 fishers_linear_discriminant.py
 
 <br></br>
 
+# Stochastic generative model
+Here, we discuss about a generative approach to model the conditional probability density $p(x|C_k)$ and the prior probability $p(C_k)$ of the class. In the generative approach, we calculate the posterior probability of $p(C_k|x)$ by using bayes theorem with modeled the conditional probability density $p(x|C_k)$ and prior probability $p(C_k)$ of the class. First, we consider the case of 2 classes. The posterior probability of class $C_1$ can be written as follows.
+
+$$
+\begin{align*}
+p(C_1|x) &= \frac{p(x|C_1)p(C_1)}{p(x|C_1)p(C_1) + p(x|C_2)p(C_2)} \\
+&=\frac{1}{1+exp(-a)}=\sigma(a) \tag{12}
+\end{align*}
+$$
+
+Here, we defined $a$ as follows.
+
+$$
+a=log \frac{p(x|C_1)p(C_1)}{p(x|C_2)p(C_2)} \tag{13}
+$$
+
+$\sigma(a)$ of Eq(13) is the logistic sigmoid function defined by following equation.
+
+$$
+\sigma(a) = \frac{1}{1+exp(-a)} \tag{14}
+$$
+
+In case $K > 2$ class, the posterior probability $p(C_k|x)$ is given as follows.
+
+$$
+\begin{align*}
+p(C_k|x)&=\frac{p(x|C_k)p(C_k)}{\sum_j p(x|C_j)p(C_j)} \\
+&=\frac{exp(a_k)}{\sum_j exp(a_j)} \tag{15}
+\end{align*}
+$$
+
+This is know as the normalized exponential function, it can be considered as generalization to multi classes of the logistic sigmoid function. Here, $a_k$ is defined by following equation.
+
+$$
+a_k=log(p(x|C_k)p(C_k)) \tag{16}
+$$
+
+The normalized exponential function is known as the softmax function. The softmax function means a smooth version of max function. That is, if $a_k>a_j$ for every $j \neq k$, $p(C_k|x)\simeq 1$ and $p(C_j|x)\simeq 0$ true.
+
+<br></br>
+
 # Reference
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
