@@ -90,6 +90,8 @@ test_linear_discriminative_model() {
     cd linear_discriminative_model
     python3 fishers_linear_discriminant.py NotShow
     check_result "fishers_linear_discriminant.py"
+    python3 stochastic_generative_model.py NotShow
+    check_result "stochastic_generative_model.py"
     cd ../
 }
 

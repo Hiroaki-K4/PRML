@@ -82,5 +82,73 @@ python3 fishers_linear_discriminant.py
 
 <br></br>
 
+# Stochastic generative model
+Here, we discuss about a generative approach to model the conditional probability density $p(x|C_k)$ and the prior probability $p(C_k)$ of the class. In the generative approach, we calculate the posterior probability of $p(C_k|x)$ by using bayes theorem with modeled the conditional probability density $p(x|C_k)$ and prior probability $p(C_k)$ of the class. First, we consider the case of 2 classes. The posterior probability of class $C_1$ can be written as follows.
+
+$$
+\begin{align*}
+p(C_1|x) &= \frac{p(x|C_1)p(C_1)}{p(x|C_1)p(C_1) + p(x|C_2)p(C_2)} \\
+&=\frac{1}{1+exp(-a)}=\sigma(a) \tag{12}
+\end{align*}
+$$
+
+Here, we defined $a$ as follows.
+
+$$
+a=log \frac{p(x|C_1)p(C_1)}{p(x|C_2)p(C_2)} \tag{13}
+$$
+
+$\sigma(a)$ of Eq(13) is the logistic sigmoid function defined by following equation.
+
+$$
+\sigma(a) = \frac{1}{1+exp(-a)} \tag{14}
+$$
+
+In case $K > 2$ class, the posterior probability $p(C_k|x)$ is given as follows.
+
+$$
+\begin{align*}
+p(C_k|x)&=\frac{p(x|C_k)p(C_k)}{\sum_j p(x|C_j)p(C_j)} \\
+&=\frac{exp(a_k)}{\sum_j exp(a_j)} \tag{15}
+\end{align*}
+$$
+
+This is know as the normalized exponential function, it can be considered as generalization to multi classes of the logistic sigmoid function. Here, $a_k$ is defined by following equation.
+
+$$
+a_k=log(p(x|C_k)p(C_k)) \tag{16}
+$$
+
+The normalized exponential function is known as the softmax function. The softmax function means a smooth version of max function. That is, if $a_k>a_j$ for every $j \neq k$, $p(C_k|x)\simeq 1$ and $p(C_j|x)\simeq 0$ true.
+
+## Continuous value input
+Let's look at the shape of the posterior probability. First, assume that all class share same covariance matrix. For the general case of $K$ class classification, we can get below relationship for $a_k(x)$ from Eq(15) and Eq(16).
+
+$$
+a_k(x)=w_k^\intercal x + w_{k0} \tag{17}
+$$
+
+Here, we define $w_k$ and $w_{k0}$ as follows.
+
+$$
+\begin{align*}
+w_k&=\Sigma^{-1} u_k \\
+w_{k0}&=-\frac{1}{2}u_k^\intercal \Sigma^{-1}u_k + log(p(C_k)) \tag{18}
+\end{align*}
+$$
+
+It turns out that $a_k(x)$ becomes linear function of $x$ because the covariance is shared and the quadratic term is canceled. The decision boundary where misclassification rate is minimum appears when two of posterior probabilities are equal.  
+When conditional probability densities $p(x|C_k)$ of each class have each covariance matrix $\Sigma_k$, the quadratic term is no longer canceled and we get the quadratic function of $x$. In below graph, blue and red clusters have same covariance matrix, only blue cluster has different covariance matrix. The right plot shows the decision boundary. It is seemed that the decision boundary between green and red is linear, but boundary of blue is quadratic.
+
+<img src="images/boundary.png" width='800'>
+
+You can try the stochastic generative model by running following command.
+
+```bash
+python3 stochastic_generative_model.py
+```
+
+<br></br>
+
 # Reference
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
