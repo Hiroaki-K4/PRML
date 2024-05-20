@@ -95,6 +95,13 @@ test_linear_discriminative_model() {
     cd ../
 }
 
+test_mixed_density_network() {
+    cd neural_network
+    python3 mixed_density_network.py
+    check_result "mixed_density_network.py"
+    cd ../
+}
+
 python3 -m pip install -r requirements.txt
 
 if [ $# -eq 1 ]; then
@@ -112,6 +119,8 @@ if [ $# -eq 1 ]; then
         test_linear_regression_model
     elif [ $1 = "linear_discriminative_model" ]; then
         test_linear_discriminative_model
+    elif [ $1 = "mixed_density_network" ]; then
+        test_mixed_density_network
     else
         echo "Argument is wrong"
         exit 1
@@ -125,4 +134,5 @@ else
     test_draw_gaussian_distribution
     test_linear_regression_model
     test_linear_discriminative_model
+    test_mixed_density_network
 fi
