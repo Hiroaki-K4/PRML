@@ -97,6 +97,10 @@ test_linear_discriminative_model() {
 
 test_mixed_density_network() {
     cd neural_network
+    python3 draw_hyperbolic_functions.py NotShow
+    check_result "draw_hyperbolic_functions.py"
+    python3 compare_tanh_sigmoid_and_sigmoid.py NotShow
+    check_result "compare_tanh_sigmoid_and_sigmoid.py"
     python3 mixed_density_network.py
     check_result "mixed_density_network.py"
     cd ../
