@@ -62,3 +62,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run test
       run: bash test.sh linear_discriminative_model
+
+  mixed_density_network_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run test
+      run: bash test.sh mixed_density_network
