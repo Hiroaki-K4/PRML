@@ -134,21 +134,21 @@ def main():
     )
     print(f"Using {device} device")
 
-    mixed_density_model = MixedDensityNetwork(device).to(device)
-    print(mixed_density_model)
+    mixture_density_model = MixedDensityNetwork(device).to(device)
+    print(mixture_density_model)
 
     loss_fn = nn.MSELoss()
-    optimizer = torch.optim.SGD(mixed_density_model.parameters(), lr=1e-3)
+    optimizer = torch.optim.SGD(mixture_density_model.parameters(), lr=1e-3)
 
     epochs = 100
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
-        train(train_dataloader, mixed_density_model, loss_fn, optimizer, device)
-        test(test_dataloader, mixed_density_model, loss_fn, device)
+        train(train_dataloader, mixture_density_model, loss_fn, optimizer, device)
+        test(test_dataloader, mixture_density_model, loss_fn, device)
     print("Done!")
 
-    model_path = "mixed_density_model.pth"
-    torch.save(mixed_density_model.state_dict(), model_path)
+    model_path = "mixture_density_model.pth"
+    torch.save(mixture_density_model.state_dict(), model_path)
     print("Saved PyTorch Model State to {0}".format(model_path))
 
     predict(model_path, test_data, device)
