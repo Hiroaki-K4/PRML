@@ -6,8 +6,7 @@ import numpy as np
 
 
 def create_dataset(N):
-    random.seed(314)
-    x = np.linspace(0, 1, 100)
+    x = np.linspace(0, 1, N)
     y = x + 0.3 * np.sin(2 * np.pi * x)
     nums = random.sample(range(x.shape[0]), k=N)
     noise_x = []
@@ -18,19 +17,23 @@ def create_dataset(N):
         noise_x.append(random_x)
         noise_y.append(random_y)
 
-    return x, y, noise_x, noise_y
+    return y, x, noise_y, noise_x
 
 
 def main():
+    random.seed(314)
+    np.random.seed(314)
+
     N = 100
-    x, y, noise_x, noise_y = create_dataset(N)
+    x, y, input_x, input_y = create_dataset(N)
 
-    degree = 3
-
-    plt.plot(y, x, label="True")
-    plt.scatter(noise_y, noise_x, label="Noise points", color="green")
+    print(input_x)
+    print(input_y)
+    input()
+    plt.plot(x, y, label="True")
+    plt.scatter(input_x, input_y, label="Input points", color="green")
     plt.legend()
-    title = "Polynomial curve fitting(degree={0},N={1})".format(str(degree), str(N))
+    title = "Mixed density network(N={0})".format(str(N))
     plt.title(title)
 
 
