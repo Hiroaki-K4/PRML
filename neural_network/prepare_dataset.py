@@ -6,7 +6,7 @@ import numpy as np
 
 
 def create_dataset(N):
-    x = np.linspace(0, 1, 100)
+    x = np.linspace(0, 1, N)
     y = x + 0.3 * np.sin(2 * np.pi * x)
     nums = random.sample(range(x.shape[0]), k=N)
     noise_x = []
