@@ -24,30 +24,32 @@ class MixtureDensityNetwork(nn.Module):
 
     def forward(self, x):
         logits = self.linear_tanh_stack(x)
+        return logits
 
-        mu_0, mu_1, mu_2 = logits[0], logits[3], logits[6]
+    def predict(self, logits):
+        mu_0, mu_1, mu_2 = logits[0], logits[1], logits[2]
         sigma_0, sigma_1, sigma_2 = (
-            torch.exp(logits[1]),
+            torch.exp(logits[3]),
             torch.exp(logits[4]),
-            torch.exp(logits[7]),
+            torch.exp(logits[5]),
         )
-        mix_coef_sum = (
-            torch.exp(logits[2]) + torch.exp(logits[5]) + torch.exp(logits[8])
-        )
-        mix_coef_0 = torch.exp(logits[2]) / mix_coef_sum
-        mix_coef_1 = torch.exp(logits[5]) / mix_coef_sum
-        mix_coef_2 = torch.exp(logits[8]) / mix_coef_sum
+        mix_coef = logits[6:]
+        mix_coef_softmax = torch.softmax(mix_coef, dim=-1)
 
         normal_dist_0 = Normal(mu_0, sigma_0)
         normal_dist_1 = Normal(mu_1, sigma_1)
         normal_dist_2 = Normal(mu_2, sigma_2)
         values = (
-            mix_coef_0 * normal_dist_0.log_prob(self.t_candidates).exp()
-            + mix_coef_1 * normal_dist_1.log_prob(self.t_candidates).exp()
-            + mix_coef_2 * normal_dist_2.log_prob(self.t_candidates).exp()
+            mix_coef_softmax[0] * normal_dist_0.log_prob(self.t_candidates).exp()
+            + mix_coef_softmax[1] * normal_dist_1.log_prob(self.t_candidates).exp()
+            + mix_coef_softmax[2] * normal_dist_2.log_prob(self.t_candidates).exp()
         )
         pred_t = torch.max(values, dim=0)[0].unsqueeze(0)
         return pred_t
+
+    def loss(self, logits, y, loss_fn):
+        pred_t = self.predict(logits)
+        return loss_fn(pred_t, y)
 
 
 def train(dataloader, model, loss_fn, optimizer, device):
@@ -57,8 +59,10 @@ def train(dataloader, model, loss_fn, optimizer, device):
         X, y = X.to(device), y.to(device)
 
         # Compute prediction error
-        pred = model(X)
-        loss = loss_fn(pred, y)
+        # pred = model(X)
+        logits = model(X)
+        # loss = loss_fn(pred, y)
+        loss = model.loss(logits, y, loss_fn)
 
         # Backpropagation
         optimizer.zero_grad()
@@ -77,8 +81,10 @@ def test(dataloader, model, loss_fn, device):
     with torch.no_grad():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device)
-            pred = model(X)
-            test_loss += loss_fn(pred, y).item()
+            # pred = model(X)
+            logits = model(X)
+            # test_loss += loss_fn(pred, y).item()
+            test_loss += model.loss(logits, y, loss_fn).item()
 
     test_loss /= num_batches
     print(f"Test avg loss: {test_loss:>8f} \n")
@@ -89,17 +95,13 @@ def predict(model_path, test_data, device):
     model.load_state_dict(torch.load(model_path))
 
     model.eval()
-    # print(test_data[0])
-    # x, y = test_data[1][0], test_data[1][1]
-    # print(x, y)
-    # print(len(test_data))
-    # input()
     for i in range(len(test_data)):
         with torch.no_grad():
-            # x = x.to(device)
             x, y = test_data[i][0], test_data[i][1]
             x = x.unsqueeze(0).to(device)
-            pred = model(x)
+            # pred = model(x)
+            logits = model(x)
+            pred = model.predict(logits)
             print(x, pred, y)
         # print(f'Predicted: "{predicted}", Actual: "{actual}"')
 
@@ -139,6 +141,7 @@ def main():
     mixture_density_model = MixtureDensityNetwork(device).to(device)
     print(mixture_density_model)
 
+    # TODO: Create custom loss function
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.SGD(mixture_density_model.parameters(), lr=1e-3)
 
