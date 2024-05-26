@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import Dataset
 
 
-class MixedDensityNetworkDataset(Dataset):
+class MixtureDensityNetworkDataset(Dataset):
     def __init__(self, input_arr, label_arr):
         input_arr = input_arr.astype(np.float32)
         label_arr = label_arr.astype(np.float32)

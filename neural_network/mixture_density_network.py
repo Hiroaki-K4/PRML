@@ -10,7 +10,7 @@ import dataset
 import prepare_dataset
 
 
-class MixedDensityNetwork(nn.Module):
+class MixtureDensityNetwork(nn.Module):
     def __init__(self, device):
         super().__init__()
         self.flatten = nn.Flatten()
@@ -85,7 +85,7 @@ def test(dataloader, model, loss_fn, device):
 
 
 def predict(model_path, test_data, device):
-    model = MixedDensityNetwork(device).to(device)
+    model = MixtureDensityNetwork(device).to(device)
     model.load_state_dict(torch.load(model_path))
 
     model.eval()
@@ -110,12 +110,14 @@ def main():
 
     train_N = 500
     x, y, input_x, input_y = prepare_dataset.create_dataset(train_N)
-    training_data = dataset.MixedDensityNetworkDataset(
+    training_data = dataset.MixtureDensityNetworkDataset(
         np.array(input_x), np.array(input_y)
     )
     test_N = 50
     x, y, input_x, input_y = prepare_dataset.create_dataset(test_N)
-    test_data = dataset.MixedDensityNetworkDataset(np.array(input_x), np.array(input_y))
+    test_data = dataset.MixtureDensityNetworkDataset(
+        np.array(input_x), np.array(input_y)
+    )
     batch_size = 1
     train_dataloader = DataLoader(training_data, batch_size=batch_size)
     test_dataloader = DataLoader(test_data, batch_size=batch_size)
@@ -134,7 +136,7 @@ def main():
     )
     print(f"Using {device} device")
 
-    mixture_density_model = MixedDensityNetwork(device).to(device)
+    mixture_density_model = MixtureDensityNetwork(device).to(device)
     print(mixture_density_model)
 
     loss_fn = nn.MSELoss()
