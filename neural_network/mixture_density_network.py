@@ -1,5 +1,6 @@
 import random
 
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torch import nn
@@ -15,9 +16,11 @@ class MixtureDensityNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_tanh_stack = nn.Sequential(
-            nn.Linear(1, 10),
+            nn.Linear(1, 8),
             nn.Tanh(),
-            nn.Linear(10, 9),
+            nn.Linear(8, 8),
+            nn.Tanh(),
+            nn.Linear(8, 9),
         )
         self.device = device
         self.t_candidates = torch.arange(0, 1.01, 0.01).to(self.device)
@@ -27,8 +30,19 @@ class MixtureDensityNetwork(nn.Module):
         return logits
 
     def predict(self, logits):
+        mu = logits[:3].to("cpu").detach().numpy().copy()
+        var = torch.exp(logits[3:6]).to("cpu").detach().numpy().copy()
+        mix_coef = logits[6:]
+        mix_coef_softmax = torch.softmax(mix_coef, dim=-1)
+        # idx = random.choices([i for i in range(3)], weights=mix_coef_softmax)
+        max_value, idx = torch.max(mix_coef_softmax, dim=0)
+        print(mix_coef_softmax, idx)
+        pred_t = np.random.normal(mu[idx], np.sqrt(var[idx]))
+        return pred_t
+
+    def loss(self, logits, y, loss_fn):
         mu_0, mu_1, mu_2 = logits[0], logits[1], logits[2]
-        sigma_0, sigma_1, sigma_2 = (
+        var_0, var_1, var_2 = (
             torch.exp(logits[3]),
             torch.exp(logits[4]),
             torch.exp(logits[5]),
@@ -36,20 +50,15 @@ class MixtureDensityNetwork(nn.Module):
         mix_coef = logits[6:]
         mix_coef_softmax = torch.softmax(mix_coef, dim=-1)
 
-        normal_dist_0 = Normal(mu_0, sigma_0)
-        normal_dist_1 = Normal(mu_1, sigma_1)
-        normal_dist_2 = Normal(mu_2, sigma_2)
-        values = (
-            mix_coef_softmax[0] * normal_dist_0.log_prob(self.t_candidates).exp()
-            + mix_coef_softmax[1] * normal_dist_1.log_prob(self.t_candidates).exp()
-            + mix_coef_softmax[2] * normal_dist_2.log_prob(self.t_candidates).exp()
+        normal_dist_0 = Normal(mu_0, torch.sqrt(var_0))
+        normal_dist_1 = Normal(mu_1, torch.sqrt(var_1))
+        normal_dist_2 = Normal(mu_2, torch.sqrt(var_2))
+        loss = -torch.log(
+            mix_coef_softmax[0] * normal_dist_0.log_prob(y).exp()
+            + mix_coef_softmax[1] * normal_dist_1.log_prob(y).exp()
+            + mix_coef_softmax[2] * normal_dist_2.log_prob(y).exp()
         )
-        pred_t = torch.max(values, dim=0)[0].unsqueeze(0)
-        return pred_t
-
-    def loss(self, logits, y, loss_fn):
-        pred_t = self.predict(logits)
-        return loss_fn(pred_t, y)
+        return loss
 
 
 def train(dataloader, model, loss_fn, optimizer, device):
@@ -59,9 +68,7 @@ def train(dataloader, model, loss_fn, optimizer, device):
         X, y = X.to(device), y.to(device)
 
         # Compute prediction error
-        # pred = model(X)
         logits = model(X)
-        # loss = loss_fn(pred, y)
         loss = model.loss(logits, y, loss_fn)
 
         # Backpropagation
@@ -81,9 +88,7 @@ def test(dataloader, model, loss_fn, device):
     with torch.no_grad():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device)
-            # pred = model(X)
             logits = model(X)
-            # test_loss += loss_fn(pred, y).item()
             test_loss += model.loss(logits, y, loss_fn).item()
 
     test_loss /= num_batches
@@ -95,15 +100,26 @@ def predict(model_path, test_data, device):
     model.load_state_dict(torch.load(model_path))
 
     model.eval()
+    xs = []
+    ys = []
+    preds = []
     for i in range(len(test_data)):
         with torch.no_grad():
             x, y = test_data[i][0], test_data[i][1]
             x = x.unsqueeze(0).to(device)
-            # pred = model(x)
             logits = model(x)
             pred = model.predict(logits)
-            print(x, pred, y)
-        # print(f'Predicted: "{predicted}", Actual: "{actual}"')
+            xs.append(x.to("cpu").detach().numpy().copy())
+            ys.append(y.to("cpu").detach().numpy().copy())
+            preds.append(pred)
+
+    plt.scatter(xs, ys, label="Input", color="green")
+    plt.scatter(xs, preds, label="Prediction", color="blue")
+    plt.legend()
+    # title = "Mixed density network(N={0})".format(str(N))
+    # plt.title(title)
+    plt.show()
+    # print(f'Predicted: "{predicted}", Actual: "{actual}"')
 
 
 def main():
@@ -115,7 +131,7 @@ def main():
     training_data = dataset.MixtureDensityNetworkDataset(
         np.array(input_x), np.array(input_y)
     )
-    test_N = 50
+    test_N = 100
     x, y, input_x, input_y = prepare_dataset.create_dataset(test_N)
     test_data = dataset.MixtureDensityNetworkDataset(
         np.array(input_x), np.array(input_y)
@@ -128,24 +144,16 @@ def main():
         print(f"Shape of y: {t.shape} {t.dtype}")
         break
 
-    # Get cpu, gpu or mps device for training.
-    device = (
-        "cuda"
-        if torch.cuda.is_available()
-        else "mps"
-        if torch.backends.mps.is_available()
-        else "cpu"
-    )
+    device = "cpu"
     print(f"Using {device} device")
 
     mixture_density_model = MixtureDensityNetwork(device).to(device)
     print(mixture_density_model)
 
-    # TODO: Create custom loss function
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.SGD(mixture_density_model.parameters(), lr=1e-3)
 
-    epochs = 100
+    epochs = 30
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train(train_dataloader, mixture_density_model, loss_fn, optimizer, device)

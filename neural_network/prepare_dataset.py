@@ -13,7 +13,7 @@ def create_dataset(N):
     noise_y = []
     for idx in nums:
         random_x = x[idx]
-        random_y = y[idx] + np.random.normal(0, 0.07)
+        random_y = y[idx] + np.random.normal(0, 0.01)
         noise_x.append(random_x)
         noise_y.append(random_y)
 
