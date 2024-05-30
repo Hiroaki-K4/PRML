@@ -1,7 +1,7 @@
 # ml_practice
 This repository provides implementations for a better understanding of [PRML](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)(Pattern Recognition and Machine Learning).
 
-## Related articles of mine
+## Related articles I wrote
 - [Understanding the Tanh Function as an Activation Function](https://medium.com/@hirok4/understanding-the-tanh-function-as-an-activation-function-ff01dc3c9777)
 - [Implementation of Stochastic Generative Model](https://medium.com/@hirok4/implementation-of-stochastic-generative-model-66d7ec44e557)
 - [Implementing Fisher’s Linear Discriminant](https://medium.com/@hirok4/implementing-fishers-linear-discriminant-4b4c9829f7de)
