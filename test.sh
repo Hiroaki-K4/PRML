@@ -101,8 +101,12 @@ test_mixture_density_network() {
     check_result "draw_hyperbolic_functions.py"
     python3 compare_tanh_sigmoid_and_sigmoid.py NotShow
     check_result "compare_tanh_sigmoid_and_sigmoid.py"
-    python3 mixture_density_network.py
-    check_result "mixture_density_network.py"
+    python3 solve_forward_problem.py NotShow
+    check_result "solve_forward_problem.py"
+    python3 solve_inverse_problem_with_mixture_density_network.py NotShow
+    check_result "solve_inverse_problem_with_mixture_density_network.py"
+    python3 solve_inverse_problem_with_simple_network.py NotShow
+    check_result "solve_inverse_problem_with_simple_network.py"
     cd ../
 }
 

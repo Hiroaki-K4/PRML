@@ -50,3 +50,4 @@ python3 compare_tanh_sigmoid_and_sigmoid.py
 # References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 - [Hyperbolic functions](https://en.wikipedia.org/wiki/Hyperbolic_functions)
+- [Mixture Density Networks](https://github.com/dusenberrymw/mixture-density-networks)
