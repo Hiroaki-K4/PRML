@@ -7,14 +7,14 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd import Variable
 
-plt.rcParams["figure.figsize"] = (8, 8)
+plt.rcParams["figure.figsize"] = (7, 7)
 np.random.seed(314)
 torch.manual_seed(314)
 torch.cuda.manual_seed(314)
 
 
 # generate data
-n = 3000
+n = 2000
 d = 1
 t = 1
 x_train = np.random.uniform(0, 1, (n, d)).astype(np.float32)
@@ -24,8 +24,8 @@ x_train_inv = y_train
 y_train_inv = x_train
 x_test = np.linspace(-0.1, 1.1, n).reshape(-1, 1).astype(np.float32)
 
-h = 50  # Dimension of hidden layer
-k = 4  # Mixing components
+h = 10  # Dimension of hidden layer
+k = 4  # Mixing coefficients
 d_pi = k
 d_sigmasq = k
 d_mu = t * k
@@ -76,8 +76,7 @@ def loss_fn(pi, sigmasq, mu, target):
         likelihood_z_x = gaussian_pdf(target, mu[:, i * t : (i + 1) * t], sigmasq[:, i])
         losses += pi[:, i] * likelihood_z_x
 
-    loss = torch.mean(-torch.log(losses))
-    return loss
+    return -torch.sum(torch.log(losses))
 
 
 def train():
@@ -111,15 +110,15 @@ def main():
     title = "Mixture density network ($N={0}$)".format(n)
     plt.title(title)
 
-    # Plot mixing components
-    plt.figure(figsize=(8, 8))
+    # Plot mixing coefficients
+    plt.figure(figsize=(7, 7))
     for i in range(pi.shape[1]):
         plt.plot(x_test, pi[:, i].detach().numpy())
-    title = "Mixing components ($K={0}$)".format(k)
+    title = "Mixing coefficients ($K={0}$)".format(k)
     plt.title(title)
 
     # Plot mu
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(7, 7))
     for i in range(mu.shape[1]):
         plt.plot(x_test, mu[:, i].detach().numpy())
     title = "$\mu$ of mixture density network"

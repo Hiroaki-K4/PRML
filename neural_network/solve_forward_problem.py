@@ -47,7 +47,7 @@ def train():
 
 
 def main():
-    plt.rcParams["figure.figsize"] = (8, 8)
+    plt.rcParams["figure.figsize"] = (7, 7)
     np.random.seed(314)
     torch.manual_seed(314)
     torch.cuda.manual_seed(314)
@@ -59,6 +59,8 @@ def main():
     # plot
     plt.plot(x_train, y_train, "bo", alpha=0.5, markerfacecolor="none")
     plt.plot(x_test, out.data.numpy(), "r", linewidth=3.0)
+    title = "Forward problem with simple neural network($N={0}$)".format(n)
+    plt.title(title)
 
 
 if __name__ == "__main__":
