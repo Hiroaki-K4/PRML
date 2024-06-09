@@ -110,6 +110,13 @@ test_mixture_density_network() {
     cd ../
 }
 
+test_kernel_method() {
+    cd kernel_method
+    python3 draw_kernel_function.py NotShow
+    check_result "draw_kernel_function.py"
+    cd ../
+}
+
 python3 -m pip install -r requirements.txt
 
 if [ $# -eq 1 ]; then
@@ -129,6 +136,8 @@ if [ $# -eq 1 ]; then
         test_linear_discriminative_model
     elif [ $1 = "mixture_density_network" ]; then
         test_mixture_density_network
+    elif [ $1 = "kernel_method" ]; then
+        test_kernel_method
     else
         echo "Argument is wrong"
         exit 1
@@ -143,4 +152,5 @@ else
     test_linear_regression_model
     test_linear_discriminative_model
     test_mixture_density_network
+    test_kernel_method
 fi

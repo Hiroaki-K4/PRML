@@ -2,6 +2,7 @@
 This repository provides implementations for a better understanding of [PRML](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)(Pattern Recognition and Machine Learning).
 
 ## Related articles I wrote
+- [Implementing Mixture Density Network(MDN) Using Pytorch](https://medium.com/@hirok4/implementing-mixture-density-network-mdn-using-pytorch-8340c9530872)
 - [Understanding the Tanh Function as an Activation Function](https://medium.com/@hirok4/understanding-the-tanh-function-as-an-activation-function-ff01dc3c9777)
 - [Implementation of Stochastic Generative Model](https://medium.com/@hirok4/implementation-of-stochastic-generative-model-66d7ec44e557)
 - [Implementing Fisher’s Linear Discriminant](https://medium.com/@hirok4/implementing-fishers-linear-discriminant-4b4c9829f7de)
@@ -44,6 +45,12 @@ This repository provides implementations for a better understanding of [PRML](ht
 # [Linear discriminative model](https://github.com/Hiroaki-K4/PRML/tree/main/linear_discriminative_model)
 
 <img src='linear_discriminative_model/images/fisher.png' width='700'>
+
+<br></br>
+
+# [Neural network](https://github.com/Hiroaki-K4/PRML/tree/main/neural_network)
+
+<img src='neural_network/images/inverse_problem_with_mixture_density_network.png' width='700'>
 
 <br></br>
 
