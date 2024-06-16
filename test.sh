@@ -114,6 +114,8 @@ test_kernel_method() {
     cd kernel_method
     python3 draw_kernel_function.py NotShow
     check_result "draw_kernel_function.py"
+    python3 nadaraya_watson_model.py NotShow
+    check_result "nadaraya_watson_model.py"
     cd ../
 }
 
