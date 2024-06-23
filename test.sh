@@ -116,6 +116,8 @@ test_kernel_method() {
     check_result "draw_kernel_function.py"
     python3 nadaraya_watson_model.py NotShow
     check_result "nadaraya_watson_model.py"
+    python3 draw_sample_from_gaussian_process_prior.py NotShow
+    check_result "draw_sample_from_gaussian_process_prior.py"
     cd ../
 }
 
