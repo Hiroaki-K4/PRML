@@ -3,44 +3,44 @@ import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.stats import norm
 
 
-def gaussian_kernel(x_train, x_test):
-    res = np.zeros(len(x_test))
-    sigma = 0.5
+def predict_by_gaussian_process(x_train, y_train, x_test):
+    preds = np.zeros(len(x_test))
+    # TODO: Calculate k and C
     for i, x in enumerate(x_test):
-        res[i] = np.exp(-np.sum(abs(x - x_train)) ** 2 / 2 * sigma**2)
+        probs = norm.pdf(x - x_train, loc=0, scale=0.2)
+        preds[i] = np.sum(probs * y_train) / np.sum(probs)
 
-    return res
+    return preds
 
 
 def main():
     # Create dataset
-    random.seed(314)
-    x = np.linspace(-1, 1, 300)
-    E = np.zeros_like(x)
+    random.seed(0)
+    x = np.linspace(0, 2 * np.pi, 500)
+    y = np.sin(x)
+    N = 25
+    nums = random.sample(range(x.shape[0]), k=N)
+    noise_x = []
+    noise_y = []
+    for idx in nums:
+        random_x = x[idx]
+        random_y = y[idx] + np.random.normal(0, 0.2)
+        noise_x.append(random_x)
+        noise_y.append(random_y)
 
-    params = [
-        (1, 4, 0, 0),
-        (9, 4, 0, 0),
-        (1, 64, 0, 0),
-        (1, 0.25, 0, 0),
-        (1, 4, 10, 0),
-        (1, 4, 0, 5),
-    ]
+    preds = predict_by_gaussian_process(
+        np.array(noise_x), np.array(noise_y), np.array(x)
+    )
 
-    fig, ax = plt.subplots(2, 3, figsize=(12, 6))
-    ax = ax.ravel()
-    for axi, (p0, p1, p2, p3) in zip(ax, params):
-        K = (
-            p0 * np.exp(-p1 / 2 * (x[:, np.newaxis] - x[np.newaxis, :]) ** 2)
-            + p2
-            + p3 * x[:, np.newaxis] * x[np.newaxis, :]
-        )
-        axi.plot(x, np.random.multivariate_normal(E, K, size=5).T)
-        axi.set_title(f"({p0}, {p1}, {p2}, {p3})")
-
-    fig.suptitle("Sample from a Gaussian process prior")
+    plt.plot(x, y, label="True", c="green")
+    plt.plot(x, preds, label="Prediction", c="red")
+    plt.scatter(noise_x, noise_y, label="inputs")
+    plt.legend()
+    title = "Nadaraya-Watson model(N={0})".format(str(N))
+    plt.title(title)
 
 
 if __name__ == "__main__":
