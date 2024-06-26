@@ -6,10 +6,24 @@ import numpy as np
 from scipy.stats import norm
 
 
+def calculate_kernel(x_train, x):
+    params = [1, 4, 0, 0]
+    k = (
+        params[0] * np.exp(-params[1] / 2 * (x[:, np.newaxis] - x[np.newaxis, :]) ** 2)
+        + params[2]
+        + params[3] * x[:, np.newaxis] * x[np.newaxis, :]
+    )
+    print(k)
+    input()
+
+
 def predict_by_gaussian_process(x_train, y_train, x_test):
     preds = np.zeros(len(x_test))
     # TODO: Calculate k and C
+    print(x_train)
+    print(x_train.shape)
     for i, x in enumerate(x_test):
+        calculate_kernel(x_train, x)
         probs = norm.pdf(x - x_train, loc=0, scale=0.2)
         preds[i] = np.sum(probs * y_train) / np.sum(probs)
 
