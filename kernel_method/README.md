@@ -74,5 +74,19 @@ Below graph shows Nadaraya-Watson model when isotropic Gaussin kernel is used fo
 
 <br></br>
 
+## Gaussian proce
+
+<img src="images/sample_from_gaussian_process.png" width='600'>
+<img src="images/gaussian_process.png" width='600'>
+
+You can run Gaussian process by running following command.
+
+```bash
+python3 draw_gaussian_process.py
+```
+
+<br></br>
+
 # References
 - [Pattern Recognition and Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
+- [Fundamentals of Gaussian Processes and Unsupervised Learning](https://www.ism.ac.jp/~daichi/lectures/H26-GaussianProcess/gp-lecture2-daichi.pdf)
