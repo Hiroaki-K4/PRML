@@ -2,6 +2,7 @@
 This repository provides implementations for a better understanding of [PRML](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)(Pattern Recognition and Machine Learning).
 
 ## Related articles I wrote
+- [Implementing Gaussian Process Regression](https://medium.com/@hirok4/implementing-gaussian-process-regression-97bcebd80399)
 - [Fitting Trigonometric Functions Using the Nadaraya-Watson Model](https://medium.com/@hirok4/fitting-trigonometric-functions-using-the-nadaraya-watson-model-4483aaaaa339)
 - [Implementing Mixture Density Network(MDN) Using Pytorch](https://medium.com/@hirok4/implementing-mixture-density-network-mdn-using-pytorch-8340c9530872)
 - [Understanding the Tanh Function as an Activation Function](https://medium.com/@hirok4/understanding-the-tanh-function-as-an-activation-function-ff01dc3c9777)
@@ -52,6 +53,14 @@ This repository provides implementations for a better understanding of [PRML](ht
 # [Neural network](https://github.com/Hiroaki-K4/PRML/tree/main/neural_network)
 
 <img src='neural_network/images/inverse_problem_with_mixture_density_network.png' width='700'>
+
+<br></br>
+
+# [Kernel method](https://github.com/Hiroaki-K4/PRML/tree/main/kernel_method)
+
+<img src='kernel_method/images/sample_from_gaussian_process.png' width='700'>
+
+<img src='kernel_method/images/gaussian_process.png' width='700'>
 
 <br></br>
 
