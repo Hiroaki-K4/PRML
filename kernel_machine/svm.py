@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 
 def calculate_gaussian_kernel(x_0, x_1, param=0.45):
     return np.exp(-param * np.linalg.norm(x_0 - x_1) ** 2)
+    # return np.dot(x_0, x_1)
 
 
 def create_kernel_matrix(Xs):
@@ -23,15 +24,28 @@ def create_kernel_matrix(Xs):
 
 
 def calculate_quadratic_programming(X_train, y_train):
-    print(X_train)
+    # https://cvxopt.org/userguide/coneprog.html?highlight=qp#quadratic-programming
+    print(X_train.shape)
+    print(y_train.shape)
     # Calculate parameters(P, q, G, h, A, b)
-    y = np.outer(y_train, y_train)
-    print(y)
-    print(y.shape)
     k = create_kernel_matrix(X_train)
     P = cvxopt.matrix(np.outer(y_train, y_train) * k)
-    print(P)
-    # TODO: Calculate q
+    print("P: ", P)
+    q = cvxopt.matrix(np.ones(X_train.shape[0]) * (-1))
+    print("q: ", q)
+    G = cvxopt.matrix(np.diag(np.ones(X_train.shape[0]) * (-1)))
+    print("G: ", G)
+    h = cvxopt.matrix(np.zeros(X_train.shape[0]))
+    print("h: ", h)
+    A = cvxopt.matrix(y_train.astype("float"), (1, X_train.shape[0]))
+    print("A: ", A)
+    b = cvxopt.matrix(0.0)
+    print("b: ", b)
+    solution = cvxopt.solvers.qp(P, q, G, h, A, b)
+    # TODO: Fix error
+    # a = np.ravel(solution['x'])
+    # print("a: ", a)
+    input()
 
 
 def main():

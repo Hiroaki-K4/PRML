@@ -12,7 +12,7 @@ def gaussian_kernel(x, y, sigma=5.0):
 
 class SVM(object):
 
-    def __init__(self, kernel=gaussian_kernel, C=None):
+    def __init__(self, kernel=linear_kernel, C=None):
         self.kernel = kernel
         self.C = C
         if self.C is not None: self.C = float(self.C)
@@ -202,5 +202,5 @@ if __name__ == "__main__":
         plot_contour(X_train[y_train==1], X_train[y_train==-1], clf)
 
 
-# test_linear()
-test_soft()
+test_linear()
+# test_soft()
