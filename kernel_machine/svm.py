@@ -42,19 +42,20 @@ def calculate_quadratic_programming(X_train, y_train):
     b = cvxopt.matrix(0.0)
     print("b: ", b)
     solution = cvxopt.solvers.qp(P, q, G, h, A, b)
-    # TODO: Fix error
-    # a = np.ravel(solution['x'])
-    # print("a: ", a)
-    input()
+    a = np.ravel(solution["x"])
+    print("a: ", a)
+
+    return a
 
 
 def main():
     # we create 40 separable points
     X, y = make_blobs(n_samples=50, centers=2, random_state=6)
+    y[y == 0] = -1
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
-    calculate_quadratic_programming(X_train, y_train)
+    a = calculate_quadratic_programming(X_train, y_train)
     input()
 
     # fit the model, don't regularize for illustration purposes
