@@ -7,15 +7,18 @@ import cvxopt.solvers
 def linear_kernel(x1, x2):
     return np.dot(x1, x2)
 
+
 def gaussian_kernel(x, y, sigma=5.0):
-    return np.exp(-linalg.norm(x-y)**2 / (2 * (sigma ** 2)))
+    return np.exp(-linalg.norm(x - y) ** 2 / (2 * (sigma**2)))
+
 
 class SVM(object):
 
     def __init__(self, kernel=linear_kernel, C=None):
         self.kernel = kernel
         self.C = C
-        if self.C is not None: self.C = float(self.C)
+        if self.C is not None:
+            self.C = float(self.C)
 
     def fit(self, X, y):
         n_samples, n_features = X.shape
@@ -24,11 +27,11 @@ class SVM(object):
         K = np.zeros((n_samples, n_samples))
         for i in range(n_samples):
             for j in range(n_samples):
-                K[i,j] = self.kernel(X[i], X[j])
+                K[i, j] = self.kernel(X[i], X[j])
 
-        P = cvxopt.matrix(np.outer(y,y) * K)
+        P = cvxopt.matrix(np.outer(y, y) * K)
         q = cvxopt.matrix(np.ones(n_samples) * -1)
-        A = cvxopt.matrix(y, (1,n_samples))
+        A = cvxopt.matrix(y, (1, n_samples))
         b = cvxopt.matrix(0.0)
 
         if self.C is None:
@@ -46,7 +49,7 @@ class SVM(object):
         solution = cvxopt.solvers.qp(P, q, G, h, A, b)
 
         # Lagrange multipliers
-        a = np.ravel(solution['x'])
+        a = np.ravel(solution["x"])
 
         # Support vectors have non zero lagrange multipliers
         sv = a > 1e-5
@@ -60,7 +63,7 @@ class SVM(object):
         self.b = 0
         for n in range(len(self.a)):
             self.b += self.sv_y[n]
-            self.b -= np.sum(self.a * self.sv_y * K[ind[n],sv])
+            self.b -= np.sum(self.a * self.sv_y * K[ind[n], sv])
         self.b /= len(self.a)
 
         # Weight vector
@@ -136,39 +139,45 @@ if __name__ == "__main__":
             # w.x + b = c
             return (-w[0] * x - b + c) / w[1]
 
-        pl.plot(X1_train[:,0], X1_train[:,1], "ro")
-        pl.plot(X2_train[:,0], X2_train[:,1], "bo")
-        pl.scatter(clf.sv[:,0], clf.sv[:,1], s=100, c="g")
+        pl.plot(X1_train[:, 0], X1_train[:, 1], "ro")
+        pl.plot(X2_train[:, 0], X2_train[:, 1], "bo")
+        pl.scatter(clf.sv[:, 0], clf.sv[:, 1], s=100, c="g")
 
         # w.x + b = 0
-        a0 = -4; a1 = f(a0, clf.w, clf.b)
-        b0 = 4; b1 = f(b0, clf.w, clf.b)
-        pl.plot([a0,b0], [a1,b1], "k")
+        a0 = -4
+        a1 = f(a0, clf.w, clf.b)
+        b0 = 4
+        b1 = f(b0, clf.w, clf.b)
+        pl.plot([a0, b0], [a1, b1], "k")
 
         # w.x + b = 1
-        a0 = -4; a1 = f(a0, clf.w, clf.b, 1)
-        b0 = 4; b1 = f(b0, clf.w, clf.b, 1)
-        pl.plot([a0,b0], [a1,b1], "k--")
+        a0 = -4
+        a1 = f(a0, clf.w, clf.b, 1)
+        b0 = 4
+        b1 = f(b0, clf.w, clf.b, 1)
+        pl.plot([a0, b0], [a1, b1], "k--")
 
         # w.x + b = -1
-        a0 = -4; a1 = f(a0, clf.w, clf.b, -1)
-        b0 = 4; b1 = f(b0, clf.w, clf.b, -1)
-        pl.plot([a0,b0], [a1,b1], "k--")
+        a0 = -4
+        a1 = f(a0, clf.w, clf.b, -1)
+        b0 = 4
+        b1 = f(b0, clf.w, clf.b, -1)
+        pl.plot([a0, b0], [a1, b1], "k--")
 
         pl.axis("tight")
         pl.show()
 
     def plot_contour(X1_train, X2_train, clf):
-        pl.plot(X1_train[:,0], X1_train[:,1], "ro")
-        pl.plot(X2_train[:,0], X2_train[:,1], "bo")
-        pl.scatter(clf.sv[:,0], clf.sv[:,1], s=100, c="g")
+        pl.plot(X1_train[:, 0], X1_train[:, 1], "ro")
+        pl.plot(X2_train[:, 0], X2_train[:, 1], "bo")
+        pl.scatter(clf.sv[:, 0], clf.sv[:, 1], s=100, c="g")
 
-        X1, X2 = np.meshgrid(np.linspace(-6,6,50), np.linspace(-6,6,50))
+        X1, X2 = np.meshgrid(np.linspace(-6, 6, 50), np.linspace(-6, 6, 50))
         X = np.array([[x1, x2] for x1, x2 in zip(np.ravel(X1), np.ravel(X2))])
         Z = clf.project(X).reshape(X1.shape)
-        pl.contour(X1, X2, Z, [0.0], colors='k', linewidths=1, origin='lower')
-        pl.contour(X1, X2, Z + 1, [0.0], colors='grey', linewidths=1, origin='lower')
-        pl.contour(X1, X2, Z - 1, [0.0], colors='grey', linewidths=1, origin='lower')
+        pl.contour(X1, X2, Z, [0.0], colors="k", linewidths=1, origin="lower")
+        pl.contour(X1, X2, Z + 1, [0.0], colors="grey", linewidths=1, origin="lower")
+        pl.contour(X1, X2, Z - 1, [0.0], colors="grey", linewidths=1, origin="lower")
 
         pl.axis("tight")
         pl.show()
@@ -185,7 +194,7 @@ if __name__ == "__main__":
         correct = np.sum(y_predict == y_test)
         print("%d out of %d predictions correct" % (correct, len(y_predict)))
 
-        plot_margin(X_train[y_train==1], X_train[y_train==-1], clf)
+        plot_margin(X_train[y_train == 1], X_train[y_train == -1], clf)
 
     def test_soft():
         X1, y1, X2, y2 = gen_lin_separable_overlap_data()
@@ -199,7 +208,7 @@ if __name__ == "__main__":
         correct = np.sum(y_predict == y_test)
         print("%d out of %d predictions correct" % (correct, len(y_predict)))
 
-        plot_contour(X_train[y_train==1], X_train[y_train==-1], clf)
+        plot_contour(X_train[y_train == 1], X_train[y_train == -1], clf)
 
 
 test_linear()

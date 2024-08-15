@@ -23,21 +23,21 @@ def create_kernel_matrix(Xs):
     return k
 
 
-def calculate_quadratic_programming(X_train, y_train):
+def calculate_quadratic_programming(x_train, y_train):
     # https://cvxopt.org/userguide/coneprog.html?highlight=qp#quadratic-programming
-    print(X_train.shape)
+    print(x_train.shape)
     print(y_train.shape)
     # Calculate parameters(P, q, G, h, A, b)
-    k = create_kernel_matrix(X_train)
+    k = create_kernel_matrix(x_train)
     P = cvxopt.matrix(np.outer(y_train, y_train) * k)
     print("P: ", P)
-    q = cvxopt.matrix(np.ones(X_train.shape[0]) * (-1))
+    q = cvxopt.matrix(np.ones(x_train.shape[0]) * (-1))
     print("q: ", q)
-    G = cvxopt.matrix(np.diag(np.ones(X_train.shape[0]) * (-1)))
+    G = cvxopt.matrix(np.diag(np.ones(x_train.shape[0]) * (-1)))
     print("G: ", G)
-    h = cvxopt.matrix(np.zeros(X_train.shape[0]))
+    h = cvxopt.matrix(np.zeros(x_train.shape[0]))
     print("h: ", h)
-    A = cvxopt.matrix(y_train.astype("float"), (1, X_train.shape[0]))
+    A = cvxopt.matrix(y_train.astype("float"), (1, x_train.shape[0]))
     print("A: ", A)
     b = cvxopt.matrix(0.0)
     print("b: ", b)
@@ -48,29 +48,65 @@ def calculate_quadratic_programming(X_train, y_train):
     return a
 
 
+def calculate_bias(x, y, a):
+    b = 0
+    for i in range(y.shape[0]):
+        w = 0
+        for j in range(y.shape[0]):
+            t_m = y[j]
+            w += a[j] * t_m * calculate_gaussian_kernel(x[i], x[j])
+
+        b += y[i] - w
+
+    b /= y.shape[0]
+    print("b: ", b)
+
+    return b
+
+
+def predict(x_train, y_train, x_test, a, b):
+    pred = np.zeros(x_test.shape[0])
+    for i in range(x_test.shape[0]):
+        for j in range(x_train.shape[0]):
+            pred[i] += (
+                a[j] * y_train[j] * calculate_gaussian_kernel(x_train[j], x_test[i])
+            )
+
+        pred[i] += b
+
+    return np.sign(pred)
+
+
 def main():
     # we create 40 separable points
-    X, y = make_blobs(n_samples=50, centers=2, random_state=6)
+    x, y = make_blobs(n_samples=50, centers=2, random_state=6)
     y[y == 0] = -1
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.2, random_state=42
     )
-    a = calculate_quadratic_programming(X_train, y_train)
+    a = calculate_quadratic_programming(x_train, y_train)
+    # Calculate bias
+    b = calculate_bias(x_train, y_train, a)
+    # Predict test data by using parameters
+    pred = predict(x_train, y_train, x_test, a, b)
+    print("pred: ", pred)
+    print("y_test: ", y_test)
+    # TODO: Plot results
     input()
 
     # fit the model, don't regularize for illustration purposes
     clf = svm.SVC(kernel="linear", C=1000)
-    clf.fit(X, y)
+    clf.fit(x, y)
 
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
-    print(X)
+    plt.scatter(x[:, 0], x[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+    print(x)
     print(y)
 
     # plot the decision function
     ax = plt.gca()
     DecisionBoundaryDisplay.from_estimator(
         clf,
-        X,
+        x,
         plot_method="contour",
         colors="k",
         levels=[-1, 0, 1],
