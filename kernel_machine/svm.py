@@ -91,14 +91,17 @@ def main():
     pred = predict(x_train, y_train, x_test, a, b)
     print("pred: ", pred)
     print("y_test: ", y_test)
-    # TODO: Plot results
-    input()
 
     # fit the model, don't regularize for illustration purposes
     clf = svm.SVC(kernel="linear", C=1000)
     clf.fit(x, y)
+    print(y)
+    input()
+    plt.scatter(x_train[:, 0], x_train[:, 1], c=y_train, s=30, cmap=plt.cm.Paired)
+    plt.scatter(x_test[:, 0], x_test[:, 1], c=pred, s=30, cmap=plt.cm.Paired)
 
-    plt.scatter(x[:, 0], x[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+    plt.show()
+    input()
     print(x)
     print(y)
 
