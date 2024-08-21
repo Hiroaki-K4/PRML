@@ -124,10 +124,10 @@ test_kernel_method() {
 }
 
 test_kernel_machine() {
-    cd kernel_machine
+    cd kernel_machine/svm
     python3 svm.py NotShow
     check_result "svm.py"
-    cd ../
+    cd ../../
 }
 
 python3 -m pip install -r requirements.txt
