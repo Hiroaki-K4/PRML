@@ -19,6 +19,7 @@ def create_noise_image(ori_img):
     noise_img = np.copy(ori_img)
     for i in range(noise_img.shape[0]):
         for j in range(noise_img.shape[1]):
+            # Invert pixels as noise with a 10% probability
             if random.randint(1, 100) <= 10:
                 inv_arr = np.abs(ori_img[i][j] - np.array([255, 255, 255]))
                 noise_img[i][j] = inv_arr
@@ -60,6 +61,7 @@ def calculate_multiplication_with_adjacent_pixels(denoise_img, row, col, denoise
         for j in range(col - 1, col + 2):
             if i == row and j == col:
                 continue
+            # Skip out of range of image
             if i < 0 or i >= denoise_img.shape[0] or j < 0 or j >= denoise_img.shape[1]:
                 continue
             adj_sum += denoise_val * denoise_img[i][j]
@@ -73,8 +75,10 @@ def calculate_energy(x_sum, adj_sum, xy_sum, h, beta, eta):
 
 
 def update_pixel(denoise_img, noise_img, target_row, target_col):
+    # Parameters of energy function
     h, beta, eta = 0, 1.0, 2.1
 
+    # Get energy of -1
     denoise_val = -1
     x_sum_0 = denoise_val
     adj_sum_0 = calculate_multiplication_with_adjacent_pixels(
@@ -82,15 +86,16 @@ def update_pixel(denoise_img, noise_img, target_row, target_col):
     )
     xy_sum_0 = denoise_val * noise_img[target_row][target_col]
     E_0 = calculate_energy(x_sum_0, adj_sum_0, xy_sum_0, h, beta, eta)
+
+    # Get energy of 1
     denoise_val = 1
     x_sum_1 = denoise_val
     adj_sum_1 = calculate_multiplication_with_adjacent_pixels(
         denoise_img, target_row, target_col, denoise_val
     )
     xy_sum_1 = denoise_val * noise_img[target_row][target_col]
-
-    E_0 = calculate_energy(x_sum_0, adj_sum_0, xy_sum_0, h, beta, eta)
     E_1 = calculate_energy(x_sum_1, adj_sum_1, xy_sum_1, h, beta, eta)
+
     if E_0 < E_1:
         denoise_img[target_row][target_col] = -1
     else:
@@ -111,6 +116,7 @@ def remove_noise_by_using_graphical_model(noise_img):
 
 def main(test_img_path):
     ori_img = cv2.imread(test_img_path)
+    # Align pixels(only (0,0,0) or (255,255,255))
     align_img = align_pixel_value(ori_img)
 
     # Create noise image
