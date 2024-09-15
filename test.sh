@@ -130,6 +130,13 @@ test_kernel_machine() {
     cd ../../
 }
 
+test_graphical_model() {
+    cd graphical_model
+    python3 remove_noise_using_graphical_model.py
+    check_result "remove_noise_using_graphical_model.py"
+    cd ../../
+}
+
 python3 -m pip install -r requirements.txt
 
 if [ $# -eq 1 ]; then
@@ -153,6 +160,8 @@ if [ $# -eq 1 ]; then
         test_kernel_method
     elif [ $1 = "kernel_machine" ]; then
         test_kernel_machine
+    elif [ $1 = "graphical_model" ]; then
+        test_graphical_model
     else
         echo "Argument is wrong"
         exit 1
@@ -169,4 +178,5 @@ else
     test_mixture_density_network
     test_kernel_method
     test_kernel_machine
+    test_graphical_model
 fi
