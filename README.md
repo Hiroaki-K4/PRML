@@ -2,6 +2,7 @@
 This repository provides implementations for a better understanding of [PRML](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)(Pattern Recognition and Machine Learning).
 
 ## Related articles I wrote
+- [Implementation of Noise Reduction Using Graphical Model](https://medium.com/@hirok4/implementation-of-noise-reduction-using-graphical-model-e31adc1196cc)
 - [Implementing Gaussian Process Regression](https://medium.com/@hirok4/implementing-gaussian-process-regression-97bcebd80399)
 - [Fitting Trigonometric Functions Using the Nadaraya-Watson Model](https://medium.com/@hirok4/fitting-trigonometric-functions-using-the-nadaraya-watson-model-4483aaaaa339)
 - [Implementing Mixture Density Network(MDN) Using Pytorch](https://medium.com/@hirok4/implementing-mixture-density-network-mdn-using-pytorch-8340c9530872)
@@ -61,6 +62,12 @@ This repository provides implementations for a better understanding of [PRML](ht
 <img src='kernel_method/images/sample_from_gaussian_process.png' width='700'>
 
 <img src='kernel_method/images/gaussian_process.png' width='700'>
+
+<br></br>
+
+# [Grapical model](https://github.com/Hiroaki-K4/PRML/tree/main/graphical_model)
+
+<img src='graphical_model/images/noise.png' width='400'><img src='graphical_model/images/denoise.png' width='400'>
 
 <br></br>
 

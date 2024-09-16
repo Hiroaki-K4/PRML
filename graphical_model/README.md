@@ -5,7 +5,7 @@ Directed graph whose edges have a specific direction is useful to represent the 
 <br></br>
 
 # Image denoising
-We perform image denoising using undirected graph. Suppose that an observed image containing noise is described as a $2$-dimensional array of binary pixel values $y_i\in \left\{-1,+1 \right\}$. Here, $i=1,...,D$ is the pixel serial number. This observed image is assumed to be obtained by randomly inverting the sign of a pixel with some small probability from a noiseless binary image described by $x_i\in \left\{-1,+1 \right\}$.
+We perform image denoising using undirected graph. Suppose that an observed image containing noise is described as a $2$-dimensional array of binary pixel values $y_i\in \left\lbrace-1,+1 \right\rbrace$. Here, $i=1,...,D$ is the pixel serial number. This observed image is assumed to be obtained by randomly inverting the sign of a pixel with some small probability from a noiseless binary image described by $x_i\in \left\lbrace-1,+1 \right\rbrace$.
 The below image is a noise added image obtained by inverting the sign of a pixel with a 10% probability. Our goal is to recover the original noiseless image from this noise-added image.
 
 <img src="images/noise.png" width='500'>
@@ -19,12 +19,12 @@ The noise level is sufficiently low that a strong correlation between $x_i$ and 
 <img src="images/undirected_graph.png" width='500'>
 
 We want to create an energy function that expresses the correlation between variables in order to determine whether a pixel value should be $-1$ or $1$ when restoring to the original image. To express the correlation between $x_i$ and $y_i$, we use a very simple function of the form $-\eta x_i y_i$, where $\eta$ is a positive constant. This energy function has the desired effect of having low energy (high probability) when $x_i$ and $y_i$ have the same sign and high energy (low probability) when they have different signs.  
-For adjacent pixels $\left\{x_i, y_i \right\}$, we also want the energy to be lower when the two pixel values have the same sign than when they have different signs. Therefore, we use the energy function $-\beta x_i x_j$. $\beta$ is a positive constant.  
+For adjacent pixels $\left\lbrace x_i, y_i \right\rbrace$, we also want the energy to be lower when the two pixel values have the same sign than when they have different signs. Therefore, we use the energy function $-\beta x_i x_j$. $\beta$ is a positive constant.  
 A term $hx_i$ may be added as a function of the $i$-th pixel value $x_i$ in the noiseless image. This term has the effect of biasing the pixel values so that they are more likely to have a particular sign.  
 In summary, the total energy function for this model is as follows.
 
 $$
-E(x,y)=h\sum_{i}x_i-\beta\sum_{\left\{i, j \right\}}x_ix_j-\eta\sum_{i}x_iy_i
+E(x,y)=h\sum_{i}x_i-\beta\sum_{\left\lbrace i, j \right\rbrace}x_ix_j-\eta\sum_{i}x_iy_i
 $$
 
 We recover the original image by using a simple repetition method called as **ICM; iterated conditional modes**. The procedure is as follows.
