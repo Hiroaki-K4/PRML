@@ -137,6 +137,13 @@ test_graphical_model() {
     cd ../../
 }
 
+test_mixed_models_and_EM() {
+    cd mixed_models_and_EM
+    python3 image_segmentation_by_k-means.py
+    check_result "image_segmentation_by_k-means.py"
+    cd ../../
+}
+
 python3 -m pip install -r requirements.txt
 
 if [ $# -eq 1 ]; then
@@ -162,6 +169,8 @@ if [ $# -eq 1 ]; then
         test_kernel_machine
     elif [ $1 = "graphical_model" ]; then
         test_graphical_model
+    elif [ $1 = "mixed_models_and_EM" ]; then
+        test_mixed_models_and_EM
     else
         echo "Argument is wrong"
         exit 1
@@ -179,4 +188,5 @@ else
     test_kernel_method
     test_kernel_machine
     test_graphical_model
+    test_mixed_models_and_EM
 fi

@@ -28,7 +28,7 @@ def segment_image_by_kmeans(input_img, k):
     # Prepare an array to store the assigned cluster for each pixel
     class_arr = np.zeros(pixels.shape[0], dtype=int)
 
-    # Iterate until convergence (in this version, just perform one iteration)
+    # Iterate until convergence
     for _ in range(10):
         # Compute the squared Euclidean distance from each pixel to each cluster center
         distances = np.sqrt(((pixels[:, np.newaxis] - u_k) ** 2).sum(axis=2))
